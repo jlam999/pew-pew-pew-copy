@@ -1,0 +1,313 @@
+% Heavily adapted from the template by Andrew Lin and Jason Chen by Fareed Sheriff
+\ProvidesPackage{template}
+\ProcessOptions*
+\usepackage[margin=1in]{geometry}
+\usepackage{indentfirst}
+\usepackage{centernot}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage[shortlabels]{enumitem}
+\usepackage{lipsum}
+\usepackage{bbm}
+%\usepackage{parskip}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{algorithmicx}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{mathrsfs}
+\usepackage[svgnames, dvipsnames, usenames]{xcolor}
+\usepackage[colorlinks]{hyperref}
+\PassOptionsToPackage{colorlinks}{hyperref}
+\hypersetup{urlcolor = RedViolet, linkcolor = RoyalBlue, citecolor = ForestGreen}
+\urlstyle{same}
+\usepackage{mhsetup, mathtools}
+\usepackage{float}
+\usepackage{xfrac}
+\usepackage{authblk}
+\usepackage[capitalize]{cleveref}
+\usepackage{asymptote}
+\usepackage{graphicx}
+\usepackage{tikz, tikz-cd, pgfplots}\pgfplotsset{compat=1.17}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{cite}
+\usepackage{multicol,array,multirow}
+\usepackage{titlesec}
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{0em}{}
+\titleformat{\subsection}[block]{\large\bfseries\filright}{}{0em}{}
+\newcommand{\vocab}[1]{\textbf{\color{blue!90}\boldmath #1}}
+\newcommand{\pnorm}[1]{\left\|#1\right\|}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+\makeatletter
+\newcommand*{\iso}{\mathrel{\mathpalette\@iso{}}}
+\newcommand*{\@iso}[2]{
+  % Calculate the amount of moving \sim up as in \simeq
+  \sbox0{$#1\simeq$}
+  \sbox2{$#1\sim$}
+  \dimen@=\ht0
+  \advance\dimen@ by -\ht2
+  \sbox0{\lower1.9\dimen@\hbox{$\m@th#1\relbar\iso@joinrel\relbar$}}
+  \rlap{\hbox to \wd0{\hfill\raise\dimen@\hbox{$\m@th#1\sim$}\hfill}}
+  \copy0
+}
+\newcommand*{\iso@joinrel}{
+  \mathrel{
+    \mkern-3.4mu
+    \mkern-1mu
+    \nonscript\mkern1mu
+  }
+}
+\makeatother
+\newcommand{\bb}{\mathbb}
+\newcommand{\bbm}{\mathbbm}
+\renewcommand{\tt}{\texttt}
+\newcommand{\tsf}{\textsf}
+\newcommand{\mtt}{\mathtt}
+\renewcommand{\sf}{\mathsf}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\G}{\mathbb{G}}
+\renewcommand{\H}{\mathbb{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathbb{K}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\OO}{\mathbb{O}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\bb{Z}}
+\newcommand{\1}{\bbm{1}}
+\newcommand{\rrule}{~\\\hrule~\\}
+\newcommand{\proj}[2]{\prj_{#1}{#2}}
+\newcommand{\re}[1]{\real\left({#1}\right)}
+\newcommand{\im}[1]{\imag\left({#1}\right)}
+\newcommand{\img}[1]{\image{#1}}
+\newcommand{\nul}[1]{\mathcal{N}\left({#1}\right)}
+\newcommand{\col}[1]{\mathcal{C}\left({#1}\right)}
+\newcommand{\np}{\mathcal{NP}}
+\newcommand{\npc}{\mathcal{NPC}}
+\newcommand{\p}{\mathcal{P}}
+\newcommand{\ip}{\mathcal{IP}}
+\newcommand{\conp}{\mbox{co-}\mathcal{NP}}
+\newcommand{\conpc}{\mbox{co-}\mathcal{NPC}}
+\newcommand{\parsh}[3]{\left(\frac{\partial #1}{\partial #2}\right)_{#3}}
+\newcommand{\Gen}{\mathsf{Gen}}%keygen algo
+\newcommand{\Enc}{\mathsf{Enc}}%encryption algo
+\newcommand{\Dec}{\mathsf{Dec}}%decryption algo
+\newcommand{\Alice}{\mathsf{Alice}}
+\newcommand{\Bob}{\mathsf{Bob}}
+\newcommand{\Eve}{\mathsf{Eve}}%eavesdropper
+\newcommand{\Eval}{\mathsf{Eval}}%evaluation algo
+\newcommand{\Sign}{\mathsf{Sign}}%signature algo
+\newcommand{\Ver}{\mathsf{Ver}}%verification algo
+\newcommand{\MAC}{\mathsf{MAC}}%message authentication code
+\newcommand{\view}{\mathsf{view}}
+\newcommand{\Sim}{\mathsf{Sim}}%simulator
+\newcommand{\Leg}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\qinom}[3]{\begin{bmatrix}#1\\#2\end{bmatrix}_q}%q-analog of binomial
+\newcommand{\drawn}[1]{\overset{#1}{\sim}}%drawn from
+\newcommand{\convp}{\overset{p}{\longrightarrow}}%convergence in probability
+\newcommand{\convd}{\overset{d}{\longrightarrow}}%convergence in distro
+\newcommand{\convqm}{\overset{L_2}{\longrightarrow}}%l2 norm
+\newcommand{\MISE}{\mathsf{MISE}}%mean integrated squared error
+\DeclareMathOperator{\inv}{\mathsf{inv}}
+\DeclareMathOperator{\id}{\mathsf{id}}
+\DeclareMathOperator{\poly}{poly}%polytime
+\DeclareMathOperator{\MSE}{MSE}%mean squared error
+\DeclareMathOperator{\se}{se}%standard error
+\DeclareMathOperator{\bias}{bias}%bias
+\DeclareMathOperator{\iid}{ i.i.d. }%identical and independently distributed
+\DeclareMathOperator{\ppt}{p.p.t.}%probabilistic polytime
+\DeclareMathOperator{\supp}{Supp}%support
+\DeclareMathOperator{\cis}{cis}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\Var}{Var}%variance
+\DeclareMathOperator{\Cov}{Cov}%covariance
+\DeclareMathOperator*{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}%order
+\DeclareMathOperator{\Ker}{Ker}%kernel
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\rad}{rad}%radius
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Sing}{Sing}
+\DeclareMathOperator{\tr}{tr}%trace
+\DeclareMathOperator{\ob}{ob}
+\DeclareMathOperator{\Hom}{Hom}%homomorphism
+\DeclareMathOperator{\Top}{Top}%topology
+\DeclareMathOperator{\chAb}{chAb}
+\DeclareMathOperator{\Tor}{Tor}%torsion
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\ndo}{End}%endomorphism
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\perm}{perm}%permutation
+\DeclareMathOperator{\prj}{proj}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\nlt}{nullity}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+\DeclareMathOperator{\sinc}{sinc}%sine cardinal
+\DeclareMathOperator{\cof}{\mathsf{cof}}%cofactor
+\DeclareMathOperator{\adj}{\mathsf{adj}}%adjoint
+\DeclareMathOperator{\sgn}{sgn}%signum
+\DeclareMathOperator{\st}{s.t.}%such that
+\DeclareMathOperator{\con}{con}
+\let\P\relax
+\DeclareMathOperator*{\P}{\mathbb{P}}
+\DeclareMathOperator*{\bern}{\text{Bern}}%Bernoulli
+\DeclareMathOperator*{\hgeo}{\text{Hgeo}}%Hypergeometric
+\DeclareMathOperator*{\geo}{\text{Geo}}%Geometric
+\DeclareMathOperator*{\bin}{\text{Bin}}%Binomial
+\DeclareMathOperator*{\psn}{\text{Psn}}%Poisson
+\DeclareMathOperator*{\xpn}{\text{Xpn}}%Exponential
+\DeclareMathOperator*{\nrm}{\mathcal{N}}%Normal
+\DeclareMathOperator*{\Uniform}{\text{Uniform}}%Uniform
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator{\indep}{\perp\!\!\!\perp}
+\renewcommand{\mod}[1]{\ \text{mod}\ #1}
+\renewcommand{\emptyset}{\varnothing}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+\newcommand{\nullset}{\varnothing}%nullset
+\newcommand{\xst}{\,\exists\,}
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\braket}[2]{\left\langle #1\middle| #2 \right\rangle}
+\newcommand{\brahket}[3]{\left\langle #1\middle|#2 \middle|#3 \right\rangle}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\scr}{\mathscr}
+\newcommand{\nsubeq}{\trianglelefteq}%normal subgroup nonstrict
+\newcommand{\nsub}{\triangleleft}%normal subgroup strict
+%\usemintedstyle{vim}
+\newminted{cpp}{gobble=0,linenos,escapeinside=||,breaklines}% cpp environment --- cppcode
+\newminted{py}{gobble=0,linenos,escapeinside=||,breaklines}% python environment --- pycode
+\newminted{jl}{gobble=0,linenos,escapeinside=||,breaklines}% julia environment --- jlcode
+
+\usepackage{thmtools}
+\usepackage[framemethod = TikZ]{mdframed}
+
+\mdfdefinestyle{reds}{linecolor = black!60!red, backgroundcolor = red!10, nobreak = true}
+\mdfdefinestyle{blues}{linecolor = blue!100!red, backgroundcolor = blue!2, nobreak = true}
+\mdfdefinestyle{greens}{linecolor = green!40!black, backgroundcolor = green!10, nobreak = true}
+\mdfdefinestyle{oranges}{linecolor = orange!100!red!70, backgroundcolor = orange!10, nobreak = true}
+\mdfdefinestyle{purples}{linecolor = purple!70!blue, backgroundcolor = purple!10, nobreak = true}
+\declaretheoremstyle[headfont = \bfseries\color{black!30!red}, mdframed = {style = reds}, headpunct = {\\[0.4pt]}, postheadspace = {0pt}, name={\ignorespaces}, numbered=no,]{redss}
+\declaretheoremstyle[headfont = \bfseries\color{blue!100!red}, mdframed = {style = blues}, headpunct = {\\[0.4pt]}, postheadspace = {0pt}, name={\ignorespaces}, numbered=no,]{bluess}
+\declaretheoremstyle[headfont = \bfseries\color{green!50!black}, mdframed = {style = greens}, headpunct = {\\[0.4pt]}, postheadspace = {0pt}, name={\ignorespaces}, numbered=no,]{greenss}
+\declaretheoremstyle[headfont = \bfseries\color{orange!70!red!100!black!80}, mdframed = {style = oranges}, headpunct = {\\[0.4pt]}, postheadspace = {0pt}, name={\ignorespaces}, numbered=no,]{orangess}
+\declaretheoremstyle[headfont = \bfseries\color{purple!70!blue}, mdframed = {style = purples}, headpunct = {\\[0.4pt]}, postheadspace = {0pt}, name={\ignorespaces}, numbered=no,]{purpless}
+\declaretheorem[style = redss]{genr}
+\declaretheorem[style = bluess]{genb}
+\declaretheorem[style = greenss]{geng}
+\declaretheorem[style = orangess]{geno}
+\declaretheorem[style = purpless]{genp}
+\makeatletter
+\patchcmd{\@maketitle}{\LARGE}{\vspace{-3em}\LARGE\bfseries}{}{}
+\makeatother
+
+% Example commutative diagram
+% \begin{equation*}
+%     \begin{tikzcd}
+%         A \ar[r, blue, "t"] \ar[d,  "e"] & B \ar[l, "te"near end, "st" near start, blue] \ar[ddr, "s" blue] \\
+%         C \ar[drr, "t"]&&\\
+%         && D %|[black, rotate=-180]| D
+%     \end{tikzcd}
+% \end{equation*}
+
+% Example asymptote diagram
+% \begin{figure}[H]
+%     \centering
+%     \begin{asy}
+%         size(7.5cm);
+%         import graph;
+%         draw(Circle((0, 0), 10));
+%         draw(shift(2.5, -2)*rotate(60)*ellipse((0,0),8,5));
+%         draw((8,0)..(4.5,0.7)..(1,0), ArcArrow(TeXHead));
+%         draw(shift(-2.5, -2)*rotate(-60)*ellipse((0,0),8,5));
+%         draw(Circle((0, -5), 3));
+%         draw(Circle((5.2, 2), 2.5));
+%         draw(Circle((-5.2, 2), 2.5));
+%         label("$PSPACE$", (0, 7));
+%         label("$\mathcal{P}$", (0, -5));
+%         label("co-$\mathcal{NPC}$", (5.2, 2));
+%         label("$\mathcal{NPC}$", (-5.2, 2));
+%         label("co-$\mathcal{NP}$", (5.2, -2));
+%         label("$\mathcal{NP}$", (-5.2, -2));
+%     \end{asy}
+% \end{figure}
+
+% Example image
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=2cm]{optimal.png}
+% \end{figure}
+
+% Example table
+% \begin{table}[H]
+%    \hspace{5em}\centering
+%     \newcolumntype{g}{>{\centering\arraybackslash}m{0.5cm}}
+%     \begin{tabular}{|g|g|g|g|g|g|}
+%         \hline &$v$&$w$&$x$&$y$&$z$\\\hline\hline
+%         $h_0$&0&0&1&2&3\\\hline
+%         $h_1$&1&0&1&2&3\\\hline
+%         $h_2$&2&0&1&2&3\\\hline
+%         $h_3$&3&0&1&2&3\\\hline
+%     \end{tabular}
+% \end{table}
+
+% Example algorithm
+% \begin{algorithm}[H]
+% \scriptsize % change fontsize
+% \captionsetup{font=scriptsize} % change caption size
+% \caption{Q-Learning$(S,A,s_0,\gamma,\alpha)$}\label{test}
+% \begin{algorithmic}[1]
+% \For{$s\in S,\,a\in A$}:
+%     \State{$Q[s,a] = 0$}
+% \EndFor
+% \State{$s=s_0$}\Comment{or draw randomly from set of states}
+% \While{ True}:
+%     \State{$a =$ select\_action($s,Q$)}
+%     \State{$r,s' =$ execute($a$)}
+%     \State{$Q[s,a] = Q[s,a] - \alpha\left(Q[s,a] - (r+\gamma\max_{a'}{Q[s',a']})\right)$}
+%     \State{$s = s'$}
+% \EndWhile
+% \end{algorithmic}
+% \end{algorithm}
+
+% Example cpp code
+% \begin{cppcode}
+% #include <bits/stdc++.h>
+% using namespace std;
+% typedef unsigned long long int ll;                                            
+% 
+% int main(){
+%     for(ll x = 0; x <= 20; x++){
+%         ll total = pow(2, x), pi_four = 0;
+%         for(ll a = 0; a < total; a++)
+%             if(pow((double)(rand())/INT_MAX, 2) + pow((double)(rand())/INT_MAX, 2) <= 1)
+%                 pi_four++;
+%         printf("%lf\n", (double)(pi_four*4)/total);
+%     }
+%     return 0;
+% }      
+% \end{cppcode}
+
+% Change fontsize and twocol
+% \fontsize{8}{6}\selectfont
+% \begin{multicols}{2}
+% \end{multicols}
