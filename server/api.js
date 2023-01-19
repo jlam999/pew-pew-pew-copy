@@ -34,13 +34,31 @@ router.get("/whoami", (req, res) => {
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user) socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  if (req.user)
+    socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
   res.send({});
 });
 
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+//Get user by user id.
+router.get("/user", (req, res) => {
+  const query = { _id: req.query._id };
+  User.find(query).then((user) => {
+    res.send(user);
+  });
+});
+
+//Does not take in picture yet.
+router.post("/addUser", (req, res) => {
+  const newUser = new User({
+    _id: req.user._id,
+    name: req.user.name,
+  });
+  newUser.save().then(res.send(`User ${req.user.name} was created.`));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
