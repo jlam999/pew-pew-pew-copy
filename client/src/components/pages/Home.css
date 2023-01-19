@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
+
+:root {
+  --primaryText: #09098f;
+  --secondText: #808080;
+  --white: #ffffff;
+
+  --xs: 4px;
+  --s: 8px;
+  --m: 16px;
+  --l: 24px;
+
+  --textLarge: 48px;
+  --textMedium: 32px;
+  --textSmall: 24px;
+}
+
+body {
+  font-family: "Sofia Sans";
+  color: var(--primaryText);
+  margin: auto;
+  max-width: 480px;
+  background-color: #eeeeee;
+  padding: 0px;
+}
+
+.Home-title {
+  font-size: var(--textLarge);
+}
+
+.Home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: auto;
+}
+
+.Home-buttonContainer {
+  background-color: var(--secondText);
+  width: 75%;
+  margin: auto;
+  height: 64px;
+  border-radius: var(--s);
+}
+
+.Home-buttonText {
+  margin: 0px;
+  font-family: "Sofia Sans";
+  font-size: var(--textMedium);
+  color: var(--primaryText);
+}
+
+.Home-codeContainer {
+  background-color: var(--white);
+  border: solid;
+  border-width: var(--xs);
+  border-color: var(--secondText);
+  width: 50%;
+  height: var(--textLarge);
+  margin: auto;
+  position: relative;
+  top: var(--m);
+}
+
+.Home-codeText {
+  font-size: var(--textSmall);
+  color: var(--secondText);
+  margin: auto;
+  padding: var(--s);
+}
+
+.u-textCenter {
+  text-align: center;
+}
+
+.Home-profileButton {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  height: 64px;
+  width: 64px;
+  border-radius: 32px;
+}

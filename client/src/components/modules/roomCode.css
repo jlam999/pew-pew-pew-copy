@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
+
+.roomCodeContainer {
+  font-family: "Sofia Sans";
+  position: relative;
+  top: 16px;
+  margin: auto;
+}
+
+.roomCodeInput {
+  font-family: "Sofia Sans";
+  text-align: center;
+  font-size: 32px;
+}
