@@ -1,0 +1,8 @@
+.StatsBox-container {
+  border: var(--darkgrey) 1px solid;
+  border-radius: var(--xs);
+  margin: auto;
+  background-color: #CCCCCC;
+  color: lightgreen;
+}
+

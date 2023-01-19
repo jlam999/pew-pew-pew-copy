@@ -1,0 +1,9 @@
+.Profile-container {
+  border: var(--darkgrey) 1px solid;
+  border-radius: var(--xs);
+  margin-top: var(--m);
+  margin: auto;
+  background-image: url("https://i.pinimg.com/originals/54/a6/2c/54a62cf5421c6b14856fe52008b7bdf3.jpg");
+  background-color: #FFFFFF;
+  color: blue;
+}
