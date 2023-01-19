@@ -26,7 +26,7 @@ const profile = (props) => {
 
   return (
     <div className="Profile-container">
-      <img src={props.imageURL} alt={props.playerName}>
+      <img src={props.imageURL} alt={props.playerName}/>
       <BackButton className="BackButton-container"/>
       <StatsBox className="StatsBox-container" gamesWon={props.gamesWon} gamesPlayed={props.gamesPlayed} kills={props.kills} name={props.name}/>
     </div>

@@ -43,6 +43,10 @@ body {
   border-radius: var(--s);
 }
 
+.Home-buttonContainer:hover {
+  opacity: 50%;
+}
+
 .Home-buttonText {
   margin: 0px;
   font-family: "Sofia Sans";
@@ -80,4 +84,17 @@ body {
   height: 64px;
   width: 64px;
   border-radius: 32px;
+}
+
+.Home-profileImg {
+  position: relative;
+  right: 8px;
+  bottom: 3px;
+  height: 64px;
+  width: 64px;
+  border-radius: 32px;
+}
+
+.Home-profileImg:hover {
+  opacity: 50%;
 }

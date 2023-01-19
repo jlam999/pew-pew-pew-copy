@@ -4,6 +4,7 @@ import {NewCodeInput, ReadCode} from "../modules/roomCode"
 
 import "../../utilities.css";
 import "./Home.css";
+import ProfileImg from "../../public/profile.jpg"
 
 const Home = (props) => {
     return (
@@ -20,11 +21,8 @@ const Home = (props) => {
                 </button>
             </section>
             <NewCodeInput defaultText="Enter Code"/>
-            {/*<div class="Home-codeContainer">
-                <h4 class="Home-codeText">Enter Code</h4>
-            </div>*/}
             <button className="Home-profileButton">
-                <img src="profile.jpg" alt="Profile"/>
+                <img src={ProfileImg} alt="Profile" className="Home-profileImg"/>
             </button>
         </div>
     )
