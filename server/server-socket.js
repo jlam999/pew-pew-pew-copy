@@ -1,3 +1,7 @@
+const gameLogic = require("./game-logic");
+
+const FPS = 60;
+
 let io;
 
 const userToSocketMap = {}; // maps user ID to socket object
@@ -6,6 +10,19 @@ const socketToUserMap = {}; // maps socket ID to user object
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const sendGameState = () => {
+  io.emit("update", gameLogic.gameState);
+};
+
+const startRunningGame = () => {
+  setInterval(() => {
+    sendGameState();
+  }, 1000 / FPS);
+};
+
+//Start running the game!
+startRunningGame();
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
