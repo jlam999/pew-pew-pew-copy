@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {GoogleLogin, GoogleOAuthProvider, googleLogout } from "@react-oauth/google";
 import { Link } from "@reach/router";
-
+import { get } from "../../utilities";
 
 import "./ProfileButton.css"
-import DefaultProfileImg from "../../public/profile.jpg"
+
+const defaultProfilePicture = "https://www.anitawatkins.com/wp-content/uploads/2016/02/Generic-Profile-1600x1600.png"
 
 const GOOGLE_CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
 
 const ProfileButton = (props) => {
+    const [user, setUser] = useState("")
+    const [isLoggedIn, setStatus] = useState(false);
+    useEffect(() => {
+        get("/api/user", { googleid: props.userId }).then((user) => {
+            if (user.length === 0) {
+                setStatus(false)
+            } else {
+                setUser(user[0]);
+                setStatus(true)
+            }
+        });
+    }, [props.userId]);
     
-    let ProfileImg;
-    if (props.userId) {
-        ProfileImg = <p>{props.userId}</p>
-    } else {
-        ProfileImg = <img src={DefaultProfileImg} alt="Profile" className="profileImg"/>
-    }
 
     return (
         <div>
@@ -26,6 +33,7 @@ const ProfileButton = (props) => {
                         googleLogout();
                         props.handleLogout();
                     }}
+                    className="googleLogoutButton"
                 >
                     Logout
                 </button>) : (
@@ -35,24 +43,20 @@ const ProfileButton = (props) => {
                     />
                 )}
             </GoogleOAuthProvider>
-                {/*{props.userId ? (
-                <GoogleLogout
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText="Logout"
-                onLogoutSuccess={props.handleLogout}
-                onFailure={(err) => console.log(err)}
-                />
-                ) : (
-                <GoogleLogin
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText="Login"
-                onSuccess={props.handleLogin}
-                onFailure={(err) => console.log(err)}
-                />)}*/}
             </div>
             <button className="profileImgButton">
-                <Link to="/profile">
-                    {ProfileImg}
+                <Link to={`/profile/${props.userId}`}>
+                    {isLoggedIn ? (<img
+                        src={user.picture}
+                        alt="Profile" 
+                        className="profileImg"
+                    />
+                    )   :   (<img
+                        src={defaultProfilePicture}
+                        alt="Profile" 
+                        className="profileImg"
+                    />
+                    )}
                 </Link>
             </button>
         </div>

@@ -1,5 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
+//const { Stats } = require("webpack");
 const User = require("./models/user");
+const Stats = require("./models/stats");
 const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
@@ -22,14 +24,24 @@ function verify(token) {
 function getOrCreateUser(user) {
   // the "sub" field means "subject", which is a unique identifier for each user
   return User.findOne({ googleid: user.sub }).then((existingUser) => {
+    console.log(existingUser)
     if (existingUser) return existingUser;
 
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
+      picture: user.picture,
     });
+    const newUserStats = new Stats({
+      googleid: user.sub,
+      games: 0,
+      wins: 0,
+      kills: 0,
+    })
 
-    return newUser.save();
+    newUserStats.save();
+    newUser.save();
+    return newUser;
   });
 }
 
@@ -39,6 +51,7 @@ function login(req, res) {
     .then((user) => {
       // persist user in the session
       req.session.user = user;
+      console.log(user)
       res.send(user);
     })
     .catch((err) => {
