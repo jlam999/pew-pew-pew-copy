@@ -30,7 +30,7 @@ const spawnPositions = [
   { x: SPAWN_DIFF, y: SPAWN_DIFF },
   { x: MAP_LENGTH - SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
   { x: SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
-  { x: MAP_LENGTH, y: SPAWN_DIFF },
+  { x: MAP_LENGTH - SPAWN_DIFF, y: SPAWN_DIFF },
 ];
 
 const addPlayer = (id) => {
