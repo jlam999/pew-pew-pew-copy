@@ -3,6 +3,9 @@
   right: 24px;
   top: 120px;
 }
+.googleLogoutButton {
+  margin: auto;
+}
 
 .profileImgButton {
   position: absolute;

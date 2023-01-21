@@ -13,9 +13,11 @@ import "./StatsBox.css";
  * @param {string} name of user
  */
 const StatsBox = (props) => {
+  console.log("User", props.user)
+  console.log("stats", props.stats)
   return (
     <div>
-      <h1 className="StatsBox-name">{props.name}'s Stats</h1>
+      <h1 className="StatsBox-name">{props.user.name}'s Stats</h1>
       <div className="StatsBox-largeContainer">
         <div className="StatsBox-containerName">
           <h2><b>Games Played:</b></h2>
@@ -27,13 +29,13 @@ const StatsBox = (props) => {
           <h2><b>Deaths Per Game:</b></h2>
         </div>
         <div className="StatsBox-containerNumber">
-          <h2>{props.gamesPlayed}</h2>
-          <h2>{props.gamesWon}</h2>
-          <h2>{props.gamesWon/props.gamesWon}</h2>
-          <h2>{props.kills}</h2>
-          <h2>{props.gamesPlayed-props.gamesWon}</h2>
-          <h2>{props.kills/props.gamesPlayed}</h2>
-          <h2>{(props.gamesPlayed-props.gamesWon)/props.gamesPlayed}</h2>
+          <h2>{props.stats.games}</h2>
+          <h2>{props.stats.wins}</h2>
+          <h2>{props.stats.games/props.stats.wins}</h2>
+          <h2>{props.stats.kills}</h2>
+          <h2>{props.stats.games-props.stats.wins}</h2>
+          <h2>{props.stats.kills/props.stats.games}</h2>
+          <h2>{(props.stats.games-props.stats.wins)/props.stats.games}</h2>
         </div>
       </div>
     </div>

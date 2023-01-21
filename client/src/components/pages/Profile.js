@@ -15,27 +15,34 @@ import "./Profile.css";
  * @param {Number} kills of user
  * @param {string} name of user
  */
-const User = (props) => {
+const Profile = (props) => {
+  const [user, setUser] = useState("")
   const [stats, updateStats] = useState([]);
 
   useEffect(() => {
-    get("/api/profile", { parent: props._id }).then((statistics) => {
-      updateStats(statistics);
+    console.log(props.userId)
+    get("/api/user", { googleid: props.userId }).then((user) => {
+      setUser(user[0])
     });
+    get("/api/stats", { googleid: props.userId }).then((stats) => updateStats(stats[0]));
   }, []);
 
   return (
     <div>
       <BackButton className="BackButton-container"/>
       <div>
-        <StatsBox className="StatsBox-container" 
-          gamesWon={props.gamesWon} 
-          gamesPlayed={props.gamesPlayed} 
-          kills={props.kills} 
-          name={props.name}/>
+        {props.userId ? (
+          <StatsBox className="StatsBox-container" 
+          user={user} 
+          stats={stats}
+        />
+        )   :   (
+          <p className="LoginToSeeStatsText"> Login to track and see your stats!</p>
+        )}
+        
       </div> 
     </div>
   );
 };
 
-export default User;
+export default Profile;

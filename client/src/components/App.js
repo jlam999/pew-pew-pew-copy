@@ -22,9 +22,9 @@ const App = () => {
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
-      if (user._id) {
+      if (user.googleid) {
         // they are registed in the database, and currently logged in.
-        setUserId(user._id);
+        setUserId(user.googleid);
       }
     });
   }, []);
@@ -32,9 +32,11 @@ const App = () => {
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
+    console.log("cred", decodedCredential);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      setUserId(user._id);
+      console.log("Set ID: ", user.googleid)
+      setUserId(user.googleid)
       post("/api/initsocket", { socketid: socket.id });
     });
   };
@@ -47,14 +49,9 @@ const App = () => {
   return (
     <>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <Profile path="/profile" _id="0" gamesPlayed="100" gamesWon="20" kills="40" name="burtis" />
-        <Skeleton
-          path="/skeleton"
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-          userId={userId}
-        />
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+        <Profile path={`/profile/${userId}`} userId={userId}/>
+        <Skeleton path="/skeleton" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Game path="/game" />
         <NotFound default />
       </Router>
