@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
 :root {
-  --primaryText: #09098f;
+  --pageBackground: #272822;
+  --primaryText: #eeeeee;
   --secondText: #808080;
   --white: #ffffff;
 
@@ -19,8 +20,9 @@ body {
   font-family: "Sofia Sans";
   color: var(--primaryText);
   margin: auto;
-  max-width: 480px;
-  background-color: #eeeeee;
+  max-width: 640px;
+  width: 60%;
+  background-color: var(--pageBackground);
   padding: 0px;
 }
 
@@ -28,16 +30,9 @@ body {
   font-size: var(--textLarge);
 }
 
-.Home-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: auto;
-}
-
 .Home-buttonContainer {
   background-color: var(--secondText);
-  width: 75%;
+  width: 50%;
   margin: auto;
   height: 64px;
   border-radius: var(--s);

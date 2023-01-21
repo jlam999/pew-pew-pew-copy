@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-import "./roomCode.css"
+import "./RoomCode.css"
+
+/**
+ * 
+ * @param {funct} props 
+ * @returns 
+ */
 
 const NewCodeInput = (props) => {
     const [roomCode,setRoomCode] = useState("");
@@ -15,16 +21,26 @@ const NewCodeInput = (props) => {
     };
 
     return (
+        <div className="largeContainer">
         <div className="roomCodeContainer"> 
             <input 
                 type="text"
-                placeholder={props.defaultText}
                 value={roomCode}
+                placeholder={props.defaultText}
                 onChange={handleChange}
                 minLength = "6"
                 maxLength = "6"
                 className="roomCodeInput"
             />
+            <button
+                type="submit"
+                value="Join" //TO BE CHANGED: VALUE THAT IS SUBMITTED UPON PRESS
+                onClick={handleSubmit}
+                className="joinButton"
+            >
+                Join
+            </button>
+        </div>
         </div>
     )
 }
@@ -36,4 +52,4 @@ const ReadCode = () => {
     <NewCodeInput defaultText="Enter Code" onSubmit={attemptCode}/>
 }
 
-export {NewCodeInput, ReadCode};
+export default NewCodeInput;

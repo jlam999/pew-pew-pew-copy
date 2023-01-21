@@ -1,9 +1,22 @@
-.StatsBox-container {
-  border: var(--darkgrey) 1px solid;
-  border-radius: var(--xs);
-  margin-top: var(--m);
+.StatsBox-name {
+  text-align: center;
+  font-size: 96px;
+}
+
+.StatsBox-largeContainer {
+  display: flex;
+  flex-direction: row;
   margin: auto;
-  background-image: url("https://images.pexels.com/photos/5186869/pexels-photo-5186869.jpeg");
-  background-color: #CCCCCC;
-  color: lightblue;
+  max-width: 400px;
+  align-content: center;
+}
+
+.StatsBox-containerName {
+  margin: auto;
+  font-size: 20px;
+}
+
+.StatsBox-containerNumber {
+  margin: auto;
+  font-size: 20px;
 }
