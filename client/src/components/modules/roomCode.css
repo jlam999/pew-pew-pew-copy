@@ -1,14 +1,41 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
+.largeContainer {
+  width: 50%;
+  margin: auto;
+}
+
 .roomCodeContainer {
   font-family: "Sofia Sans";
   position: relative;
-  top: 16px;
+  top: 0x;
   margin: auto;
+  display: flex;
+  flex-direction: row;
+  gap: var(--s);
+  padding: 0px;
 }
 
 .roomCodeInput {
   font-family: "Sofia Sans";
   text-align: center;
   font-size: 32px;
+  border-radius: var(--s);
+  width: 200px;
+}
+
+.joinButton {
+  font-family: "Sofia Sans";
+  font-size: 32px;
+  height: 48px;
+  width: 104px;
+  background-color: var(--secondText);
+  border-radius: var(--s);
+  color: var(--primaryText);
+  padding: 0px;
+  margin: 0px;
+}
+
+.joinButton:hover {
+  opacity: 50%;
 }

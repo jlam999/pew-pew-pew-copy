@@ -36,7 +36,7 @@ const socketManager = require("./server-socket");
 const mongoConnectionURL =
   "mongodb+srv://jlam999:rtQaqgpdPTAwjLRE@cluster0.zz7ztpa.mongodb.net/?retryWrites=true&w=majority";
 // TODO change database name to the name you chose
-const databaseName = "Cluster0";
+const databaseName = "cluster0";
 
 // connect to mongodb
 mongoose

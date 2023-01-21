@@ -1,8 +1,14 @@
-.StatsBox-container {
-  border: var(--darkgrey) 1px solid;
-  border-radius: var(--xs);
-  margin: auto;
-  background-color: #CCCCCC;
-  color: lightgreen;
+.BackButton-container {
+  position: absolute;
+  left: 32px;
+  top: 32px;
 }
 
+.BackButton-img {
+  width: 48px;
+  height: 48px;
+}
+
+.BackButton-img:hover {
+  opacity: 60%;
+}
