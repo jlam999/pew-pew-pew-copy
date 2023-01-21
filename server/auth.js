@@ -34,12 +34,10 @@ function getOrCreateUser(user) {
 }
 
 function login(req, res) {
-  console.log("100")
-  verify(req.body.token).then(console.log("200"))
+  verify(req.body.token)
     .then((user) => getOrCreateUser(user))
     .then((user) => {
       // persist user in the session
-      console.log("300")
       req.session.user = user;
       res.send(user);
     })
