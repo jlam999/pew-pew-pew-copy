@@ -34,11 +34,8 @@ const App = () => {
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("1");
       setUserId(user._id);
-      console.log("2");
       post("/api/initsocket", { socketid: socket.id });
-      console.log("3");
     });
   };
 
