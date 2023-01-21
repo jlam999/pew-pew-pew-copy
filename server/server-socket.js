@@ -1,6 +1,6 @@
 const gameLogic = require("./game-logic");
 
-const FPS = 60;
+const FPS = 1;
 
 let io;
 
@@ -35,6 +35,9 @@ const addUser = (user, socket) => {
 
   userToSocketMap[user._id] = socket;
   socketToUserMap[socket.id] = user;
+
+  gameLogic.addPlayer(user._id);
+  console.log("Player added");
 };
 
 const removeUser = (user, socket) => {
