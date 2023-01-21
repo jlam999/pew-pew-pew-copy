@@ -1,7 +1,7 @@
 //Constants
 MAP_LENGTH = 500;
 INIT_HEALTH = 100;
-SPAWN_DIFF = 10;
+SPAWN_DIFF = 50;
 
 //Game State
 gameState = {
@@ -35,7 +35,7 @@ const spawnPositions = [
 
 const addPlayer = (id) => {
   gameState.players[id] = {
-    position: spawnPositions[gameState.players.length], //Initial position to be calculated later
+    position: spawnPositions[Object.keys(gameState.players).length], //Initial position to be calculated later
     health: INIT_HEALTH,
     bullets: [],
   };

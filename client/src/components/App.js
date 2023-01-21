@@ -11,7 +11,8 @@ import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 import Home from "./pages/Home.js";
-import Profile from "./pages/Profile.js"
+import Profile from "./pages/Profile.js";
+import Game from "./pages/Game.js";
 
 /**
  * Define the "App" component
@@ -33,11 +34,11 @@ const App = () => {
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("1")
+      console.log("1");
       setUserId(user._id);
-      console.log("2")
+      console.log("2");
       post("/api/initsocket", { socketid: socket.id });
-      console.log("3")
+      console.log("3");
     });
   };
 
@@ -49,9 +50,15 @@ const App = () => {
   return (
     <>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
-        <Profile path="/profile" _id="0" gamesPlayed="100" gamesWon="20" kills="40" name="burtis"/>
-        <Skeleton path="/skeleton" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Profile path="/profile" _id="0" gamesPlayed="100" gamesWon="20" kills="40" name="burtis" />
+        <Skeleton
+          path="/skeleton"
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          userId={userId}
+        />
+        <Game path="/game" />
         <NotFound default />
       </Router>
     </>

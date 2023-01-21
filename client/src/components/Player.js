@@ -108,13 +108,11 @@ class Player {
     return [...this.#base, this.#radius()];
   }
 
-  getBlocks() {
-    blocks = [];
-    for (bullets of this.#bullets) {
-      blocks.push(bullet.getPosition());
-    }
-    return blocks;
+  getBullets() {
+    arr = [];
+    for (bullet of this.#bullets) arr.push(bullet.getPosition());
+    return arr;
   }
 }
 
-//export default Player;
+export default Player;
