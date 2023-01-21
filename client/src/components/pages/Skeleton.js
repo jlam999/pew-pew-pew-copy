@@ -5,7 +5,8 @@ import "../../utilities.css";
 import "./Skeleton.css";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "646237457613-t3e38boslv31goaphqkhrghtna1dikv0.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
+
 
 const Skeleton = ({ userId, handleLogin, handleLogout }) => {
   return (

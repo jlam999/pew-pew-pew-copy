@@ -4,8 +4,9 @@ const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
 //    TODO: replace with your own CLIENT_ID
-const CLIENT_ID = "646237457613-t3e38boslv31goaphqkhrghtna1dikv0.apps.googleusercontent.com";
+const CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
 const client = new OAuth2Client(CLIENT_ID);
+console.log(client)
 
 // accepts a login token from the frontend, and verifies that it's legit
 function verify(token) {
