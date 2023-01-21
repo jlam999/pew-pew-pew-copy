@@ -11,7 +11,8 @@ import { socket } from "../client-socket.js";
 
 import { get, post } from "../utilities";
 import Home from "./pages/Home.js";
-import Profile from "./pages/Profile.js"
+import Profile from "./pages/Profile.js";
+import Game from "./pages/Game.js";
 
 /**
  * Define the "App" component
@@ -51,6 +52,7 @@ const App = () => {
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
         <Profile path={`/profile/${userId}`} userId={userId}/>
         <Skeleton path="/skeleton" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        <Game path="/game" />
         <NotFound default />
       </Router>
     </>
