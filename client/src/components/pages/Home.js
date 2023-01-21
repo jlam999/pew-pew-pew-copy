@@ -27,7 +27,7 @@ const Home = (props) => {
         handleLogout={props.handleLogout}
         userId={props.userId}
       />
-      <Link to="/game"></Link>
+      <Link to="/game">Click Here</Link>
     </div>
   );
 };

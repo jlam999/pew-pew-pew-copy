@@ -18,8 +18,6 @@ const draw = (gameState) => {
   ctx.fill();
   ctx.closePath();
 
-  console.log(gameState.players);
-
   ctx.beginPath();
   for (let player of Object.values(gameState.players)) {
     ctx.arc(player.position.x, player.position.y, Math.sqrt(player.health), 0, 2 * Math.PI, true);
