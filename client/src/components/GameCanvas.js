@@ -2,8 +2,9 @@
 
 //Input is of the form of gameState (in backend gamelogic)
 
-const draw = (gameState) => {
-  const canvas = document.getElementById("game-canvas");
+const draw = (gameState, canvasRef) => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
 
   // canvas.width = self.outerWidth;
   // canvas.height = self.outerHeight;
