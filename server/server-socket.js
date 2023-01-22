@@ -57,7 +57,7 @@ module.exports = {
         removeUser(user, socket);
       });
       socket.on("move", (dir) => {
-        const uder = getUserFromSocketID(socket.id);
+        const user = getUserFromSocketID(socket.id);
         if (user) gameLogic.movePlayer(user.googleId, dir);
       });
     });

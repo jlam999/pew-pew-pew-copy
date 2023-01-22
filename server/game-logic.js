@@ -27,6 +27,10 @@ const addPlayer = (id) => {
   };
 };
 
+const movePlayer = (id, dir) => {
+  gameState.players[id].move(dir);
+};
+
 const checkWin = () => {
   //TODO: Checks if the game has been won.
 };
