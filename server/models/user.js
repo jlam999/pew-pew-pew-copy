@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  googleid: String, //TO DO: figure out if we can use googleid as id.
+  googleid: String,
   picture: {
     type: String,
     default:
