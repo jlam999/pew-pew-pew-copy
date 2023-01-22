@@ -1,3 +1,4 @@
+const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
 
 const FPS = 1;
@@ -25,7 +26,7 @@ const startRunningGame = () => {
 startRunningGame();
 
 const addUser = (user, socket) => {
-  const oldSocket = userToSocketMap[user._id];
+  const oldSocket = userToSocketMap[user.googleId];
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
@@ -33,15 +34,15 @@ const addUser = (user, socket) => {
     delete socketToUserMap[oldSocket.id];
   }
 
-  userToSocketMap[user._id] = socket;
+  userToSocketMap[user.googleId] = socket;
   socketToUserMap[socket.id] = user;
 
-  gameLogic.addPlayer(user._id);
+  gameLogic.addPlayer(user.googleId);
   console.log("Player added");
 };
 
 const removeUser = (user, socket) => {
-  if (user) delete userToSocketMap[user._id];
+  if (user) delete userToSocketMap[user.googleId];
   delete socketToUserMap[socket.id];
 };
 
@@ -54,6 +55,10 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+      });
+      socket.on("move", (dir) => {
+        const uder = getUserFromSocketID(socket.id);
+        if (user) gameLogic.movePlayer(user.googleId, dir);
       });
     });
   },
