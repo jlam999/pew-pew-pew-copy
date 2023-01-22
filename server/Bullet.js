@@ -1,3 +1,7 @@
+BULLET_RADIUS = 5;
+BORDER_MAX_X = 500;
+BORDER_MAX_Y = 500;
+
 class Bullet {
   #position = 0;
   #angle = 0;
@@ -14,13 +18,13 @@ class Bullet {
     return this.#position;
   }
 
-  //   getAngle() {
-  //     return this.#angle;
-  //   }
+  getAngle() {
+    return this.#angle;
+  }
 
-  //   getSpeed() {
-  //     return this.#speed;
-  //   }
+  getSpeed() {
+    return this.#speed;
+  }
 
   getIsActive() {
     return this.#isActive;
@@ -54,11 +58,29 @@ class Bullet {
    * @param {Player} bulletOwner : the Player object that owns this bullet
    */
   checkCollision(players, bulletOwner) {
-    //TODO: Iterates through all of the players and determine if any of them
+    //TODO: Iterates through all of the players and determine if any of them were hit by this bullet
+    players.forEach(player => {
+      let playerPos = player.getPosition();
+      let distance = Math.sqrt((playerPos[0]-this.position[0])**2 + (playerPos[1]-this.position[1])**2);
+      if (distance < BULLET_RADIUS + player.getRadius()) {
+        if (player === bulletOwner) {
+          player.absorb();
+        } else {
+          player.getsHit();
+        }
+        this.#isActive = false;
+      }
+    })
   }
 
   checkWallCollision() {
     //TODO: Checks if this bullet is hitting a wall.
+    if (!(Math.abs(BORDER_MAX_X/2-this.position[0])<BORDER_MAX_X/2-BULLET_RADIUS)) {
+      this.#angle = Math.PI-this.#angle;
+    }
+    if (!(Math.abs(BORDER_MAX_Y/2-this.position[1])<BORDER_MAX_Y/2-BULLET_RADIUS)) {
+      this.#angle = -this.#angle;
+    }
   }
 }
 
