@@ -1,5 +1,6 @@
 //import Player from "./Player.js";
 
+const BULLET_RADIUS = 5;
 //Input is of the form of gameState (in backend gamelogic)
 
 const draw = (gameState, canvasRef) => {
@@ -21,11 +22,17 @@ const draw = (gameState, canvasRef) => {
 
   ctx.beginPath();
   for (let player of Object.values(gameState.players)) {
-    ctx.arc(player.position.x, player.position.y, Math.sqrt(player.health), 0, 2 * Math.PI, true);
-    // player.move();
-    // for (let x of player.getBullets()) {
-    //   ctx.rect(x[0] - 10, x[1] - 10, 20, 20);
-    // }
+    ctx.arc(
+      player.getPosition().x,
+      player.getPosition().y,
+      player.getRadius(),
+      0,
+      2 * Math.PI,
+      true
+    );
+    for (let bullet of player.getBullets()) {
+      cts.arc(bullet.getPosition().x, bullet.getPosition().y, BULLET_RADIUS, 0, 2 * Math.PI, true);
+    }
   }
   ctx.fillStyle = "#AAAAAA";
   ctx.fill();
