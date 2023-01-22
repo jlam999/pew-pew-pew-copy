@@ -1,3 +1,5 @@
+const { _ } = require("core-js");
+
 //Constants
 MAP_LENGTH = 500;
 INIT_HEALTH = 100;
@@ -25,18 +27,8 @@ const addPlayer = (id) => {
   };
 };
 
-const movePlayer = (id, dir) => {
-  // Unbounded moves
-  speed = 10;
-  if (dir === "up") {
-    gameState.players[id].position.y -= speed;
-  } else if (dir === "down") {
-    gameState.players[id].position.y += speed;
-  } else if (dir === "left") {
-    gameState.players[id].position.x -= speed;
-  } else if (dir === "right") {
-    gameState.players[id].position.x += speed;
-  }
+const checkWin = () => {
+  //TODO: Checks if the game has been won.
 };
 
 const removePlayer = (id) => {
@@ -44,6 +36,9 @@ const removePlayer = (id) => {
     delete gameState.players[id];
   }
 };
+
+//TODO
+const updateGameState = () => {};
 
 module.exports = {
   gameState,
