@@ -9,22 +9,6 @@ gameState = {
   players: {},
 };
 
-/**
- * gameState.players will comprise PlayerObjs of the following form:
- * PlayerObj = {
- *  position: {x: Number, y: Number},
- *  health: Number,
- *  bullets: [BulletObj],
- * }
- *
- * BulletObjs are of the following form:
- * BulletObj = {
- *  position: {x: Number, y: Number},
- *  angle: Number,
- *  speed: Number,
- * }
- */
-
 //Determines the spawn locations of all four players
 const spawnPositions = [
   { x: SPAWN_DIFF, y: SPAWN_DIFF },
