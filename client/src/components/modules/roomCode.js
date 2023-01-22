@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import "./RoomCode.css"
 
 /**
+ * The box in the home page that allows you to input the room code
  * 
- * @param {funct} props 
- * @returns 
+ * The following props are used:
+ * @param {Function} onSubmit //NOT PASSED IN YET, MUST BE RESOLVED
  */
 
 const NewCodeInput = (props) => {
@@ -26,7 +27,7 @@ const NewCodeInput = (props) => {
             <input 
                 type="text"
                 value={roomCode}
-                placeholder={props.defaultText}
+                placeholder="Enter Code"
                 onChange={handleChange}
                 minLength = "6"
                 maxLength = "6"

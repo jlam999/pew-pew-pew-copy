@@ -9,6 +9,15 @@ const defaultProfilePicture = "https://www.anitawatkins.com/wp-content/uploads/2
 
 const GOOGLE_CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
 
+/**
+ * Profile Button rendered in the home page
+ * 
+ * The following props are used:
+ * @param {Function} handleLogin for Google Login
+ * @param {Function} handleLogout for Google Logout
+ * @param {String} userId (state) to track user using Google ID
+ */
+
 const ProfileButton = (props) => {
     const [user, setUser] = useState("")
     const [isLoggedIn, setStatus] = useState(false);
