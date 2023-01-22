@@ -4,7 +4,7 @@ import "./BackButton.css";
 import BackButtonImg from "../../public/back-arrow.jpg"
 
 /**
- * Profile is a component that displays the user's stats and a back button to the game menu
+ * Back button rendered on the profile page that returns user to home
  */
 const BackButton = () => {
   return (

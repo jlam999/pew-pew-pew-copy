@@ -7,13 +7,10 @@ import "./Profile.css";
 
 /**
  * User is a component that displays the user's stats and a back button to the game menu
+ * Renders the Profile Page, which contains user stats, path is "/profile/{User's Google Id}"
  *
- * Proptypes
- * @param {string} _id of user
- * @param {Number} gamesWon of user
- * @param {Number} gamesPlayed of user
- * @param {Number} kills of user
- * @param {string} name of user
+ * The following props are used: 
+ * @param {String} userId to track user through Google ID
  */
 const Profile = (props) => {
   const [user, setUser] = useState("")
