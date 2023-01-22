@@ -1,5 +1,3 @@
-const { _ } = require("core-js");
-
 //Constants
 MAP_LENGTH = 500;
 INIT_HEALTH = 100;
@@ -31,6 +29,10 @@ const movePlayer = (id, dir) => {
   gameState.players[id].move(dir);
 };
 
+const playerShoot = (id, dir) => {
+  gameState.players[id].shoot(dir);
+};
+
 const checkWin = () => {
   //TODO: Checks if the game has been won.
 };
@@ -48,5 +50,6 @@ module.exports = {
   gameState,
   addPlayer,
   movePlayer,
+  playerShoot,
   removePlayer,
 };

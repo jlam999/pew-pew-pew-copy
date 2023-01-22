@@ -60,6 +60,10 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         if (user) gameLogic.movePlayer(user.googleId, dir);
       });
+      socket.on("shoot", (dir) => {
+        const user = getUserFromSocketID(socket.id);
+        if (user) gameLogic.playerShoot(user.googleId, dir);
+      });
     });
   },
 

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
+import { handleKey, handleClick } from "../../input.js";
 
 const Game = (props) => {
   const canvasRef = useRef(null);
   // add event listener on mount
   useEffect(() => {
-    window.addEventListener("keydown", handleInput);
+    window.addEventListener("keydown", handleKey);
+    window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keydown", handleInput);
