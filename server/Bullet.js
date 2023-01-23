@@ -49,6 +49,7 @@ class Bullet {
       this.position[0] + this.speed * Math.cos(this.angle),
       this.position[1] + this.speed * Math.sin(this.angle),
     ];
+    this.checkWallCollision();
     this.speed *= 0.95;
   }
 
