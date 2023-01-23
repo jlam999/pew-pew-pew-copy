@@ -1,3 +1,5 @@
+const Player = require("./Player");
+
 //Constants
 MAP_LENGTH = 500;
 INIT_HEALTH = 100;
@@ -18,11 +20,8 @@ const spawnPositions = [
 ];
 
 const addPlayer = (id) => {
-  gameState.players[id] = {
-    position: spawnPositions[Object.keys(gameState.players).length], //Initial position to be calculated later
-    health: INIT_HEALTH,
-    bullets: [],
-  };
+  init_position = spawnPositions[Object.keys(gameState.players).length];
+  gameState.players[id] = new Player(INIT_HEALTH, init_position.x, init_position.y, id);
 };
 
 const movePlayer = (id, dir) => {

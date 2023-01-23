@@ -1,4 +1,4 @@
-import Bullet from "./Bullet.js";
+const Bullet = require("./Bullet.js");
 
 class Player {
   #position = [0, 0];
@@ -27,38 +27,38 @@ class Player {
   }
 
   getSpeed() {
-    return this.#baseHealth / Math.sqrt(this.#health);
+    return this.#initHealth / Math.sqrt(this.#health);
   }
 
   getRadius() {
     return Math.sqrt(this.#health / Math.PI);
   }
 
-  /**
-   * @param {Number} theta: The angle that the player will shoot towards
-   */
-  shoot(theta) {
-    // mouse direction
-    this.#health--;
-    this.#bullets.push(
-      new Bullet(
-        this.#base[0] + (this.#radius() + this.#speed()) * Math.cos(theta),
-        this.#base[1] + (this.#radius + this.#speed()) * Math.sin(theta),
-        theta
-      )
-    );
-  }
+  // /**
+  //  * @param {Number} theta: The angle that the player will shoot towards
+  //  */
+  // shoot(theta) {
+  //   // mouse direction
+  //   this.#health--;
+  //   this.#bullets.push(
+  //     new Bullet(
+  //       this.#base[0] + (this.#radius() + this.#speed()) * Math.cos(theta),
+  //       this.#base[1] + (this.#radius + this.#speed()) * Math.sin(theta),
+  //       theta
+  //     )
+  //   );
+  // }
 
   /**
    * @param {Number} theta: The angle that the player will move in
    */
-  move(theta) {
-    // pi/4 increments because if like up & left are pressed, we get a 3pi/4 angle --- keyboard directions
-    if (theta !== undefined) {
-      this.#base[0] += this.#speed() * Math.cos(theta);
-      this.#base[1] += this.#speed() * Math.sin(theta);
-    }
-  }
+  // move(theta) {
+  //   // pi/4 increments because if like up & left are pressed, we get a 3pi/4 angle --- keyboard directions
+  //   if (theta !== undefined) {
+  //     this.#base[0] += this.#speed() * Math.cos(theta);
+  //     this.#base[1] += this.#speed() * Math.sin(theta);
+  //   }
+  // }
 
   // Will implement later
   // /**
@@ -92,4 +92,4 @@ class Player {
   }
 }
 
-export default Player;
+module.exports = Player;
