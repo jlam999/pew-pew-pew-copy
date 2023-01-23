@@ -8,7 +8,7 @@ const socketManager = require("./server-socket");
 //    TODO: replace with your own CLIENT_ID
 const CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
 const client = new OAuth2Client(CLIENT_ID);
-console.log(client)
+//console.log(client);
 
 // accepts a login token from the frontend, and verifies that it's legit
 function verify(token) {
@@ -24,7 +24,7 @@ function verify(token) {
 function getOrCreateUser(user) {
   // the "sub" field means "subject", which is a unique identifier for each user
   return User.findOne({ googleid: user.sub }).then((existingUser) => {
-    console.log(existingUser)
+    console.log(existingUser);
     if (existingUser) return existingUser;
 
     const newUser = new User({
@@ -37,7 +37,7 @@ function getOrCreateUser(user) {
       games: 0,
       wins: 0,
       kills: 0,
-    })
+    });
 
     newUserStats.save();
     newUser.save();
@@ -51,7 +51,7 @@ function login(req, res) {
     .then((user) => {
       // persist user in the session
       req.session.user = user;
-      console.log(user)
+      console.log(user);
       res.send(user);
     })
     .catch((err) => {

@@ -12,7 +12,8 @@ const Game = (props) => {
     window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
-      window.removeEventListener("keydown", handleInput);
+      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("click", handleClick);
     };
   }, []);
 

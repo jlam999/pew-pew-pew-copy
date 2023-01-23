@@ -48,8 +48,8 @@ class Bullet {
   //Be sure to use checkWallCollision()
   update(players) {
     this.position = [
-      this.position[0] + this.speed * Math.cos(this.angle),
-      this.position[1] + this.speed * Math.sin(this.angle),
+      this.position.x + this.speed * Math.cos(this.angle),
+      this.position.y + this.speed * Math.sin(this.angle),
     ];
     this.checkWallCollision();
     this.checkCollision(players);
@@ -59,7 +59,6 @@ class Bullet {
   /**
    * ig we don't do this when updating game state?
    * @param {[Player]} players : List of all the players in the game
-   * @param {Player} bulletOwner : the Player object that owns this bullet
    */
   checkCollision(players) {
     players.forEach((player) => {

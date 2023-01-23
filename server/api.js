@@ -48,7 +48,7 @@ router.post("/initsocket", (req, res) => {
 
 //Get user by user id.
 router.get("/user", (req, res) => {
-  console.log("Searching for ", req);
+  //console.log("Searching for ", req);
   const query = { googleid: req.query.googleid };
   User.find(query).then((user) => {
     console.log("Found ", user);

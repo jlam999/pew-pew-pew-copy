@@ -20,8 +20,11 @@ const spawnPositions = [
 ];
 
 const addPlayer = (id) => {
+  console.log("hi");
   init_position = spawnPositions[Object.keys(gameState.players).length];
-  gameState.players[id] = new Player(INIT_HEALTH, init_position.x, init_position.y, id);
+  newPlayer = new Player(INIT_HEALTH, init_position.x, init_position.y, id);
+  console.log(newPlayer.getPosition());
+  gameState.players[id] = newPlayer;
 };
 
 const movePlayer = (id, dir) => {
@@ -35,10 +38,10 @@ const playerShoot = (id, dir) => {
 const checkWin = () => {
   winner = undefined;
   nonzeroHealth = 0;
-  for (let id = 0; id < gameState.players.length; id++) {
-    if (gameState.players[id].health !== 0) {
+  for (let player_id of Object.keys(gameState.players)) {
+    if (gameState.players[player_id].health !== 0) {
       nonzeroHealth++;
-      winner = id;
+      winner = player_id;
     }
   }
   if (nonzeroHealth === 1) gameState.winner = winner;
@@ -51,7 +54,8 @@ const removePlayer = (id) => {
 };
 
 const updateGameState = () => {
-  for (p of gameState.players) p.moveBullets(gameState.players);
+  //checkWin();
+  for (p of Object.values(gameState.players)) p.moveBullets(gameState.players);
 };
 
 module.exports = {
@@ -60,4 +64,5 @@ module.exports = {
   movePlayer,
   playerShoot,
   removePlayer,
+  updateGameState,
 };
