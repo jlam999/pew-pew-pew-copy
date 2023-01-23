@@ -21,16 +21,20 @@ const draw = (gameState, canvasRef) => {
   ctx.fill();
   ctx.closePath();
 
-  ctx.beginPath();
   for (let player of Object.values(gameState.players)) {
+    ctx.beginPath();
     ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
-    // for (let bullet of player.getBullets()) {
-    //   ctx.arc(bullet.getPosition().x, bullet.getPosition().y, BULLET_RADIUS, 0, 2 * Math.PI, true);
-    // }
+    ctx.fillStyle = "#AAAAAA";
+    ctx.fill();
+    ctx.closePath();
+    for (let bullet of player.bullets) {
+      ctx.beginPath();
+      ctx.arc(bullet.position.x, bullet.position.y, bullet.radius, 0, 2 * Math.PI, true);
+      ctx.fillStyle = "#AAAAAA";
+      ctx.fill();
+      ctx.closePath();
+    }
   }
-  ctx.fillStyle = "#AAAAAA";
-  ctx.fill();
-  ctx.closePath();
 };
 
 export { draw };

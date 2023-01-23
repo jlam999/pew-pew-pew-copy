@@ -32,7 +32,7 @@ class Player {
   }
 
   getRadius() {
-    return Math.sqrt(this.#health / Math.PI);
+    return Math.sqrt(this.#health) * 5;
   }
 
   getId() {
@@ -61,7 +61,7 @@ class Player {
     this.#bullets.push(
       new Bullet(
         this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta),
-        this.#position.x + (this.getRadius() + this.getSpeed()) * Math.sin(theta),
+        this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta),
         theta,
         this.#id
       )
@@ -72,7 +72,7 @@ class Player {
    * @param {Number} theta: The angle that the player will move in
    */
   // move(theta) {
-  //   // pi/4 increments because if like up & left are pressed, we get a 3pi/4 angle --- keyboard directions
+  //   // pi/4 increments because if like up & left are pressed, we xget a 3pi/4 angle --- keyboard directions
   //   if (theta !== undefined) {
   //     this.#base[0] += this.#speed() * Math.cos(theta);
   //     this.#base[1] += this.#speed() * Math.sin(theta);
@@ -82,8 +82,8 @@ class Player {
     // pi/4 increments because if like up & left are pressed, we get a 3pi/4
     // angle --- keyboard directions
     if (theta !== undefined) {
-      this.#position.x += this.#position.y * Math.cos(theta);
-      this.#position.y += this.getSpeed() * Math.sin(theta);
+      this.#position.x += this.getSpeed() * Math.cos(theta);
+      this.#position.y -= this.getSpeed() * Math.sin(theta);
     }
   }
 

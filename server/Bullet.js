@@ -12,7 +12,7 @@ class Bullet {
   constructor(x, y, theta, owner) {
     this.#position = { x: x, y: y };
     this.#angle = theta;
-    this.#speed = 100 / Math.sqrt(2); // start at 100/sqrt(2) and decrease exponentially
+    this.#speed = 20 / Math.sqrt(2); // start at 100/sqrt(2) and decrease exponentially
     this.#owner = owner;
   }
 
@@ -47,13 +47,13 @@ class Bullet {
   //Updates bullet's position and speed based on current position and speed
   //Be sure to use checkWallCollision()
   update(players) {
-    this.position = [
-      this.position.x + this.speed * Math.cos(this.angle),
-      this.position.y + this.speed * Math.sin(this.angle),
-    ];
+    this.#position = {
+      x: this.#position.x + this.#speed * Math.cos(this.#angle),
+      y: this.#position.y - this.#speed * Math.sin(this.#angle),
+    };
     this.checkWallCollision();
     this.checkCollision(players);
-    this.speed *= 0.95;
+    this.#speed *= 0.95;
   }
 
   /**
@@ -61,10 +61,10 @@ class Bullet {
    * @param {[Player]} players : List of all the players in the game
    */
   checkCollision(players) {
-    players.forEach((player) => {
+    Object.values(players).forEach((player) => {
       let playerPos = player.getPosition();
       let distance = Math.sqrt(
-        (playerPos[0] - this.position[0]) ** 2 + (playerPos[1] - this.position[1]) ** 2
+        (playerPos.x - this.#position.x) ** 2 + (playerPos.y - this.#position.y) ** 2
       );
       if (distance < BULLET_RADIUS + player.getRadius()) {
         if (player.getId() === this.#owner) {
@@ -78,10 +78,10 @@ class Bullet {
   }
 
   checkWallCollision() {
-    if (!(Math.abs(BORDER_MAX_X / 2 - this.position[0]) < BORDER_MAX_X / 2 - BULLET_RADIUS)) {
+    if (!(Math.abs(BORDER_MAX_X / 2 - this.#position.x) < BORDER_MAX_X / 2 - BULLET_RADIUS)) {
       this.#angle = Math.PI - this.#angle;
     }
-    if (!(Math.abs(BORDER_MAX_Y / 2 - this.position[1]) < BORDER_MAX_Y / 2 - BULLET_RADIUS)) {
+    if (!(Math.abs(BORDER_MAX_Y / 2 - this.#position.y) < BORDER_MAX_Y / 2 - BULLET_RADIUS)) {
       this.#angle = -this.#angle;
     }
   }

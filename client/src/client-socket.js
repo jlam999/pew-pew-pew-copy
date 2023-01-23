@@ -12,15 +12,5 @@ export const move = (dir) => {
 };
 
 export const shoot = (x, y) => {
-  let angle;
-  if (x === 0) {
-    angle = y < 0 ? 90 : 270;
-  } else if (x > 0) {
-    angle = (Math.atan2(-y, x) * 180) / Math.PI;
-  } else {
-    angle = (Math.atan2(-y, x) * 180) / Math.PI + 180;
-  }
-  angle %= 360;
-
-  socket.emit("shoot", angle);
+  socket.emit("shoot", { x: x, y: y });
 };

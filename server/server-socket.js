@@ -1,7 +1,7 @@
 const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
 
-const FPS = 30;
+const FPS = 60;
 
 let io;
 
@@ -13,12 +13,15 @@ const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const sendGameState = () => {
-  io.emit("update", gameLogic.packageGameState());
+  const package = gameLogic.packageGameState();
+  //console.log(package);
+  io.emit("update", package);
 };
 
 const startRunningGame = () => {
   setInterval(() => {
     sendGameState();
+    gameLogic.updateGameState();
   }, 1000 / FPS);
 };
 
@@ -60,9 +63,9 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         if (user) gameLogic.movePlayer(user.googleid, dir);
       });
-      socket.on("shoot", (dir) => {
+      socket.on("shoot", (position) => {
         const user = getUserFromSocketID(socket.id);
-        if (user) gameLogic.playerShoot(user.googleid, dir);
+        if (user) gameLogic.playerShoot(user.googleid, position);
       });
     });
   },
