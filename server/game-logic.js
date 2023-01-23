@@ -31,8 +31,13 @@ const movePlayer = (id, dir) => {
   gameState.players[id].move(dir);
 };
 
-const playerShoot = (id, dir) => {
-  gameState.players[id].shoot(dir);
+const playerShoot = (id, position) => {
+  const player = gameState.players[id];
+  playerPos = player.getPosition();
+  const diffX = position.x - playerPos.x;
+  const diffY = playerPos.y - position.y;
+  let angle = Math.atan2(diffY, diffX);
+  player.shoot(angle);
 };
 
 const checkWin = () => {
@@ -55,14 +60,23 @@ const removePlayer = (id) => {
 
 const updateGameState = () => {
   //checkWin();
-  for (p of Object.values(gameState.players)) p.moveBullets(gameState.players);
+  for (let p of Object.values(gameState.players)) p.moveBullets(gameState.players);
+};
+
+const packageGameState = () => {
+  newPlayers = {};
+  for (let player_id of Object.keys(gameState.players)) {
+    newPlayers[player_id] = gameState.players[player_id].toObject();
+  }
+  return { winner: gameState.winner, players: newPlayers };
 };
 
 module.exports = {
-  gameState,
+  //gameState,
   addPlayer,
   movePlayer,
   playerShoot,
   removePlayer,
   updateGameState,
+  packageGameState,
 };

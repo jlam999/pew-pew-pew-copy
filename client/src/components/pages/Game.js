@@ -20,6 +20,7 @@ const Game = (props) => {
   // Turn on the socket to update the game periodically
   useEffect(() => {
     socket.on("update", (update) => {
+      //console.log(update.players);
       processUpdate(update);
     });
   }, []);
