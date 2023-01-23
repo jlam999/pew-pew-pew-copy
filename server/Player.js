@@ -100,7 +100,7 @@ class Player {
       this.#bullets[i].update(players);
     }
     this.#bullets = this.#bullets.filter((bullet) => {
-      return bullet.isActive();
+      return bullet.getIsActive();
     });
   }
 
