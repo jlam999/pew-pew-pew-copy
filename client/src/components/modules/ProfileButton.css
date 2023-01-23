@@ -28,3 +28,10 @@
 .profileImg:hover {
   opacity: 50%;
 }
+
+.googleLogoutButton {
+  width: 96px;
+  height: 32px;
+  font-family: "Sofia Sans";
+  font-size: 16px;
+}
