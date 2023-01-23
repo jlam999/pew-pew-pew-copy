@@ -4,6 +4,7 @@ const BULLET_RADIUS = 5;
 //Input is of the form of gameState (in backend gamelogic)
 
 const draw = (gameState, canvasRef) => {
+  console.log(gameState);
   const canvas = canvasRef.current;
   if (!canvas) return;
 
