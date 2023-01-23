@@ -2,7 +2,8 @@ const Bullet = require("./Bullet.js");
 
 class Player {
   #position = [0, 0];
-  #health = 0; // max health should be 100 and the bullet speed should be the same speed as somebody at 2 health (100/sqrt(2))
+  #health = 0; // max health should be 100 and the bullet speed should be the
+  // same speed as somebody at 2 health (100/sqrt(2))
   #id = 0;
   #bullets = {};
   #initHealth = 0;
@@ -34,6 +35,9 @@ class Player {
     return Math.sqrt(this.#health / Math.PI);
   }
 
+  getId() {
+    return this.#id;
+  }
   // /**
   //  * @param {Number} theta: The angle that the player will shoot towards
   //  */
@@ -48,6 +52,21 @@ class Player {
   //     )
   //   );
   // }
+  /**
+   * @param {Number} theta: The angle that the player will shoot towards
+   */
+  shoot(theta) {
+    // mouse direction
+    this.#health--;
+    this.#bullets.push(
+      new Bullet(
+        this.#base[0] + (this.#radius() + this.#speed()) * Math.cos(theta),
+        this.#base[1] + (this.#radius + this.#speed()) * Math.sin(theta),
+        theta,
+        this.#id
+      )
+    );
+  }
 
   /**
    * @param {Number} theta: The angle that the player will move in
@@ -59,20 +78,31 @@ class Player {
   //     this.#base[1] += this.#speed() * Math.sin(theta);
   //   }
   // }
+  move(theta) {
+    // pi/4 increments because if like up & left are pressed, we get a 3pi/4
+    // angle --- keyboard directions
+    if (theta !== undefined) {
+      this.#base[0] += this.#speed() * Math.cos(theta);
+      this.#base[1] += this.#speed() * Math.sin(theta);
+    }
+  }
 
-  // Will implement later
-  // /**
-  //  * Used to draw bullets toward player base --- call when Ctrl key or something is pressed
-  //  * @param {Number} index
-  //  */
-  // #moveBullets() {
-  //   for (let i = 0; i < this.#bullets.length; i++) {
-  //     pos = this.#bullets[i].getPosition();
-  //     vec = [pos[0] - this.base[0], pos[1] - this.base[1]];
-  //     this.#bullets[i].getPosition(Math.tan(vec[1] / vec[0]), this.#health);
-  //     this.#bullets[i].move();
-  //   }
-  // }
+  /**
+   * Used to draw bullets toward player base --- call when Ctrl key or
+   something is pressed
+   * @param {Number} index
+   */
+  moveBullets(players) {
+    for (let i = 0; i < this.#bullets.length; i++) {
+      //pos = this.#bullets[i].getPosition();
+      //vec = [pos[0] - this.base[0], pos[1] - this.base[1]];
+      //this.#bullets[i].getPosition(Math.tan(vec[1] / vec[0]), this.#health);
+      this.#bullets[i].update(players);
+    }
+    this.#bullets = this.#bullets.filter((bullet) => {
+      return bullet.isActive();
+    });
+  }
 
   // /**
   //  * @param {Boolean} whether or not to pull bullets
@@ -84,11 +114,11 @@ class Player {
   // }
 
   getsHit() {
-    //TODO: Updates player instance if it gets hit by opponent's bullet
+    this.#health -= 2;
   }
 
   absorb() {
-    //TODO: Update player instance if it absorbs one of its own bullets
+    this.#health++;
   }
 }
 

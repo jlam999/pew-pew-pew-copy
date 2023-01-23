@@ -33,7 +33,15 @@ const playerShoot = (id, dir) => {
 };
 
 const checkWin = () => {
-  //TODO: Checks if the game has been won.
+  winner = undefined;
+  nonzeroHealth = 0;
+  for (let id = 0; id < gameState.players.length; id++) {
+    if (gameState.players[id].health !== 0) {
+      nonzeroHealth++;
+      winner = id;
+    }
+  }
+  if (nonzeroHealth === 1) gameState.winner = winner;
 };
 
 const removePlayer = (id) => {
@@ -42,8 +50,9 @@ const removePlayer = (id) => {
   }
 };
 
-//TODO
-const updateGameState = () => {};
+const updateGameState = () => {
+  for (p of gameState.players) p.moveBullets(gameState.players);
+};
 
 module.exports = {
   gameState,
