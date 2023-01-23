@@ -1,6 +1,6 @@
-BULLET_RADIUS = 5;
-BORDER_MAX_X = 500;
-BORDER_MAX_Y = 500;
+const BULLET_RADIUS = 5;
+const BORDER_MAX_X = 500;
+const BORDER_MAX_Y = 500;
 
 class Bullet {
   #position = 0;
@@ -84,6 +84,13 @@ class Bullet {
     if (!(Math.abs(BORDER_MAX_Y / 2 - this.position[1]) < BORDER_MAX_Y / 2 - BULLET_RADIUS)) {
       this.#angle = -this.#angle;
     }
+  }
+
+  toObject() {
+    return {
+      position: this.#position,
+      radius: BULLET_RADIUS,
+    };
   }
 }
 

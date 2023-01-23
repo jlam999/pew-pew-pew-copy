@@ -121,8 +121,17 @@ class Player {
     this.#health++;
   }
 
-  toString() {
-    return "Test toString";
+  toObject() {
+    const bulletObjs = [];
+    for (let bullet of this.#bullets) {
+      bulletObjs.push(bullet.toObject());
+    }
+    return {
+      position: this.#position,
+      radius: this.getRadius(),
+      health: this.#health,
+      bullets: bulletObjs,
+    };
   }
 }
 

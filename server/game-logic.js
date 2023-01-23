@@ -58,11 +58,20 @@ const updateGameState = () => {
   for (p of Object.values(gameState.players)) p.moveBullets(gameState.players);
 };
 
+const packageGameState = () => {
+  newPlayers = {};
+  for (let player_id of Object.keys(gameState.players)) {
+    newPlayers[player_id] = gameState.players[player_id].toObject();
+  }
+  return { winner: gameState.winner, players: newPlayers };
+};
+
 module.exports = {
-  gameState,
+  //gameState,
   addPlayer,
   movePlayer,
   playerShoot,
   removePlayer,
   updateGameState,
+  packageGameState,
 };
