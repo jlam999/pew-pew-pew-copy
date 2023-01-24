@@ -28,7 +28,6 @@ const addPlayer = (id) => {
 
 const movePlayer = (id, dir) => {
   gameState.players[id].move(dir);
-  console.log(gameState.players[id].getPosition());
 };
 
 const playerShoot = (id, position) => {
