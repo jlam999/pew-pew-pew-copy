@@ -7,6 +7,7 @@ import { Link } from "@reach/router";
 
 const Game = (props) => {
   const [winnerModal, setWinnerModal] = useState(null);
+  const [aloneModal, setAloneModal] = useState(null);
   const [joined, setJoined] = useState(false);
 
   // add event listener on mount
@@ -28,16 +29,26 @@ const Game = (props) => {
     });
   }, []);
 
-  const homeLink = <Link to="/">Return Home</Link>;
+  const homeLink = <Link to="/">Please Return Home</Link>;
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    if (update.winner === props.userId) {
-      setWinnerModal(<div>You Won! {homeLink}</div>);
-    } else if (update.winner !== null) {
-      setWinnerModal(<div>You Lost. {homeLink}</div>);
-    } else {
+    if (update.winner === null) {
       setWinnerModal(null);
+    } else if (update.winner === props.userId) {
+      setWinnerModal(<div>You Won! {homeLink}</div>);
+    } else {
+      setWinnerModal(<div>You Lost. {homeLink}</div>);
+    }
+
+    if (
+      update.isActive &&
+      Object.keys(update.players).length === 1 &&
+      update.players[props.userId] !== undefined
+    ) {
+      setAloneModal(<div>Your opponent has left! {homeLink}</div>);
+    } else {
+      setAloneModal(null);
     }
     draw(update);
   };
@@ -45,7 +56,7 @@ const Game = (props) => {
   const attemptJoinGame = () => {
     if (!joined) {
       get("/api/isActive").then((isActive) => {
-        console.log("Is Active: " + String(isActive));
+        //console.log("Is Active: " + String(isActive));
         if (isActive) {
           alert("Game in Session; Cannot Join.");
         } else {
@@ -64,6 +75,7 @@ const Game = (props) => {
         <div>
           <canvas id="gameCanvas" width={500} height={500}></canvas>
           {winnerModal}
+          {aloneModal}
           {joined ? <></> : <button onClick={attemptJoinGame}>Join Game</button>}
         </div>
       ) : (

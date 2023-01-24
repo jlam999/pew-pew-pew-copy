@@ -62,6 +62,7 @@ const checkWin = () => {
       }
     }
     if (notDead === 1) {
+      console.log("we have a winner");
       gameState.winner = winner;
     }
   }
