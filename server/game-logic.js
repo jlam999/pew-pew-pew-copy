@@ -22,9 +22,8 @@ const spawnPositions = [
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
-  init_position = spawnPositions[Object.keys(gameState.players).length-1];
+  init_position = spawnPositions[Object.keys(gameState.players).length - 1];
   newPlayer.setPosition(init_position.x, init_position.y);
-  console.log(newPlayer.getPosition());
 };
 
 const movePlayer = (id, dir) => {

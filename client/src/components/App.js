@@ -33,8 +33,8 @@ const App = () => {
     //console.log("cred", decodedCredential);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("Set ID: ", user.googleid)
-      setUserId(user.googleid)
+      console.log("Set ID: ", user.googleid);
+      setUserId(user.googleid);
     });
   };
 
@@ -46,10 +46,15 @@ const App = () => {
   return (
     <>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Profile path={`/profile/${userId}`} userId={userId} />
-        <Skeleton path="/skeleton" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <Game path="/game" />
+        <Skeleton
+          path="/skeleton"
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          userId={userId}
+        />
+        <Game path="/game" userId={userId} />
         <NotFound default />
       </Router>
     </>
