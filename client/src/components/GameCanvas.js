@@ -24,7 +24,7 @@ const draw = (gameState) => {
   if (Object.values(gameState.players).length < 2) {
     ctx.font = "bold 30px Arial";
     ctx.fillStyle = "black";
-    ctx.strokeText("Waiting for another player...", 25, 200);
+    ctx.fillText("Waiting for another player...", 25, 200);
   } else {
     for (let player of Object.values(gameState.players)) {
       ctx.beginPath();
