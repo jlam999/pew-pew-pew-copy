@@ -11,6 +11,7 @@ import { get, post } from "../utilities";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile.js";
 import Game from "./pages/Game.js";
+import { socket } from "../client-socket.js";
 
 /**
  * Define the "App" component
@@ -33,8 +34,9 @@ const App = () => {
     //console.log("cred", decodedCredential);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("Set ID: ", user.googleid)
-      setUserId(user.googleid)
+      console.log("Set ID: ", user.googleid);
+      setUserId(user.googleid);
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 
@@ -46,10 +48,15 @@ const App = () => {
   return (
     <>
       <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId}/>
+        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Profile path={`/profile/${userId}`} userId={userId} />
-        <Skeleton path="/skeleton" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <Game path="/game" userId={userId}/>
+        <Skeleton
+          path="/skeleton"
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          userId={userId}
+        />
+        <Game path="/game" userId={userId} />
         <NotFound default />
       </Router>
     </>

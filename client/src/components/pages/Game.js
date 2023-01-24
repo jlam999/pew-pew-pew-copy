@@ -5,7 +5,8 @@ import { draw } from "../GameCanvas.js";
 import { handleKey, handleClick } from "../../input.js";
 
 const Game = (props) => {
-  const canvasRef = useRef(null);
+  const [winnerModal, setWinnerModal] = useState(null);
+
   // add event listener on mount
   useEffect(() => {
     window.addEventListener("keydown", handleKey);
@@ -14,6 +15,7 @@ const Game = (props) => {
     return () => {
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("click", handleClick);
+      post("/api/despawn", { userid: props.userId });
     };
   }, []);
 
@@ -28,15 +30,25 @@ const Game = (props) => {
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    draw(update, canvasRef);
+    if (update.winner === props.userId) {
+      setWinnerModal(<div>You Won!</div>);
+    } else if (update.winner !== null) {
+      setWinnerModal(<div>You Lost.</div>);
+    } else {
+      setWinnerModal(null);
+    }
+    draw(update);
   };
 
   return (
     <>
       {props.userId ? (
-        <canvas ref={canvasRef} width={500} height={500}></canvas>
-      )   :   (
-        <h3>Please login in order to play a game.</h3>
+        <div>
+          <canvas id="gameCanvas" width={500} height={500}></canvas>
+          {winnerModal}
+        </div>
+      ) : (
+        <div>Please Login First!</div>
       )}
     </>
   );

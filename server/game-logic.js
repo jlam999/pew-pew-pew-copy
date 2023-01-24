@@ -22,34 +22,40 @@ const spawnPositions = [
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
-  init_position = spawnPositions[Object.keys(gameState.players).length-1];
+  init_position = spawnPositions[Object.keys(gameState.players).length - 1];
   newPlayer.setPosition(init_position.x, init_position.y);
-  console.log(newPlayer.getPosition());
 };
 
 const movePlayer = (id, dir) => {
   gameState.players[id].move(dir);
+  console.log(gameState.players[id].getPosition());
 };
 
 const playerShoot = (id, position) => {
   const player = gameState.players[id];
-  playerPos = player.getPosition();
+  const playerPos = player.getPosition();
   const diffX = position.x - playerPos.x;
   const diffY = playerPos.y - position.y;
   let angle = Math.atan2(diffY, diffX);
   player.shoot(angle);
 };
 
+//There can only be a winner if there is more than one player in the game.
 const checkWin = () => {
-  winner = undefined;
-  nonzeroHealth = 0;
-  for (let player_id of Object.keys(gameState.players)) {
-    if (gameState.players[player_id].health !== 0) {
-      nonzeroHealth++;
-      winner = player_id;
+  let winner = undefined;
+  let notDead = 0;
+  const player_ids = Object.keys(gameState.players);
+  if (player_ids.length > 1) {
+    for (let player_id of Object.keys(gameState.players)) {
+      if (!gameState.players[player_id].getIsDead()) {
+        notDead++;
+        winner = player_id;
+      }
+    }
+    if (notDead === 1) {
+      gameState.winner = winner;
     }
   }
-  if (nonzeroHealth === 1) gameState.winner = winner;
 };
 
 const removePlayer = (id) => {
@@ -59,7 +65,7 @@ const removePlayer = (id) => {
 };
 
 const updateGameState = () => {
-  //checkWin();
+  checkWin();
   for (let p of Object.values(gameState.players)) p.moveBullets(gameState.players);
 };
 

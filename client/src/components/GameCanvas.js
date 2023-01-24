@@ -1,11 +1,11 @@
 //import Player from "./Player.js";
 
-const BULLET_RADIUS = 5;
+//const BULLET_RADIUS = 5;
 //Input is of the form of gameState (in backend gamelogic)
 
-const draw = (gameState, canvasRef) => {
+const draw = (gameState) => {
   //console.log(gameState);
-  const canvas = canvasRef.current;
+  const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
 
   // canvas.width = self.outerWidth;
@@ -22,9 +22,9 @@ const draw = (gameState, canvasRef) => {
   ctx.closePath();
 
   if (Object.values(gameState.players).length < 2) {
-    ctx.font = "bold 30px Arial"
-    ctx.fillStyle = "black"
-    ctx.strokeText("Waiting for another player...", 25, 200);
+    ctx.font = "bold 30px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Waiting for another player...", 25, 200);
   } else {
     for (let player of Object.values(gameState.players)) {
       ctx.beginPath();
