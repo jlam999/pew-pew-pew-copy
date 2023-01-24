@@ -3,7 +3,7 @@
 //const BULLET_RADIUS = 5;
 //Input is of the form of gameState (in backend gamelogic)
 
-const playerColors = ["#C73E1D","#2E86AB","#F18F01","#A23B72"]
+const playerColors = ["#C73E1D", "#2E86AB", "#F18F01", "#A23B72"];
 
 const draw = (gameState) => {
   //console.log(gameState);
@@ -11,7 +11,7 @@ const draw = (gameState) => {
   if (!canvas) return;
 
   // canvas.width = 800;
-// canvas.height = 800;
+  // canvas.height = 800;
 
   // window.onresize = function(event){
   //   canvas.width = self.innerWidth;
@@ -26,7 +26,7 @@ const draw = (gameState) => {
   ctx.fillStyle = "white";
   ctx.fill();
   ctx.closePath();
-  
+
   ctx.beginPath();
   ctx.rect(0, 0, 500, 500);
   ctx.fillStyle = "white";
@@ -38,12 +38,12 @@ const draw = (gameState) => {
     ctx.fillStyle = "black";
     ctx.fillText("Waiting for another player...", 25, 200);
   } else {
-    let i = 0
+    let i = 0;
     for (let player of Object.values(gameState.players)) {
       ctx.beginPath();
-      ctx.rect(player.position.x-player.radius, player.position.y-player.radius, 2*player.radius, 2*player.radius);
-      //ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
-      ctx.fillStyle = playerColors[i];//"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
+      //ctx.rect(player.position.x-player.radius, player.position.y-player.radius, 2*player.radius, 2*player.radius);
+      ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
+      ctx.fillStyle = playerColors[i]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
       ctx.fill();
       ctx.closePath();
       for (let bullet of player.bullets) {
