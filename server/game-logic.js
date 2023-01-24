@@ -72,6 +72,7 @@ const removePlayer = (id) => {
     delete gameState.players[id];
     if (Object.keys(gameState.players).length === 0) {
       gameState.isActive = false;
+      gameState.winner = null;
     }
   }
 };
