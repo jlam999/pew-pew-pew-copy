@@ -14,7 +14,7 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const sendGameState = () => {
   const package = gameLogic.packageGameState();
-  //console.log(package);
+  //console.log(package.winner);
   io.emit("update", package);
 };
 
@@ -36,6 +36,10 @@ const removeUserFromGame = (user) => {
   gameLogic.removePlayer(user.googleid);
 };
 
+const getIsActive = () => {
+  return gameLogic.gameState.isActive;
+};
+
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user.googleid];
   if (oldSocket && oldSocket.id !== socket.id) {
@@ -51,7 +55,11 @@ const addUser = (user, socket) => {
 };
 
 const removeUser = (user, socket) => {
-  if (user) delete userToSocketMap[user.googleid];
+  if (user) {
+    delete userToSocketMap[user.googleid];
+    removeUserFromGame(user);
+  }
+
   delete socketToUserMap[socket.id];
 };
 
@@ -80,6 +88,7 @@ module.exports = {
   removeUser: removeUser,
   addUserToGame: addUserToGame,
   removeUserFromGame: removeUserFromGame,
+  getIsActive: getIsActive,
 
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,

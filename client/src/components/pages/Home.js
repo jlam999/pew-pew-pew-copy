@@ -3,7 +3,7 @@ import NewCodeInput from "../modules/RoomCode.js";
 import ProfileButton from "../modules/ProfileButton.js";
 import { Link } from "@reach/router";
 import { socket } from "../../client-socket.js";
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 
 import "../../utilities.css";
 import "./Home.css";
@@ -18,10 +18,6 @@ import "./Home.css";
  */
 
 const Home = (props) => {
-  const joinGame = () => {
-    post("/api/spawn", { userid: props.userId });
-  };
-
   return (
     <div className="Home-titleContainer">
       <div className="Home-title">
@@ -29,9 +25,7 @@ const Home = (props) => {
       </div>
       <Link to="/game">
         <button className="Home-buttonContainer">
-          <h3 className="Home-buttonText" onClick={joinGame}>
-            Create a Game
-          </h3>
+          <h3 className="Home-buttonText">Create a Game</h3>
         </button>
       </Link>
       <div>
