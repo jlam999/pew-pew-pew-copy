@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import NewCodeInput from "../modules/RoomCode.js";
 import ProfileButton from "../modules/ProfileButton.js";
 import { Link } from "@reach/router";
+import { socket } from "../../client-socket.js";
+import { post } from "../../utilities";
+
 
 import "../../utilities.css";
 import "./Home.css";
@@ -16,13 +19,17 @@ import "./Home.css";
  */
 
 const Home = (props) => {
+  const connectSocket = () => {
+    post("/api/initsocket", { socketid: socket.id })
+  }
+  
   return (
     <div className="u-textCenter">
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
       <button className="Home-buttonContainer">
-        <Link to="/game"><h3 className="Home-buttonText">Create a Game</h3></Link>
+        <Link to="/game"><h3 className="Home-buttonText" onClick = {connectSocket}>Create a Game</h3></Link>
       </button>
       <div>
         <h4>OR</h4>
