@@ -51,7 +51,7 @@ router.get("/user", (req, res) => {
   //console.log("Searching for ", req);
   const query = { googleid: req.query.googleid };
   User.find(query).then((user) => {
-    console.log("Found ", user);
+    //console.log("Found ", user);
     res.send(user);
   });
 });
@@ -73,7 +73,9 @@ router.post("/spawn", (req, res) => {
 });
 
 router.post("/despawn", (req, res) => {
+  console.log("PLEASEEEE");
   if (req.user) {
+    console.log("hi");
     socketManager.removeUserFromGame(req.user);
   }
   res.send({});

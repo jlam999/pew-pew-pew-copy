@@ -11,13 +11,11 @@ const Game = (props) => {
 
   // add event listener on mount
   useEffect(() => {
-    window.addEventListener("keydown", handleKey);
-    window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId });
+      //post("/api/despawn", { userid: props.userId });
       setJoined(false);
     };
   }, []);
@@ -47,10 +45,13 @@ const Game = (props) => {
   const attemptJoinGame = () => {
     if (!joined) {
       get("/api/isActive").then((isActive) => {
+        console.log("Is Active: " + String(isActive));
         if (isActive) {
           alert("Game in Session; Cannot Join.");
         } else {
           setJoined(true);
+          window.addEventListener("keydown", handleKey);
+          window.addEventListener("click", handleClick);
           post("/api/spawn", { userid: props.userId });
         }
       });

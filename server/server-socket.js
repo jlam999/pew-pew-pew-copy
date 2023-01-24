@@ -54,7 +54,11 @@ const addUser = (user, socket) => {
 };
 
 const removeUser = (user, socket) => {
-  if (user) delete userToSocketMap[user.googleid];
+  if (user) {
+    delete userToSocketMap[user.googleid];
+    removeUserFromGame(user);
+  }
+
   delete socketToUserMap[socket.id];
 };
 
