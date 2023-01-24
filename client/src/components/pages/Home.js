@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NewCodeInput from "../modules/RoomCode.js";
+import NewCodeInput from "../modules/roomCode.js";
 import ProfileButton from "../modules/ProfileButton.js";
 import { Link } from "@reach/router";
 import { socket } from "../../client-socket.js";
