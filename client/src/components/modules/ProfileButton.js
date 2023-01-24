@@ -56,6 +56,7 @@ const ProfileButton = (props) => {
                         ux_mode={"popup"}
                         auto_select={false}
                         useOneTap={false}
+                        context={"signin"}
                     />
                 )}
             </GoogleOAuthProvider>

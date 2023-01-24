@@ -20,6 +20,7 @@ import "./Home.css";
 const Home = (props) => {
   const joinGame = () => {
     post("/api/spawn", { userid: props.userId });
+    post("/api/initsocket", { socketid: socket.id });
   };
 
   return (
@@ -29,7 +30,7 @@ const Home = (props) => {
       </div>
       <Link to="/game">
         <button className="Home-buttonContainer">
-          <h3 className="Home-buttonText" onClick={connectSocket}>
+          <h3 className="Home-buttonText" onClick={joinGame}>
             Create a Game
           </h3>
         </button>
