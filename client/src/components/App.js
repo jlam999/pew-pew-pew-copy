@@ -36,6 +36,7 @@ const App = () => {
     post("/api/login", { token: userToken }).then((user) => {
       console.log("Set ID: ", user.googleid);
       setUserId(user.googleid);
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 

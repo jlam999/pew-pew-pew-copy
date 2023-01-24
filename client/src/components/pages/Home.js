@@ -20,7 +20,6 @@ import "./Home.css";
 const Home = (props) => {
   const joinGame = () => {
     post("/api/spawn", { userid: props.userId });
-    post("/api/initsocket", { socketid: socket.id });
   };
 
   return (
@@ -46,7 +45,7 @@ const Home = (props) => {
         handleLogin={props.handleLogin}
         handleLogout={props.handleLogout}
         userId={props.userId}
-        className = "Home-shrunkenPosition"
+        className="Home-shrunkenPosition"
       />
     </div>
   );
