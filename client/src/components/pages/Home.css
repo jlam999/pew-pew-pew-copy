@@ -19,12 +19,16 @@
 body {
   font-family: "Sofia Sans";
   color: var(--primaryText);
-  margin: auto;
-  max-width: 640px;
-  width: 60%;
   background-color: var(--pageBackground);
   padding: 0px;
   text-align: center;
+  margin: auto;
+}
+
+.Home-titleContainer {
+  max-width: 640px;
+  margin: auto;
+  width: 60%;
 }
 
 .Home-title {

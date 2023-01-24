@@ -1,5 +1,6 @@
 const Bullet = require("./Bullet.js");
-
+const BORDER_MAX_X = 500;
+const BORDER_MAX_Y = 500;
 class Player {
   #position = [0, 0];
   #health = 0; // max health should be 100 and the bullet speed should be the
@@ -34,7 +35,7 @@ class Player {
   }
 
   getSpeed() {
-    return this.#initHealth / Math.sqrt(this.#health);
+    return this.#initHealth/3 / (1+Math.exp(Math.sqrt(this.#health)/5));
   }
 
   getRadius() {
@@ -97,7 +98,9 @@ class Player {
     if (theta !== undefined) {
       this.#position.x += this.getSpeed() * Math.cos(theta);
       this.#position.y -= this.getSpeed() * Math.sin(theta);
-    }
+    } 
+    this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-50), 50), y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-50), 50)};
+    console.log(this.#position)
   }
 
   /**
@@ -127,7 +130,7 @@ class Player {
   // }
 
   getsHit() {
-    this.#health -= 2;
+    this.#health -= 5;
     if (this.#health <= 0) {
       this.#isDead = true;
     }
@@ -147,6 +150,7 @@ class Player {
       radius: this.getRadius(),
       health: this.#health,
       bullets: bulletObjs,
+      id: this.#id,
     };
   }
 }

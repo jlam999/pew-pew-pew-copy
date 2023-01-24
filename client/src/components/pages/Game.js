@@ -5,6 +5,8 @@ import { draw } from "../GameCanvas.js";
 import { handleKey, handleClick } from "../../input.js";
 import { Link } from "@reach/router";
 
+import "./Game.css"
+
 const Game = (props) => {
   const [winnerModal, setWinnerModal] = useState(null);
   const [aloneModal, setAloneModal] = useState(null);
@@ -72,8 +74,8 @@ const Game = (props) => {
   return (
     <>
       {props.userId ? (
-        <div>
-          <canvas id="gameCanvas" width={500} height={500}></canvas>
+        <div className='GameBox'>
+          <canvas id="gameCanvas" width={500} height={500} className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}
           {joined ? <></> : <button onClick={attemptJoinGame}>Join Game</button>}
