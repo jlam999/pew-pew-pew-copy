@@ -99,7 +99,8 @@ class Player {
       this.#position.x += this.getSpeed() * Math.cos(theta);
       this.#position.y -= this.getSpeed() * Math.sin(theta);
     } 
-    this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-50), 50), y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-50), 50)};
+    this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-this.getRadius()), this.getRadius()), 
+      y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-this.getRadius()), this.getRadius())};
   }
 
   /**
