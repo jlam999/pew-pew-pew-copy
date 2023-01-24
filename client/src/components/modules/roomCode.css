@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
 .largeContainer {
-  width: 50%;
+  width: 320px;
   margin: auto;
 }
 
 .roomCodeContainer {
   font-family: "Sofia Sans";
   position: relative;
-  top: 0x;
+  height: fit-content;
   margin: auto;
   display: flex;
   flex-direction: row;
@@ -21,14 +21,14 @@
   text-align: center;
   font-size: 32px;
   border-radius: var(--s);
-  width: 200px;
+  max-width: 200px;
 }
 
 .joinButton {
   font-family: "Sofia Sans";
   font-size: 32px;
-  height: 48px;
-  width: 104px;
+  height: fit-content;
+  width: 112px;
   background-color: var(--secondText);
   border-radius: var(--s);
   color: var(--primaryText);
@@ -38,4 +38,36 @@
 
 .joinButton:hover {
   opacity: 50%;
+}
+
+@media (max-width: 1000px) {
+  .roomCodeContainer {
+    font-family: "Sofia Sans";
+    position: relative;
+    height: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s);
+    padding: 0px;
+  }
+  .roomCodeInput {
+    font-family: "Sofia Sans";
+    text-align: center;
+    font-size: 32px;
+    border-radius: var(--s);
+    max-width: 240px;
+    margin: auto;
+  }
+  .joinButton {
+    font-family: "Sofia Sans";
+    font-size: 32px;
+    height: fit-content;
+    width: 112px;
+    background-color: var(--secondText);
+    border-radius: var(--s);
+    color: var(--primaryText);
+    padding: 0px;
+    margin: auto;
+  }
 }

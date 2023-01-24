@@ -24,13 +24,15 @@ const Home = (props) => {
   }
   
   return (
-    <div className="u-textCenter">
+    <div className="Home-titleContainer">
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
-      <button className="Home-buttonContainer">
-        <Link to="/game"><h3 className="Home-buttonText" onClick = {connectSocket}>Create a Game</h3></Link>
-      </button>
+      <Link to="/game">
+        <button className="Home-buttonContainer">
+          <h3 className="Home-buttonText" onClick={connectSocket}>Create a Game</h3>
+        </button>
+      </Link>
       <div>
         <h4>OR</h4>
       </div>
@@ -42,6 +44,7 @@ const Home = (props) => {
         handleLogin={props.handleLogin}
         handleLogout={props.handleLogout}
         userId={props.userId}
+        className = "Home-shrunkenPosition"
       />
     </div>
   );

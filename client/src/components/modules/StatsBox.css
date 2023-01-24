@@ -1,6 +1,6 @@
 .StatsBox-name {
   text-align: center;
-  font-size: 96px;
+  font-size: 64px;
 }
 
 .StatsBox-largeContainer {
@@ -14,9 +14,33 @@
 .StatsBox-containerName {
   margin: auto;
   font-size: 20px;
+  text-align: left;
 }
 
 .StatsBox-containerNumber {
   margin: auto;
   font-size: 20px;
+  text-align: left;
+}
+
+@media (max-width: 800px) {
+  .StatsBox-containerName {
+    position: absolute;
+    left: 229px;
+    top: 162px;
+    white-space: nowrap;
+  }
+  .StatsBox-containerNumber {
+    position: absolute;
+    left: 516px;
+    top: 162px;
+    white-space: nowrap;
+  }
+  .StatsBox-name {
+    position: absolute;
+    left: 160px;
+    width: 480px;
+    white-space: nowrap;
+    text-align: center;
+  }
 }

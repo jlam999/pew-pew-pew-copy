@@ -24,22 +24,25 @@ body {
   width: 60%;
   background-color: var(--pageBackground);
   padding: 0px;
+  text-align: center;
 }
 
 .Home-title {
   font-size: var(--textLarge);
+  min-width: 480px;
 }
 
 .Home-buttonContainer {
   background-color: var(--secondText);
-  width: 50%;
+  width: 320px;
   margin: auto;
-  height: 64px;
+  height: fit-content;
   border-radius: var(--s);
+  min-width: 250px;
 }
 
 .Home-buttonContainer:hover {
-  opacity: 50%;
+  opacity: 60%;
 }
 
 .Home-buttonText {
@@ -49,47 +52,16 @@ body {
   color: var(--primaryText);
 }
 
-.Home-codeContainer {
-  background-color: var(--white);
-  border: solid;
-  border-width: var(--xs);
-  border-color: var(--secondText);
-  width: 50%;
-  height: var(--textLarge);
-  margin: auto;
-  position: relative;
-  top: var(--m);
+@media (max-width: 1000px) {
+  .Home-buttonContainer {
+    width: 240px;
+  }
 }
 
-.Home-codeText {
-  font-size: var(--textSmall);
-  color: var(--secondText);
-  margin: auto;
-  padding: var(--s);
-}
-
-.u-textCenter {
-  text-align: center;
-}
-
-.Home-profileButton {
-  position: absolute;
-  right: 40px;
-  top: 40px;
-  height: 64px;
-  width: 64px;
-  border-radius: 32px;
-}
-
-.Home-profileImg {
-  position: relative;
-  right: 8px;
-  bottom: 3px;
-  height: 64px;
-  width: 64px;
-  border-radius: 32px;
-}
-
-.Home-profileImg:hover {
-  opacity: 50%;
+@media (max-width: 800px) {
+  .Home-titleContainer {
+    position: fixed;
+    left: 160px;
+    width: 480px;
+  }
 }

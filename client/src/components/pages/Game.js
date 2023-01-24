@@ -33,8 +33,11 @@ const Game = (props) => {
 
   return (
     <>
-      This is the Game Page
-      <canvas ref={canvasRef} width={500} height={500}></canvas>
+      {props.userId ? (
+        <canvas ref={canvasRef} width={500} height={500}></canvas>
+      )   :   (
+        <h3>Please login in order to play a game.</h3>
+      )}
     </>
   );
 };

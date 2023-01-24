@@ -47,8 +47,15 @@ const ProfileButton = (props) => {
                     Logout
                 </button>) : (
                     <GoogleLogin
+                        text="signin"
                         onSuccess={props.handleLogin}
                         onError={(err)=>console.log(err)}
+                        className="googleLoginButton"
+                        theme={"outline"}
+                        shape={"pill"}
+                        ux_mode={"popup"}
+                        auto_select={false}
+                        useOneTap={false}
                     />
                 )}
             </GoogleOAuthProvider>
