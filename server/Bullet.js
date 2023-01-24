@@ -32,6 +32,7 @@ class Bullet {
     return this.#isActive;
   }
 
+
   // Will implement later:
   //   adjustPath(theta, health) {
   //     // the speed at which the bullet is drawn toward a player is inversely proportional to the root of the player's health
@@ -90,6 +91,7 @@ class Bullet {
     return {
       position: this.#position,
       radius: BULLET_RADIUS,
+      owner: this.#owner,
     };
   }
 }

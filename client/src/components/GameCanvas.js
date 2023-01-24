@@ -11,13 +11,17 @@ const draw = (gameState) => {
   // canvas.width = self.outerWidth;
   // canvas.height = self.outerHeight;
 
+  window.onresize = function(event){
+    canvas.width = self.outerWidth;
+    canvas.height = self.outerHeight;
+  };
   const ctx = canvas.getContext("2d");
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.beginPath();
   ctx.rect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = "#272822";
   ctx.fill();
   ctx.closePath();
 
@@ -28,14 +32,15 @@ const draw = (gameState) => {
   } else {
     for (let player of Object.values(gameState.players)) {
       ctx.beginPath();
-      ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
-      ctx.fillStyle = "#AAAAAA";
+      ctx.rect(player.position.x-player.radius, player.position.y-player.radius, player.radius, player.radius);
+      //ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
+      ctx.fillStyle = "{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
       ctx.fill();
       ctx.closePath();
       for (let bullet of player.bullets) {
         ctx.beginPath();
         ctx.arc(bullet.position.x, bullet.position.y, bullet.radius, 0, 2 * Math.PI, true);
-        ctx.fillStyle = "#AAAAAA";
+        ctx.fillStyle = "{parseInt(bullet.id, 16)%parseInt('FFFFFF', 16)}";
         ctx.fill();
         ctx.closePath();
       }

@@ -147,6 +147,7 @@ class Player {
       radius: this.getRadius(),
       health: this.#health,
       bullets: bulletObjs,
+      id: this.#id,
     };
   }
 }
