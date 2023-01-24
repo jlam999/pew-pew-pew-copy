@@ -28,6 +28,7 @@ const addPlayer = (id) => {
 
 const movePlayer = (id, dir) => {
   gameState.players[id].move(dir);
+  console.log(gameState.players[id].getPosition());
 };
 
 const playerShoot = (id, position) => {
@@ -39,6 +40,7 @@ const playerShoot = (id, position) => {
   player.shoot(angle);
 };
 
+//There can only be a winner if there is more than one player in the game.
 const checkWin = () => {
   let winner = undefined;
   let notDead = 0;

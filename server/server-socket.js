@@ -28,20 +28,29 @@ const startRunningGame = () => {
 //Start running the game!
 startRunningGame();
 
+const addUserToGame = (user) => {
+  gameLogic.addPlayer(user.googleid);
+};
+
+const removeUserFromGame = (user) => {
+  gameLogic.removePlayer(user.googleid);
+};
+
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user.googleid];
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
+    //Can potentially change so user doesn't automatically die on refresh.
     oldSocket.disconnect();
     delete socketToUserMap[oldSocket.id];
   }
 
+  console.log("hi");
   userToSocketMap[user.googleid] = socket;
   socketToUserMap[socket.id] = user;
-
-  gameLogic.addPlayer(user.googleid);
-  console.log("Player added");
+  console.log("socket to user map: ");
+  console.log(socketToUserMap);
 };
 
 const removeUser = (user, socket) => {
@@ -64,7 +73,9 @@ module.exports = {
         if (user) gameLogic.movePlayer(user.googleid, dir);
       });
       socket.on("shoot", (position) => {
+        console.log(socket.id);
         const user = getUserFromSocketID(socket.id);
+        console.log(user);
         if (user) gameLogic.playerShoot(user.googleid, position);
       });
     });
@@ -72,6 +83,8 @@ module.exports = {
 
   addUser: addUser,
   removeUser: removeUser,
+  addUserToGame: addUserToGame,
+  removeUserFromGame: removeUserFromGame,
 
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,
