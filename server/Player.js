@@ -19,6 +19,11 @@ class Player {
     return this.#position;
   }
 
+  setPosition(x,y) {
+    this.#position.x = x;
+    this.#position.y = y;
+  }
+
   getHealth() {
     return this.#health;
   }
