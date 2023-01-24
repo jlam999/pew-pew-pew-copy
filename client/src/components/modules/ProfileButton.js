@@ -52,11 +52,9 @@ const ProfileButton = (props) => {
                         onError={(err)=>console.log(err)}
                         className="googleLoginButton"
                         theme={"outline"}
-                        shape={"pill"}
+                        shape="pill"
                         ux_mode={"popup"}
-                        auto_select={false}
-                        useOneTap={false}
-                        context={"signin"}
+                        width="96px"
                     />
                 )}
             </GoogleOAuthProvider>
