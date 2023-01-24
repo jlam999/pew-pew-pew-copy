@@ -9,6 +9,7 @@ SPAWN_DIFF = 50;
 gameState = {
   winner: null,
   players: {},
+  isActive: false,
 };
 
 //Determines the spawn locations of all four players
@@ -22,21 +23,30 @@ const spawnPositions = [
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
-  init_position = spawnPositions[Object.keys(gameState.players).length - 1];
+  numPlayers = Object.keys(gameState.players).length;
+  init_position = spawnPositions[numPlayers - 1];
   newPlayer.setPosition(init_position.x, init_position.y);
+  if (numPlayers >= 2) {
+    gameState.isActive = true;
+    console.log("game is active.");
+  }
 };
 
 const movePlayer = (id, dir) => {
-  gameState.players[id].move(dir);
+  if (gameState.isActive) {
+    gameState.players[id].move(dir);
+  }
 };
 
 const playerShoot = (id, position) => {
-  const player = gameState.players[id];
-  const playerPos = player.getPosition();
-  const diffX = position.x - playerPos.x;
-  const diffY = playerPos.y - position.y;
-  let angle = Math.atan2(diffY, diffX);
-  player.shoot(angle);
+  if (gameState.isActive) {
+    const player = gameState.players[id];
+    const playerPos = player.getPosition();
+    const diffX = position.x - playerPos.x;
+    const diffY = playerPos.y - position.y;
+    let angle = Math.atan2(diffY, diffX);
+    player.shoot(angle);
+  }
 };
 
 //There can only be a winner if there is more than one player in the game.
@@ -60,6 +70,9 @@ const checkWin = () => {
 const removePlayer = (id) => {
   if (gameState.players[id] != undefined) {
     delete gameState.players[id];
+    if (Object.keys(gameState.players).length === 0) {
+      gameState.isActive = false;
+    }
   }
 };
 
@@ -73,11 +86,11 @@ const packageGameState = () => {
   for (let player_id of Object.keys(gameState.players)) {
     newPlayers[player_id] = gameState.players[player_id].toObject();
   }
-  return { winner: gameState.winner, players: newPlayers };
+  return { winner: gameState.winner, players: newPlayers, isActive: gameState.isActive };
 };
 
 module.exports = {
-  //gameState,
+  gameState,
   addPlayer,
   movePlayer,
   playerShoot,

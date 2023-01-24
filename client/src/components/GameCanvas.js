@@ -21,7 +21,7 @@ const draw = (gameState) => {
   ctx.fill();
   ctx.closePath();
 
-  if (Object.values(gameState.players).length < 2) {
+  if (Object.values(gameState.players).length == 1) {
     ctx.font = "bold 30px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Waiting for another player...", 25, 200);
