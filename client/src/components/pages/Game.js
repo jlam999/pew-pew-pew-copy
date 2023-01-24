@@ -40,16 +40,16 @@ const Game = (props) => {
     draw(update);
   };
 
-  let loginModal = null;
-  if (!props.userId) {
-    loginModal = <div>Please Login First!</div>;
-  }
-
   return (
     <>
-      <canvas id="gameCanvas" width={500} height={500}></canvas>
-      {loginModal}
-      {winnerModal}
+      {props.userId ? (
+        <div>
+          <canvas id="gameCanvas" width={500} height={500}></canvas>
+          {winnerModal}
+        </div>
+      ) : (
+        <div>Please Login First!</div>
+      )}
     </>
   );
 };
