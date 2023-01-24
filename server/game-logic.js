@@ -32,7 +32,7 @@ const movePlayer = (id, dir) => {
 
 const playerShoot = (id, position) => {
   const player = gameState.players[id];
-  playerPos = player.getPosition();
+  const playerPos = player.getPosition();
   const diffX = position.x - playerPos.x;
   const diffY = playerPos.y - position.y;
   let angle = Math.atan2(diffY, diffX);
@@ -40,15 +40,20 @@ const playerShoot = (id, position) => {
 };
 
 const checkWin = () => {
-  winner = undefined;
-  nonzeroHealth = 0;
-  for (let player_id of Object.keys(gameState.players)) {
-    if (gameState.players[player_id].health !== 0) {
-      nonzeroHealth++;
-      winner = player_id;
+  let winner = undefined;
+  let notDead = 0;
+  const player_ids = Object.keys(gameState.players);
+  if (player_ids.length > 1) {
+    for (let player_id of Object.keys(gameState.players)) {
+      if (!gameState.players[player_id].getIsDead()) {
+        notDead++;
+        winner = player_id;
+      }
+    }
+    if (notDead === 1) {
+      gameState.winner = winner;
     }
   }
-  if (nonzeroHealth === 1) gameState.winner = winner;
 };
 
 const removePlayer = (id) => {
@@ -58,7 +63,7 @@ const removePlayer = (id) => {
 };
 
 const updateGameState = () => {
-  //checkWin();
+  checkWin();
   for (let p of Object.values(gameState.players)) p.moveBullets(gameState.players);
 };
 

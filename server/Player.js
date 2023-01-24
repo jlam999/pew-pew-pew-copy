@@ -7,6 +7,7 @@ class Player {
   #id = 0;
   #bullets = [];
   #initHealth = 0;
+  #isDead = false;
 
   constructor(health, x, y, id) {
     this.#health = health;
@@ -19,7 +20,7 @@ class Player {
     return this.#position;
   }
 
-  setPosition(x,y) {
+  setPosition(x, y) {
     this.#position.x = x;
     this.#position.y = y;
   }
@@ -43,6 +44,11 @@ class Player {
   getId() {
     return this.#id;
   }
+
+  getIsDead() {
+    return this.#isDead;
+  }
+
   // /**
   //  * @param {Number} theta: The angle that the player will shoot towards
   //  */
@@ -120,6 +126,9 @@ class Player {
 
   getsHit() {
     this.#health -= 2;
+    if (this.#health <= 0) {
+      this.#isDead = true;
+    }
   }
 
   absorb() {
