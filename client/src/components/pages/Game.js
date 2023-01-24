@@ -16,7 +16,7 @@ const Game = (props) => {
     return () => {
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("click", handleClick);
-      //post("/api/despawn", { userid: props.userId });
+      post("/api/despawn", { userid: props.userId });
       setJoined(false);
     };
   }, []);
