@@ -39,7 +39,7 @@ const Game = (props) => {
     } else if (update.winner === props.userId) {
       setWinnerModal(<div className="Banner">You Won! {homeLink}</div>);
     } else {
-      setWinnerModal(<div className="Banner" > You Lost. {homeLink}</div>);
+      setWinnerModal(<div className="Banner"> You Lost. {homeLink}</div>);
     }
 
     if (
