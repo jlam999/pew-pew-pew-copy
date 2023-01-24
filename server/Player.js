@@ -68,15 +68,17 @@ class Player {
    */
   shoot(theta) {
     // mouse direction
-    this.#health--;
-    this.#bullets.push(
-      new Bullet(
-        this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta),
-        this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta),
-        theta,
-        this.#id
-      )
-    );
+    if (this.#health > 2) {
+      this.#health--;
+      this.#bullets.push(
+        new Bullet(
+          this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta),
+          this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta),
+          theta,
+          this.#id
+        )
+      );
+    }
   }
 
   /**
