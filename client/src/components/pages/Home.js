@@ -25,16 +25,13 @@ const Home = (props) => {
       </div>
       <Link to="/game">
         <button className="Home-buttonContainer">
-          <h3 className="Home-buttonText">Create a Game</h3>
+          <h3 className="Home-buttonText">Join a Game</h3>
         </button>
       </Link>
-      <div>
+      {/* <div>
         <h4>OR</h4>
-      </div>
-      <NewCodeInput onSubmit="" /> {/*NEED TO CODE SUBMISSION OF ROOM CODE*/}
-      {/*<button className="Home-profileButton">
-                <img src={ProfileImg} alt="Profile" className="Home-profileImg"/>
-                </button>*/}
+      </div> */}
+      {/* <NewCodeInput onSubmit="" /> NEED TO CODE SUBMISSION OF ROOM CODE */}
       <ProfileButton
         handleLogin={props.handleLogin}
         handleLogout={props.handleLogout}

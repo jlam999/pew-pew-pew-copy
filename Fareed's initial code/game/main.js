@@ -20,7 +20,6 @@ class Player{
         this.#base = [x,y];
         this.#id = id;
         this.#blocks.push([this.#base[0] + this.#radius, this.#base[1] + this.#radius, [4,4], 4]);// location, vector, speed
-        //console.log(this.#radius, this.#base, this.#id);
     }
 
     shoot(){

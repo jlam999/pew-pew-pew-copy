@@ -6,7 +6,6 @@
 const playerColors = ["#C73E1D", "#2E86AB", "#F18F01", "#A23B72"];
 
 const draw = (gameState) => {
-  //console.log(gameState);
   const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
 

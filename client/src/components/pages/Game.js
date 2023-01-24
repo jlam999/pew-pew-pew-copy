@@ -26,21 +26,20 @@ const Game = (props) => {
   // Turn on the socket to update the game periodically
   useEffect(() => {
     socket.on("update", (update) => {
-      //console.log(update.players);
       processUpdate(update);
     });
   }, []);
 
-  const homeLink = <Link to="/">Please Return Home</Link>;
+  const homeLink = <Link to="/"><button>Please Return Home</button></Link>;
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
     if (update.winner === null) {
       setWinnerModal(null);
     } else if (update.winner === props.userId) {
-      setWinnerModal(<div>You Won! {homeLink}</div>);
+      setWinnerModal(<div className="Banner">You Won! {homeLink}</div>);
     } else {
-      setWinnerModal(<div>You Lost. {homeLink}</div>);
+      setWinnerModal(<div className="Banner" > You Lost. {homeLink}</div>);
     }
 
     if (
@@ -58,7 +57,6 @@ const Game = (props) => {
   const attemptJoinGame = () => {
     if (!joined) {
       get("/api/isActive").then((isActive) => {
-        //console.log("Is Active: " + String(isActive));
         if (isActive) {
           alert("Game in Session; Cannot Join.");
         } else {

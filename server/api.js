@@ -48,19 +48,15 @@ router.post("/initsocket", (req, res) => {
 
 //Get user by user id.
 router.get("/user", (req, res) => {
-  //console.log("Searching for ", req);
   const query = { googleid: req.query.googleid };
   User.find(query).then((user) => {
-    //console.log("Found ", user);
     res.send(user);
   });
 });
 
 router.get("/stats", (req, res) => {
-  console.log("Searching for stats for ", req);
   const query = { googleid: req.query.googleid };
   Stats.find(query).then((stats) => {
-    console.log("Found Stats", stats);
     res.send(stats);
   });
 });
@@ -73,9 +69,7 @@ router.post("/spawn", (req, res) => {
 });
 
 router.post("/despawn", (req, res) => {
-  console.log("PLEASEEEE");
   if (req.user) {
-    console.log("hi");
     socketManager.removeUserFromGame(req.user);
   }
   res.send({});

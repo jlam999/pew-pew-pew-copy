@@ -10,11 +10,6 @@ import "./StatsBox.css";
  * @param {Object} stats
  */
 const StatsBox = (props) => {
-  console.log("User", props.user)
-  console.log("stats", props.stats)
-
-  
-
   return (
     <div className="fullStatsBox">
       <h1 className="StatsBox-name">{props.user.name}'s Stats</h1>

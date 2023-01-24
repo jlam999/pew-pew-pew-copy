@@ -8,7 +8,6 @@ const socketManager = require("./server-socket");
 //    TODO: replace with your own CLIENT_ID
 const CLIENT_ID = "329655122590-a18c4j9pbbiu6thahct4a0dse0p457qd.apps.googleusercontent.com"; //OUR CLIENT, NOT WEBLAB'S
 const client = new OAuth2Client(CLIENT_ID);
-//console.log(client);
 
 // accepts a login token from the frontend, and verifies that it's legit
 function verify(token) {

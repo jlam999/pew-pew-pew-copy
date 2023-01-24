@@ -28,7 +28,6 @@ const addPlayer = (id) => {
   newPlayer.setPosition(init_position.x, init_position.y);
   if (numPlayers >= 2) {
     gameState.isActive = true;
-    //console.log("game is active.");
   }
 };
 
@@ -62,7 +61,6 @@ const checkWin = () => {
       }
     }
     if (notDead === 1) {
-      console.log("we have a winner");
       gameState.winner = winner;
     }
   }
@@ -71,7 +69,6 @@ const checkWin = () => {
 const removePlayer = (id) => {
   if (gameState.players[id] != undefined) {
     delete gameState.players[id];
-    console.log(gameState.players);
     if (Object.keys(gameState.players).length === 0) {
       gameState.isActive = false;
       gameState.winner = null;

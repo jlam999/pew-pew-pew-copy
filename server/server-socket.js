@@ -14,7 +14,6 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
 const sendGameState = () => {
   const package = gameLogic.packageGameState();
-  //console.log(package.winner);
   io.emit("update", package);
 };
 

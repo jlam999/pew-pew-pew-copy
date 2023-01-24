@@ -3,7 +3,6 @@ import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
 
 import "../utilities.css";
 
@@ -31,10 +30,8 @@ const App = () => {
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
     const decodedCredential = jwt_decode(userToken);
-    //console.log("cred", decodedCredential);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
-      console.log("Set ID: ", user.googleid);
       setUserId(user.googleid);
       post("/api/initsocket", { socketid: socket.id });
     });
@@ -50,12 +47,6 @@ const App = () => {
       <Router>
         <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
         <Profile path={`/profile/${userId}`} userId={userId} />
-        <Skeleton
-          path="/skeleton"
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-          userId={userId}
-        />
         <Game path="/game" userId={userId} />
         <NotFound default />
       </Router>

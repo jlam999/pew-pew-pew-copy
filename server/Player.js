@@ -35,7 +35,7 @@ class Player {
   }
 
   getSpeed() {
-    return this.#initHealth/3 / (1+Math.exp(Math.sqrt(this.#health)/5));
+    return this.#initHealth/1.5 / (1+Math.exp(Math.sqrt(this.#health)/5));
   }
 
   getRadius() {
@@ -100,7 +100,6 @@ class Player {
       this.#position.y -= this.getSpeed() * Math.sin(theta);
     } 
     this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-50), 50), y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-50), 50)};
-    console.log(this.#position)
   }
 
   /**

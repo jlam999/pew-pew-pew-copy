@@ -17,7 +17,6 @@ const Profile = (props) => {
   const [stats, updateStats] = useState([]);
 
   useEffect(() => {
-    //console.log(props.userId)
     get("/api/user", { googleid: props.userId }).then((user) => {
       setUser(user[0]);
     });
