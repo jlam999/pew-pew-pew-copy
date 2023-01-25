@@ -5,7 +5,7 @@ import { draw } from "../GameCanvas.js";
 import { handleKey, handleClick } from "../../input.js";
 import { Link } from "@reach/router";
 
-import "./Game.css"
+import "./Game.css";
 
 const Game = (props) => {
   const [winnerModal, setWinnerModal] = useState(null);
@@ -30,14 +30,18 @@ const Game = (props) => {
     });
   }, []);
 
-  const homeLink = <Link to="/"><button>Please Return Home</button></Link>;
+  const homeLink = (
+    <Link to="/">
+      <button>Please Return Home</button>
+    </Link>
+  );
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    if (update.winner === null) {
+    if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
       setWinnerModal(null);
     } else if (update.winner === props.userId) {
-      setWinnerModal(<div className="Banner">You Won! {homeLink}</div>);
+      setWinnerModal(<div className="Banner"> You Won! {homeLink}</div>);
     } else {
       setWinnerModal(<div className="Banner"> You Lost. {homeLink}</div>);
     }
@@ -72,7 +76,7 @@ const Game = (props) => {
   return (
     <>
       {props.userId ? (
-        <div className='GameBox'>
+        <div className="GameBox">
           <canvas id="gameCanvas" width={500} height={500} className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}
