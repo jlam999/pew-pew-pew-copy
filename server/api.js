@@ -61,6 +61,21 @@ router.get("/stats", (req, res) => {
   });
 });
 
+router.post("/addGameStats", (req, res) => {
+  const query = { googleid: req.body.googleid };
+  Stats.find(query).then((stats) => {
+    const newStats = new Stats({
+      googleid: stats.googleid,
+      wins: stats.wins + req.body.win,
+      games: stats.game + 1,
+      kills: stats.kills + req.body.kills,
+    });
+    newStats.save().then((stats) => {
+      res.send(stats);
+    });
+  });
+});
+
 router.post("/spawn", (req, res) => {
   if (req.user) {
     socketManager.addUserToGame(req.user);
