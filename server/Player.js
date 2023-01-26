@@ -129,13 +129,13 @@ class Player {
     }
     if(this.#position.y <=  this.getRadius()){
       this.#position.y = this.getRadius();
-      this.#speed.up = Math.min(this.#speed.down*0.5 + this.#speed.up, MAX_SPEED);//kickback
-      this.#speed.down = 0;
+      this.#speed.down = Math.min(this.#speed.up*0.5 + this.#speed.down, MAX_SPEED);//kickback
+      this.#speed.up = 0;
     }
     if(this.#position.y >= BORDER_MAX_Y - this.getRadius()){
       this.#position.y = BORDER_MAX_Y-this.getRadius();
-      this.#speed.down = Math.min(this.#speed.up*0.5 + this.#speed.down, MAX_SPEED);//kickback
-      this.#speed.up = 0;
+      this.#speed.up = Math.min(this.#speed.down*0.5 + this.#speed.up, MAX_SPEED);//kickback
+      this.#speed.down = 0;
     }
     this.#position.x = Math.max(
       Math.min(BORDER_MAX_X - this.getRadius(), this.#position.x),
