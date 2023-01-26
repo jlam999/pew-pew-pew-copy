@@ -35,8 +35,13 @@ const removeUserFromGame = (user) => {
   gameLogic.removePlayer(user.googleid);
 };
 
-const getIsActive = () => {
-  return gameLogic.gameState.isActive;
+const startGame = () => {
+  io.emit("start game")
+  gameLogic.startGame();
+}
+
+const getGameState = () => {
+  return gameLogic.gameState;
 };
 
 const addUser = (user, socket) => {
@@ -87,7 +92,8 @@ module.exports = {
   removeUser: removeUser,
   addUserToGame: addUserToGame,
   removeUserFromGame: removeUserFromGame,
-  getIsActive: getIsActive,
+  startGame: startGame,
+  getGameState: getGameState,
 
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,

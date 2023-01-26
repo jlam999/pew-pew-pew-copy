@@ -26,7 +26,7 @@ const ProfileButton = (props) => {
             if (user.length === 0) {
                 setStatus(false)
             } else {
-                setUser(user[0]);
+                setUser(user);
                 setStatus(true)
             }
         });

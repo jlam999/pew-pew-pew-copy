@@ -1,11 +1,9 @@
-import React, { Component } from "react";
-import NewCodeInput from "../modules/roomCode.js";
+import React from "react";
+import NewCodeInput from "../modules/RoomCode.js";
 import ProfileButton from "../modules/ProfileButton.js";
 import { Link } from "@reach/router";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
-
-import "../../utilities.css";
 import "./Home.css";
 
 /**
@@ -18,20 +16,25 @@ import "./Home.css";
  */
 
 const Home = (props) => {
+  const connectSocket = () => {
+    post("/api/initsocket", { socketid: socket.id });
+    post("/api/spawn", { userid: props.userId });
+  }
+
   return (
     <div className="Home-titleContainer">
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
-      <Link to="/game">
-        <button className="Home-buttonContainer">
+      <Link to="/lobby">
+        <button className="Home-buttonContainer" onClick={connectSocket}>
           <h3 className="Home-buttonText">Join a Game</h3>
         </button>
       </Link>
-      {/* <div>
+      <div>
         <h4>OR</h4>
-      </div> */}
-      {/* <NewCodeInput onSubmit="" /> NEED TO CODE SUBMISSION OF ROOM CODE */}
+      </div>
+      <NewCodeInput onSubmit="" /> {/*NEED TO CODE SUBMISSION OF ROOM CODE*/}
       <ProfileButton
         handleLogin={props.handleLogin}
         handleLogout={props.handleLogout}
