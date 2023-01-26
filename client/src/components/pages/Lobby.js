@@ -2,7 +2,7 @@ import { Redirect, Link, useNavigate } from "@reach/router"
 import React, {useState, useEffect} from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
-import { handleKey, handleClick } from "../../input.js";
+import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox from "../modules/PlayerBox.js"
 
 import "./Lobby.css"
@@ -36,7 +36,8 @@ const Lobby = (props) => {
     useEffect(() => {
         document.title = "Lobby"
         socket.on("start game", () =>{
-            window.addEventListener("keydown", handleKey);
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
             window.addEventListener("click", handleClick);
             navigate("/game");
         })
