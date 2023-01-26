@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
-import { handleKey, handleClick } from "../../input.js";
+import { handleKeyUp, handleKeyDown, handleClick } from "../../input.js";
 import { Link } from "@reach/router";
 
-import "./Game.css"
+import "./Game.css";
 
 const Game = (props) => {
   const [winnerModal, setWinnerModal] = useState(null);
@@ -16,7 +16,8 @@ const Game = (props) => {
   useEffect(() => {
     // remove event listener on unmount
     return () => {
-      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
       post("/api/despawn", { userid: props.userId });
       setJoined(false);
@@ -30,14 +31,31 @@ const Game = (props) => {
     });
   }, []);
 
-  const homeLink = <Link to="/"><button>Please Return Home</button></Link>;
+  const updateStats = (gameState) => {
+    const requestBody = {
+      win: 0,
+      kills: 0,
+    };
+    if (props.userId === gameState.winner) {
+      requestBody.win = 1;
+      requestBody.kills = 1;
+    }
+    post("/api/addGameStats", requestBody);
+  };
+
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    if (update.winner === null) {
+    const homeLink = (
+      <Link to="/">
+        <button onClick={() => updateStats(update)}>Please Return Home</button>
+      </Link>
+    );
+
+    if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
       setWinnerModal(null);
     } else if (update.winner === props.userId) {
-      setWinnerModal(<div className="Banner">You Won! {homeLink}</div>);
+      setWinnerModal(<div className="Banner"> You Won! {homeLink}</div>);
     } else {
       setWinnerModal(<div className="Banner"> You Lost. {homeLink}</div>);
     }
@@ -53,7 +71,7 @@ const Game = (props) => {
     }
     draw(update);
   };
-
+  
   // const attemptJoinGame = () => {
   //   if (!joined) {
   //   get("/api/isActive").then((isActive) => {
@@ -72,7 +90,7 @@ const Game = (props) => {
   return (
     <>
       {props.userId ? (
-        <div className='GameBox'>
+        <div className="GameBox">
           <canvas id="gameCanvas" width={500} height={500} className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}

@@ -22,7 +22,6 @@ const router = express.Router();
 //initialize socket
 const socketManager = require("./server-socket");
 const { STATES } = require("mongoose");
-//const { default: StatsBox } = require("../client/src/components/modules/StatsBox");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -58,6 +57,17 @@ router.get("/stats", (req, res) => {
   const query = { googleid: req.query.googleid };
   Stats.find(query).then((stats) => {
     res.send(stats[0]);
+  });
+});
+
+router.post("/addGameStats", (req, res) => {
+  const query = { googleid: req.user.googleid };
+
+  Stats.findOne(query).then((stats) => {
+    stats.games++;
+    stats.wins += req.body.win;
+    stats.kills += req.body.kills;
+    stats.save();
   });
 });
 

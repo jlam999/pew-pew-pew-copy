@@ -1,14 +1,17 @@
 const Bullet = require("./Bullet.js");
 const BORDER_MAX_X = 500;
 const BORDER_MAX_Y = 500;
+const MAX_SPEED = 1000;
 class Player {
-  #position = [0, 0];
+  #position = { x: 0, y: 0 };
   #health = 0; // max health should be 100 and the bullet speed should be the
   // same speed as somebody at 2 health (100/sqrt(2))
   #id = 0;
   #bullets = [];
   #initHealth = 0;
   #isDead = false;
+  #directions = { up: false, down: false, left: false, right: false };
+  #speed = { up: 0, down: 0, left: 0, right: 0 };
 
   constructor(health, x, y, id) {
     this.#health = health;
@@ -35,7 +38,7 @@ class Player {
   }
 
   getSpeed() {
-    return this.#initHealth/1.5 / (1+Math.exp(Math.sqrt(this.#health)/5));
+    return this.#initHealth / 1.5 / (1 + Math.exp(Math.sqrt(this.#health) / 5));
   }
 
   getRadius() {
@@ -92,15 +95,37 @@ class Player {
   //     this.#base[1] += this.#speed() * Math.sin(theta);
   //   }
   // }
-  move(theta) {
+  move(dir) {
     // pi/4 increments because if like up & left are pressed, we get a 3pi/4
     // angle --- keyboard directions
-    if (theta !== undefined) {
-      this.#position.x += this.getSpeed() * Math.cos(theta);
-      this.#position.y -= this.getSpeed() * Math.sin(theta);
-    } 
-    this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-this.getRadius()), this.getRadius()), 
-      y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-this.getRadius()), this.getRadius())};
+    //
+    this.#directions[Object.keys(dir)[0]] = Object.values(dir)[0];
+    //    if (theta !== undefined) {
+    //      this.#position.x += this.getSpeed() * Math.cos(theta);
+    //      this.#position.y -= this.getSpeed() * Math.sin(theta);
+    //    }
+    //    this.#position = {x: Math.max(Math.min(this.#position.x, BORDER_MAX_X-this.getRadius()), this.getRadius()),
+    //      y:Math.max(Math.min(this.#position.y, BORDER_MAX_Y-this.getRadius()), this.getRadius())};
+  }
+
+  updatePlayerState(players) {
+    for (let dir of Object.keys(this.#directions)) {
+      if (this.#directions[dir]) this.#speed[dir] = Math.min(this.#speed[dir] + 1, MAX_SPEED);
+      else this.#speed[dir] = Math.max(this.#speed[dir] - 1, 0);
+    }
+    this.#position = {
+      x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / MAX_SPEED,
+      y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / MAX_SPEED,
+    };
+    this.#position.x = Math.max(
+      Math.min(BORDER_MAX_X - this.getRadius(), this.#position.x),
+      0 + this.getRadius()
+    );
+    this.#position.y = Math.max(
+      Math.min(BORDER_MAX_Y - this.getRadius(), this.#position.y),
+      0 + this.getRadius()
+    );
+    this.moveBullets(players);
   }
 
   /**

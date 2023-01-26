@@ -81,8 +81,9 @@ const removePlayer = (id) => {
 };
 
 const updateGameState = () => {
+  //make players move as well
   checkWin();
-  for (let p of Object.values(gameState.players)) p.moveBullets(gameState.players);
+  for (let p of Object.values(gameState.players)) p.updatePlayerState(gameState.players);
 };
 
 const packageGameState = () => {
