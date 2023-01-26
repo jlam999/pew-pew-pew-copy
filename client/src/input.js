@@ -1,15 +1,28 @@
 import { move, shoot } from "./client-socket";
 
 /** Callback function that calls correct movement from key */
-export const handleKey = (e) => {
+// modify to trigger on and off keypress
+export const handleKeyUp = (e) => {
   if (e.key === "ArrowUp" || e.key === "w") {
-    move(Math.PI / 2);
+    move({ up: false });
   } else if (e.key === "ArrowDown" || e.key === "s") {
-    move((3 * Math.PI) / 2);
+    move({ down: false });
   } else if (e.key === "ArrowLeft" || e.key === "a") {
-    move(Math.PI);
+    move({ left: false });
   } else if (e.key === "ArrowRight" || e.key === "d") {
-    move(0);
+    move({ right: false });
+  }
+};
+
+export const handleKeyDown = (e) => {
+  if (e.key === "ArrowUp" || e.key === "w") {
+    move({ up: true });
+  } else if (e.key === "ArrowDown" || e.key === "s") {
+    move({ down: true });
+  } else if (e.key === "ArrowLeft" || e.key === "a") {
+    move({ left: true });
+  } else if (e.key === "ArrowRight" || e.key === "d") {
+    move({ right: true });
   }
 };
 
