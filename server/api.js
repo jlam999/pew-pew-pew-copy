@@ -64,7 +64,6 @@ router.post("/addGameStats", (req, res) => {
   const query = { googleid: req.user.googleid };
 
   Stats.findOne(query).then((stats) => {
-    console.log(stats);
     stats.games++;
     stats.wins += req.body.win;
     stats.kills += req.body.kills;
