@@ -30,14 +30,27 @@ const Game = (props) => {
     });
   }, []);
 
-  const homeLink = (
-    <Link to="/">
-      <button>Please Return Home</button>
-    </Link>
-  );
+  const updateStats = (gameState) => {
+    const requestBody = {
+      win: 0,
+      kills: 0,
+    };
+    if (props.userId === gameState.winner) {
+      requestBody.win = 1;
+      requestBody.kills = 1;
+    }
+    post("/api/addGameStats", requestBody);
+  };
+
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
+    const homeLink = (
+      <Link to="/">
+        <button onClick={() => updateStats(update)}>Please Return Home</button>
+      </Link>
+    );
+
     if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
       setWinnerModal(null);
     } else if (update.winner === props.userId) {
