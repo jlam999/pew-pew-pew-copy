@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
-import { handleKey, handleClick } from "../../input.js";
+import { handleKeyUp, handleKeyDown, handleClick } from "../../input.js";
 import { Link } from "@reach/router";
 
 import "./Game.css";
@@ -16,7 +16,8 @@ const Game = (props) => {
   useEffect(() => {
     // remove event listener on unmount
     return () => {
-      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
       post("/api/despawn", { userid: props.userId });
       setJoined(false);
@@ -65,7 +66,8 @@ const Game = (props) => {
           alert("Game in Session; Cannot Join.");
         } else {
           setJoined(true);
-          window.addEventListener("keydown", handleKey);
+          window.addEventListener("keydown", handleKeyDown);
+          window.addEventListener("keyup", handleKeyUp);
           window.addEventListener("click", handleClick);
           post("/api/spawn", { userid: props.userId });
         }
