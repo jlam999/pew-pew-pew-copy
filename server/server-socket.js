@@ -36,9 +36,9 @@ const removeUserFromGame = (user) => {
 };
 
 const startGame = () => {
-  io.emit("start game")
+  io.emit("start game");
   gameLogic.startGame();
-}
+};
 
 const getGameState = () => {
   return gameLogic.gameState;

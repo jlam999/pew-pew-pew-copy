@@ -22,7 +22,7 @@ const spawnPositions = [
 
 const startGame = () => {
   gameState.isActive = true;
-}
+};
 
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);

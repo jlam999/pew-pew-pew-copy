@@ -10,8 +10,8 @@ class Player {
   #bullets = [];
   #initHealth = 0;
   #isDead = false;
-  #directions = { up: false, down: false, left: false, right: false };
-  #speed = { up: 0, down: 0, left: 0, right: 0 };
+  #directions = { up: false, down: false, left: false, right: false, space: false };
+  #speed = { up: 0, down: 0, left: 0, right: 0, space: false };
 
   constructor(health, x, y, id) {
     this.#health = health;
@@ -98,7 +98,6 @@ class Player {
   move(dir) {
     // pi/4 increments because if like up & left are pressed, we get a 3pi/4
     // angle --- keyboard directions
-    //
     this.#directions[Object.keys(dir)[0]] = Object.values(dir)[0];
     //    if (theta !== undefined) {
     //      this.#position.x += this.getSpeed() * Math.cos(theta);
@@ -113,28 +112,29 @@ class Player {
       if (this.#directions[dir]) this.#speed[dir] = Math.min(this.#speed[dir] + 1, MAX_SPEED);
       else this.#speed[dir] = Math.max(this.#speed[dir] - 1, 0);
     }
+    if (this.#directions.space === false && this.#bullets.length === 0) this.#speed.space = 0;
     this.#position = {
       x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / MAX_SPEED,
       y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / MAX_SPEED,
     };
-    if(this.#position.x >= BORDER_MAX_X - this.getRadius()){
-      this.#position.x = BORDER_MAX_X-this.getRadius();
-      this.#speed.left = Math.min(this.#speed.right*0.5 + this.#speed.left, MAX_SPEED);//kickback
+    if (this.#position.x >= BORDER_MAX_X - this.getRadius()) {
+      this.#position.x = BORDER_MAX_X - this.getRadius();
+      this.#speed.left = Math.min(this.#speed.right * 0.5 + this.#speed.left, MAX_SPEED); //kickback
       this.#speed.right = 0;
     }
-    if(this.#position.x <=  this.getRadius()){
+    if (this.#position.x <= this.getRadius()) {
       this.#position.x = this.getRadius();
-      this.#speed.right = Math.min(this.#speed.left*0.5 + this.#speed.right, MAX_SPEED);//kickback
+      this.#speed.right = Math.min(this.#speed.left * 0.5 + this.#speed.right, MAX_SPEED); //kickback
       this.#speed.left = 0;
     }
-    if(this.#position.y <=  this.getRadius()){
+    if (this.#position.y <= this.getRadius()) {
       this.#position.y = this.getRadius();
-      this.#speed.down = Math.min(this.#speed.up*0.5 + this.#speed.down, MAX_SPEED);//kickback
+      this.#speed.down = Math.min(this.#speed.up * 0.5 + this.#speed.down, MAX_SPEED); //kickback
       this.#speed.up = 0;
     }
-    if(this.#position.y >= BORDER_MAX_Y - this.getRadius()){
-      this.#position.y = BORDER_MAX_Y-this.getRadius();
-      this.#speed.up = Math.min(this.#speed.down*0.5 + this.#speed.up, MAX_SPEED);//kickback
+    if (this.#position.y >= BORDER_MAX_Y - this.getRadius()) {
+      this.#position.y = BORDER_MAX_Y - this.getRadius();
+      this.#speed.up = Math.min(this.#speed.down * 0.5 + this.#speed.up, MAX_SPEED); //kickback
       this.#speed.down = 0;
     }
     this.#position.x = Math.max(
@@ -158,7 +158,7 @@ class Player {
       //pos = this.#bullets[i].getPosition();
       //vec = [pos[0] - this.base[0], pos[1] - this.base[1]];
       //this.#bullets[i].getPosition(Math.tan(vec[1] / vec[0]), this.#health);
-      this.#bullets[i].update(players);
+      this.#bullets[i].update(players, (50 * this.#speed.space) / MAX_SPEED, this.#position);
     }
     this.#bullets = this.#bullets.filter((bullet) => {
       return bullet.getIsActive();

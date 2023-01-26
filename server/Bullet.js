@@ -32,7 +32,6 @@ class Bullet {
     return this.#isActive;
   }
 
-
   // Will implement later:
   //   adjustPath(theta, health) {
   //     // the speed at which the bullet is drawn toward a player is inversely proportional to the root of the player's health
@@ -47,10 +46,17 @@ class Bullet {
 
   //Updates bullet's position and speed based on current position and speed
   //Be sure to use checkWallCollision()
-  update(players) {
+  update(players, parentSpeed, parentLoc) {
+    let parentAngle = Math.atan2(parentLoc.y - this.#position.y, parentLoc.x - this.#position.x);
     this.#position = {
-      x: this.#position.x + this.#speed * Math.cos(this.#angle),
-      y: this.#position.y - this.#speed * Math.sin(this.#angle),
+      x:
+        this.#position.x +
+        this.#speed * Math.cos(this.#angle) +
+        parentSpeed * Math.cos(parentAngle),
+      y:
+        this.#position.y -
+        this.#speed * Math.sin(this.#angle) +
+        parentSpeed * Math.sin(parentAngle),
     };
     this.checkWallCollision();
     this.checkCollision(players);
