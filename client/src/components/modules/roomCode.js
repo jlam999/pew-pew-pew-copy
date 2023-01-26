@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./roomCode.css";
+import "./RoomCode.css";
 
 /**
  * The box in the home page that allows you to input the room code

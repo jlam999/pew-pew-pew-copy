@@ -49,14 +49,14 @@ router.post("/initsocket", (req, res) => {
 router.get("/user", (req, res) => {
   const query = { googleid: req.query.googleid };
   User.find(query).then((user) => {
-    res.send(user);
+    res.send(user[0]);
   });
 });
 
 router.get("/stats", (req, res) => {
   const query = { googleid: req.query.googleid };
   Stats.find(query).then((stats) => {
-    res.send(stats);
+    res.send(stats[0]);
   });
 });
 
@@ -85,9 +85,14 @@ router.post("/despawn", (req, res) => {
   res.send({});
 });
 
-router.get("/isActive", (req, res) => {
-  res.send(socketManager.getIsActive());
+router.get("/gameState", (req, res) => {
+  res.send(socketManager.getGameState());
 });
+
+router.post("/startGame", (req, res) => {
+  socketManager.startGame();
+  res.send({});
+})
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
