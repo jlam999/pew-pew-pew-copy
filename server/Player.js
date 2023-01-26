@@ -117,6 +117,26 @@ class Player {
       x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / MAX_SPEED,
       y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / MAX_SPEED,
     };
+    if(this.#position.x >= BORDER_MAX_X - this.getRadius()){
+      this.#position.x = BORDER_MAX_X-this.getRadius();
+      this.#speed.left = Math.min(this.#speed.right*0.5 + this.#speed.left, MAX_SPEED);//kickback
+      this.#speed.right = 0;
+    }
+    if(this.#position.x <=  this.getRadius()){
+      this.#position.x = this.getRadius();
+      this.#speed.right = Math.min(this.#speed.left*0.5 + this.#speed.right, MAX_SPEED);//kickback
+      this.#speed.left = 0;
+    }
+    if(this.#position.y <=  this.getRadius()){
+      this.#position.y = this.getRadius();
+      this.#speed.up = Math.min(this.#speed.down*0.5 + this.#speed.up, MAX_SPEED);//kickback
+      this.#speed.down = 0;
+    }
+    if(this.#position.y >= BORDER_MAX_Y - this.getRadius()){
+      this.#position.y = BORDER_MAX_Y-this.getRadius();
+      this.#speed.down = Math.min(this.#speed.up*0.5 + this.#speed.down, MAX_SPEED);//kickback
+      this.#speed.up = 0;
+    }
     this.#position.x = Math.max(
       Math.min(BORDER_MAX_X - this.getRadius(), this.#position.x),
       0 + this.getRadius()
