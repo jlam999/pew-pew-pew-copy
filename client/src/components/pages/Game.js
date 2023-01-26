@@ -54,20 +54,20 @@ const Game = (props) => {
     draw(update);
   };
 
-  const attemptJoinGame = () => {
-    if (!joined) {
-      get("/api/isActive").then((isActive) => {
-        if (isActive) {
-          alert("Game in Session; Cannot Join.");
-        } else {
-          setJoined(true);
-          window.addEventListener("keydown", handleKey);
-          window.addEventListener("click", handleClick);
-          post("/api/spawn", { userid: props.userId });
-        }
-      });
-    }
-  };
+  // const attemptJoinGame = () => {
+  //   if (!joined) {
+  //   get("/api/isActive").then((isActive) => {
+  //       if (isActive) {
+  //       alert("Game in Session; Cannot Join.");
+  //       } else {
+  //       setJoined(true);
+  //       window.addEventListener("keydown", handleKey);
+  //       window.addEventListener("click", handleClick);
+  //       post("/api/spawn", { userid: props.userId });
+  //       }
+  //   });
+  //   }
+  // };
 
   return (
     <>
@@ -76,7 +76,7 @@ const Game = (props) => {
           <canvas id="gameCanvas" width={500} height={500} className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}
-          {joined ? <></> : <button onClick={attemptJoinGame}>Join Game</button>}
+          {/* {joined ? <></> : <button onClick={attemptJoinGame}>Join Game</button>} */}
         </div>
       ) : (
         <div>Please Login First!</div>

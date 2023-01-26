@@ -20,15 +20,19 @@ const spawnPositions = [
   { x: MAP_LENGTH - SPAWN_DIFF, y: SPAWN_DIFF },
 ];
 
+const startGame = () => {
+  gameState.isActive = true;
+}
+
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
   numPlayers = Object.keys(gameState.players).length;
   init_position = spawnPositions[numPlayers - 1];
   newPlayer.setPosition(init_position.x, init_position.y);
-  if (numPlayers >= 2) {
-    gameState.isActive = true;
-  }
+  // if (numPlayers >= 2) {
+  //   gameState.isActive = true;
+  // }
 };
 
 const movePlayer = (id, dir) => {
@@ -91,6 +95,7 @@ const packageGameState = () => {
 
 module.exports = {
   gameState,
+  startGame,
   addPlayer,
   movePlayer,
   playerShoot,
