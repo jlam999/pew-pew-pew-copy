@@ -69,7 +69,7 @@ const Game = (props) => {
     } else {
       setAloneModal(null);
     }
-    draw(update);
+    draw(update, props.userId);
   };
   
   // const attemptJoinGame = () => {
