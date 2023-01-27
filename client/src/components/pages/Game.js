@@ -14,6 +14,10 @@ const Game = (props) => {
 
   // add event listener on mount
   useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("click", handleClick);
+    post("/api/spawn", { userid: props.userId });
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keyup", handleKeyUp);
@@ -46,18 +50,18 @@ const Game = (props) => {
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    const homeLink = (
+    const lobbyLink = (
       <Link to="/lobby">
-        <button onClick={() => updateStats(update)}>Please Return Home</button>
+        <button onClick={() => updateStats(update)}>Please Return to Lobby</button>
       </Link>
     );
 
     if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
       setWinnerModal(null);
     } else if (update.winner === props.userId) {
-      setWinnerModal(<div className="Banner"> You Won! {homeLink}</div>);
+      setWinnerModal(<div className="Banner"> You Won! {lobbyLink}</div>);
     } else {
-      setWinnerModal(<div className="Banner"> You Lost. {homeLink}</div>);
+      setWinnerModal(<div className="Banner"> You Lost. {lobbyLink}</div>);
     }
 
     if (

@@ -11,30 +11,39 @@ const Lobby = (props) => {
   const navigate = useNavigate();
   const [playerList, setPlayerList] = useState([]);
 
-  const getPlayers = () => {
-    get("/api/gameState").then((gameState) => {
-      const promiseArray = [];
-      for (let playerId of Object.keys(gameState.players)) {
-        let user = get("/api/user", { googleid: playerId });
-        promiseArray.push(user);
-      }
-      Promise.all(promiseArray).then((array) => {
-        let names = array.map((player) => {
-          return player.name;
-        });
-        setPlayerList(names);
-      });
-    });
-  };
+  // const getPlayers = () => {
+  //   get("/api/gameState").then((gameState) => {
+  //     const promiseArray = [];
+  //     for (let playerId of Object.keys(gameState.players)) {
+  //       let user = get("/api/user", { googleid: playerId });
+  //       promiseArray.push(user);
+  //     }
+  //     Promise.all(promiseArray).then((array) => {
+  //       let names = array.map((player) => {
+  //         return player.name;
+  //       });
+  //       setPlayerList(names);
+  //     });
+  //   });
+  // };
 
   useEffect(() => {
-    getPlayers();
+    const updateLobby = (lobbyList) => {
+      console.log(lobbyList);
+      setPlayerList(lobbyList.map((player) => <PlayerBox name={player.name} />));
+    };
+    socket.on("lobby", updateLobby);
+    return () => {
+      post("/api/leaveLobby");
+      socket.off("lobby", updateLobby);
+    };
   }, []);
 
   // console.log(players)
 
   useEffect(() => {
     document.title = "Lobby";
+    post("/api/joinLobby");
     socket.on("start game", () => {
       navigate("/game");
     });
@@ -45,7 +54,7 @@ const Lobby = (props) => {
       console.log(gameState);
       if (gameState.isActive) {
         alert("Game in Session; Cannot Join.");
-      } else if (Object.keys(gameState.players).length < 2) {
+      } else if (playerList.length < 2) {
         alert("Not enough players!");
       } else {
         post("/api/startGame", {});
@@ -53,14 +62,14 @@ const Lobby = (props) => {
     });
   };
 
-  const players = playerList.map((playerName) => <PlayerBox name={playerName} />);
+  //const players = playerList.map((playerName) => <PlayerBox name={playerName} />);
 
   return (
     <>
       <h1 className="Lobby-title">Game Lobby</h1>
       <h2 className="Lobby-code">Code: ABCXYZ</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
       <p>Players:</p>
-      {players}
+      {playerList}
       <button className="Lobby-startButton" onClick={attemptGameStart}>
         Start Game
       </button>

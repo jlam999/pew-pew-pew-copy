@@ -92,7 +92,19 @@ router.get("/gameState", (req, res) => {
 router.post("/startGame", (req, res) => {
   socketManager.startGame();
   res.send({});
-})
+});
+
+router.post("/joinLobby", (req, res) => {
+  if (req.user) {
+    socketManager.addPlayerToLobby(req.user);
+  }
+});
+
+router.post("/leaveLobby", (req, res) => {
+  if (req.user) {
+    socketManager.removePlayerFromLobby(req.user);
+  }
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

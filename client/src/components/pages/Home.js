@@ -17,9 +17,8 @@ import "./Home.css";
 
 const Home = (props) => {
   const connectSocket = () => {
-    post("/api/initsocket", { socketid: socket.id });
     post("/api/spawn", { userid: props.userId });
-  }
+  };
 
   return (
     <div className="Home-titleContainer">
@@ -27,7 +26,7 @@ const Home = (props) => {
         <h1>Pew Pew Pew</h1>
       </div>
       <Link to="/lobby">
-        <button className="Home-buttonContainer" onClick={connectSocket}>
+        <button className="Home-buttonContainer">
           <h3 className="Home-buttonText">Join a Game</h3>
         </button>
       </Link>

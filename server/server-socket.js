@@ -1,5 +1,6 @@
 const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
+const { remove } = require("./models/user");
 
 const FPS = 60;
 
@@ -11,6 +12,23 @@ const socketToUserMap = {}; // maps socket ID to user object
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const lobbyPlayers = new Set();
+
+const addPlayerToLobby = (user) => {
+  lobbyPlayers.add({ name: user.name, googleid: user.googleid });
+  console.log(lobbyPlayers);
+  io.emit("lobby", [...lobbyPlayers]);
+};
+
+const removePlayerFromLobby = (user) => {
+  lobbyPlayers.forEach((player) => {
+    if (user.googleid === player.googleid) {
+      lobbyPlayers.delete(player);
+    }
+  });
+  io.emit("lobby", [...lobbyPlayers]);
+};
 
 const sendGameState = () => {
   const package = gameLogic.packageGameState();
@@ -99,4 +117,7 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
   getIo: () => io,
+
+  addPlayerToLobby: addPlayerToLobby,
+  removePlayerFromLobby: removePlayerFromLobby,
 };
