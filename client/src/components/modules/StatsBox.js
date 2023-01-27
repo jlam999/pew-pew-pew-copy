@@ -29,11 +29,11 @@ const StatsBox = (props) => {
         <div className="StatsBox-containerNumber">
           <h2>{props.stats.games}</h2>
           <h2>{props.stats.wins}</h2>
-          <h2>{props.stats.wins/props.stats.games}</h2>
+          <h2>{Math.round(props.stats.wins/props.stats.games*1000)/10+"%"}</h2>
           <h2>{props.stats.kills}</h2>
           <h2>{props.stats.games-props.stats.wins}</h2>
-          <h2>{props.stats.kills/props.stats.games}</h2>
-          <h2>{(props.stats.games-props.stats.wins)/props.stats.games}</h2>
+          <h2>{Math.round(props.stats.kills/props.stats.games*1000)/1000}</h2>
+          <h2>{Math.round((props.stats.games-props.stats.wins)/props.stats.games*1000)/1000}</h2>
         </div>
       </div>
       )}
