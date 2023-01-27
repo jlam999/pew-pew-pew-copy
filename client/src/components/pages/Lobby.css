@@ -6,6 +6,25 @@
   font-size: 48px;
 }
 
+.Lobby-waitButton {
+  margin: auto;
+  position: relative;
+  top: 32px;
+  font-family: "Sofia Sans";
+  font-size: 32px;
+  width: 240px;
+  height: 64px;
+  background-color: var(--secondText);
+  color: var(--primaryText);
+  border-radius: 32px;
+  text-align: center;
+}
+
+.Lobby-waitText {
+  position: relative;
+  top: 12px;
+}
+
 .Lobby-startButton {
   position: relative;
   top: 32px;

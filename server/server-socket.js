@@ -29,6 +29,8 @@ startRunningGame();
 
 const addUserToGame = (user) => {
   gameLogic.addPlayer(user.googleid);
+  io.emit("add user")
+  console.log("added user", user)
 };
 
 const removeUserFromGame = (user) => {

@@ -3,13 +3,14 @@ import React, {useState, useEffect} from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
-import PlayerBox from "../modules/PlayerBox.js"
+import PlayerBox, {drawPlayer} from "../modules/PlayerBox.js"
 
 import "./Lobby.css"
 
 const Lobby = (props) => {
     const navigate = useNavigate()
     const [playerList, setPlayerList] = useState([]);
+    const [ready, setReady] = useState(false);
 
     const getPlayers = () => {
         get("/api/gameState").then((gameState) => {
@@ -19,22 +20,38 @@ const Lobby = (props) => {
                 promiseArray.push(user)
             }
             Promise.all(promiseArray).then((array) => {
-                let names = array.map((player) => {
-                    return player.name;
+                const secondPromiseArray = [];
+                for (let i = 0; i < 4; i++) {
+                    if (i < array.length) {
+                        secondPromiseArray.push(<PlayerBox player={array[i]} playerNum={i}/>);
+                        drawPlayer(array[i], i);
+                        if (array.length >= 2) {
+                            setReady(true);
+                        } else {
+                            setReady(false);
+                        }
+                    } else {
+                        secondPromiseArray.push(<PlayerBox playerNum={i}/>);
+                    }
+                }
+                Promise.all(secondPromiseArray).then((array) => {
+                    setPlayerList(array);
                 })
-                setPlayerList(names);
             })
         })
     }
 
     useEffect(() => {
         getPlayers();
-    }, [])
-
-    // console.log(players)
+        socket.on("add user", () => {
+            getPlayers();
+        })
+        socket.on("disconnect", () => {
+            getPlayers();
+        })
+    }, [playerList])
 
     useEffect(() => {
-        document.title = "Lobby"
         socket.on("start game", () =>{
             window.addEventListener("keydown", handleKeyDown);
             window.addEventListener("keyup", handleKeyUp);
@@ -45,7 +62,6 @@ const Lobby = (props) => {
 
     const attemptGameStart = () => {
         get("/api/gameState").then((gameState)=> {
-            console.log(gameState)
             if (gameState.isActive) {
                 alert("Game in Session; Cannot Join.");
             } else if (Object.keys(gameState.players).length < 2) {
@@ -56,19 +72,25 @@ const Lobby = (props) => {
         })
     }
 
-    const players = playerList.map((playerName) => (
-        <PlayerBox name={playerName}/>
-    ))
+    // const players = playerList.map((playerName) => (
+    //     <PlayerBox name={playerName}/>
+    // ))
 
     return (
         <>
             <h1 className="Lobby-title">Game Lobby</h1>
             <h2 className="Lobby-code">Code: ABCXYZ</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
-            <p>Players:</p>
-            {players}
-            <button className="Lobby-startButton" onClick={attemptGameStart}>
-                Start Game
-            </button>
+            {playerList}
+            {(!ready) ? (
+                <div className="Lobby-waitButton">
+                    <p className="Lobby-waitText">Waiting...</p>
+                </div>
+            )   :   (
+                <button className="Lobby-startButton" onClick={attemptGameStart}>
+                    Start Game
+                </button>
+            )}
+            
         </>
     )
 }
