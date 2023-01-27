@@ -47,7 +47,7 @@ const Game = (props) => {
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
     const homeLink = (
-      <Link to="/">
+      <Link to="/lobby">
         <button onClick={() => updateStats(update)}>Please Return Home</button>
       </Link>
     );
@@ -71,7 +71,7 @@ const Game = (props) => {
     }
     draw(update);
   };
-  
+
   // const attemptJoinGame = () => {
   //   if (!joined) {
   //   get("/api/isActive").then((isActive) => {

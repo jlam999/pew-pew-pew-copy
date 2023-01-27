@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Router } from "@reach/router";
+import { Router, useNavigate } from "@reach/router";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
@@ -56,7 +56,8 @@ const App = () => {
         </Router>
       ) : (
         <Router>
-          <Home default handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+          <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+          <NotFound default />
         </Router>
       )}
     </>
