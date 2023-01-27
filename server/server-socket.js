@@ -28,7 +28,9 @@ const startRunningGame = () => {
 startRunningGame();
 
 const addUserToGame = (user) => {
-  gameLogic.addPlayer(user.googleid);
+  if (!Object.keys(gameLogic.gameState).includes(user.googleid)) {
+    gameLogic.addPlayer(user.googleid);
+  }
 };
 
 const removeUserFromGame = (user) => {
@@ -36,9 +38,9 @@ const removeUserFromGame = (user) => {
 };
 
 const startGame = () => {
-  io.emit("start game")
+  io.emit("start game");
   gameLogic.startGame();
-}
+};
 
 const getGameState = () => {
   return gameLogic.gameState;
@@ -49,7 +51,6 @@ const addUser = (user, socket) => {
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
-    //Can potentially change so user doesn't automatically die on refresh.
     oldSocket.disconnect();
     delete socketToUserMap[oldSocket.id];
   }
@@ -61,7 +62,6 @@ const addUser = (user, socket) => {
 const removeUser = (user, socket) => {
   if (user) {
     delete userToSocketMap[user.googleid];
-    removeUserFromGame(user);
   }
 
   delete socketToUserMap[socket.id];

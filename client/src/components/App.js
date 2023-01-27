@@ -10,7 +10,9 @@ import { get, post } from "../utilities";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile.js";
 import Game from "./pages/Game.js";
-import Lobby from "./pages/Lobby.js"
+import Lobby from "./pages/Lobby.js";
+
+import { socket } from "../client-socket.js";
 
 /**
  * Define the "App" component
@@ -33,6 +35,7 @@ const App = () => {
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user.googleid);
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 
@@ -43,13 +46,19 @@ const App = () => {
 
   return (
     <>
-      <Router>
-        <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
-        <Profile path={`/profile/${userId}`} userId={userId} />
-        <Game path="/game" userId={userId} />
-        <Lobby path="/lobby" userId={userId}/>
-        <NotFound default />
-      </Router>
+      {userId ? (
+        <Router>
+          <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+          <Profile path={`/profile/${userId}`} userId={userId} />
+          <Game path="/game" userId={userId} />
+          <Lobby path="/lobby" userId={userId} />
+          <NotFound default />
+        </Router>
+      ) : (
+        <Router>
+          <Home default handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+        </Router>
+      )}
     </>
   );
 };
