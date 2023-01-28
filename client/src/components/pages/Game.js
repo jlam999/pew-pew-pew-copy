@@ -74,14 +74,12 @@ const Game = (props) => {
       </Link>
     );
 
-    if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
-      setWinnerModal(null);
+    if (update.winner === props.userId) {
+      setWinnerModal(<div className="Banner"> You Won! {lobbyLink}</div>);
+    } else if (update.players[props.userId].health <= 0) {
+      setWinnerModal(<div className="Banner"> You Lost. {lobbyLink}</div>);
     } else {
-      if (update.winner === props.userId) {
-        setWinnerModal(<div className="Banner"> You Won! {lobbyLink}</div>);
-      } else {
-        setWinnerModal(<div className="Banner"> You Lost. {lobbyLink}</div>);
-      }
+      setWinnerModal(null);
     }
 
     if (
