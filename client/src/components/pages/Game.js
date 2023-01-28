@@ -72,15 +72,15 @@ const Game = (props) => {
       }
     }
 
-    if (
-      update.isActive &&
-      Object.keys(update.players).length === 1 &&
-      update.players[props.userId] !== undefined
-    ) {
-      setAloneModal(<div>Your opponent has left! {lobbyLink}</div>);
-    } else {
-      setAloneModal(null);
-    }
+    // if (
+    //   update.isActive &&
+    //   Object.keys(update.players).length === 1 &&
+    //   update.players[props.userId] !== undefined
+    // ) {
+    //   setAloneModal(<div>Your opponent has left! {lobbyLink}</div>);
+    // } else {
+    //   setAloneModal(null);
+    // }
     draw(update, props.userId);
   };
 

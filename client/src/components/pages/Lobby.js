@@ -46,8 +46,6 @@ const Lobby = (props) => {
     });
   };
 
-  //const players = playerList.map((playerName) => <PlayerBox name={playerName} />);
-
   return (
     <>
       <h1 className="Lobby-title">Game Lobby</h1>
