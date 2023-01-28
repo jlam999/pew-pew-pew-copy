@@ -58,8 +58,6 @@ startRunningGame();
 const addUserToGame = (user) => {
   if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.addPlayer(user.googleid);
-    io.emit("add user");
-    console.log("added user", user);
   }
 };
 
