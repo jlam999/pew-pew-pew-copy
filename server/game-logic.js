@@ -24,6 +24,12 @@ const startGame = () => {
   gameState.isActive = true;
 };
 
+const reset = () => {
+  gameState.winner = null;
+  gameState.isActive = false;
+  gameState.players = {};
+};
+
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
@@ -70,7 +76,6 @@ const checkWin = () => {
 const removePlayer = (id) => {
   if (gameState.players[id] != undefined) {
     delete gameState.players[id];
-    console.log("player removed, id: " + String(id));
     if (Object.keys(gameState.players).length === 0) {
       gameState.isActive = false;
       gameState.winner = null;
@@ -101,4 +106,5 @@ module.exports = {
   removePlayer,
   updateGameState,
   packageGameState,
+  reset,
 };

@@ -14,10 +14,11 @@ const Lobby = (props) => {
   useEffect(() => {
     document.title = "Lobby";
 
-    socket.on("start game", () => {
+    const bringToGame = () => {
       post("/api/spawn", { userid: props.userId });
       navigate("/game");
-    });
+    };
+    socket.on("start game", bringToGame);
 
     const updateLobby = (lobbyList) => {
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
@@ -25,11 +26,16 @@ const Lobby = (props) => {
 
     socket.on("lobby", updateLobby);
     get("/api/joinLobby").then((lobbyList) => {
+      if (lobbyList.length > 4) {
+        alert("Lobby is full.");
+        navigate("/");
+      }
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
     });
 
     return () => {
       get("/api/leaveLobby");
+      socket.off("start game", bringToGame);
       socket.off("lobby", updateLobby);
     };
   }, []);
@@ -46,17 +52,21 @@ const Lobby = (props) => {
     });
   };
 
-  //const players = playerList.map((playerName) => <PlayerBox name={playerName} />);
-
   return (
     <>
       <h1 className="Lobby-title">Game Lobby</h1>
       <h2 className="Lobby-code">Code: ABCXYZ</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
       <p>Players:</p>
       {playerList}
-      <button className="Lobby-startButton" onClick={attemptGameStart}>
-        Start Game
-      </button>
+      {playerList.length < 2 ? (
+        <div className="Lobby-waitButton">
+          <p className="Lobby-waitText">Waiting...</p>
+        </div>
+      ) : (
+        <button className="Lobby-startButton" onClick={attemptGameStart}>
+          Start Game
+        </button>
+      )}
     </>
   );
 };

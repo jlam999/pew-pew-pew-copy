@@ -1,3 +1,4 @@
+const { reset } = require("nodemon");
 const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
 const { remove } = require("./models/user");
@@ -9,9 +10,62 @@ let io;
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
 
+const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const sendGameState = () => {
+  const package = gameLogic.packageGameState();
+  io.emit("update", package);
+};
+
+//Returns true if at least one connected user is in the game.
+const checkUserConnection = () => {
+  for (let user of getAllConnectedUsers()) {
+    if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
+      return false;
+    }
+  }
+  // console.log("connected users: ");
+  // console.log(
+  //   getAllConnectedUsers().map((user) => {
+  //     return user.googleid;
+  //   })
+  // );
+  // console.log("users in game: ");
+  // console.log(Object.keys(gameLogic.gameState.players));
+  return true;
+};
+
+const startRunningGame = () => {
+  let frame_counter = 0;
+  let win_count;
+  setInterval(() => {
+    if (gameLogic.gameState.isActive) {
+      frame_counter++;
+      sendGameState();
+      gameLogic.updateGameState();
+      if (frame_counter > FPS && checkUserConnection()) {
+        console.log("all players left");
+        gameLogic.reset();
+      }
+      if (gameLogic.gameState.winner !== null) {
+        if (win_count === undefined) {
+          win_count = frame_counter;
+        } else if (frame_counter - win_count > FPS * 10) {
+          io.emit("end game");
+        }
+      }
+    } else {
+      frame_counter = 0;
+      win_count = undefined;
+    }
+  }, 1000 / FPS);
+};
+
+//Start running the game!
+startRunningGame();
 
 const lobbyPlayers = new Set();
 
@@ -39,36 +93,23 @@ const removePlayerFromLobby = (user) => {
   return lobbyPlayers;
 };
 
-const sendGameState = () => {
-  const package = gameLogic.packageGameState();
-  io.emit("update", package);
-};
-
-const startRunningGame = () => {
-  setInterval(() => {
-    sendGameState();
-    gameLogic.updateGameState();
-  }, 1000 / FPS);
-};
-
-//Start running the game!
-startRunningGame();
-
 const addUserToGame = (user) => {
   if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.addPlayer(user.googleid);
+    console.log(String(user.googleid) + " has been added to the game.");
   }
 };
 
 const removeUserFromGame = (user) => {
   if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.removePlayer(user.googleid);
+    console.log(String(user.googleid) + " has been removed to the game.");
   }
 };
 
 const startGame = () => {
-  io.emit("start game");
   gameLogic.startGame();
+  io.emit("start game");
 };
 
 const getGameState = () => {
@@ -105,6 +146,7 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+        console.log("Socket has disconnected " + String(socket.id));
       });
       socket.on("move", (dir) => {
         const user = getUserFromSocketID(socket.id);
