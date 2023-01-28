@@ -98,7 +98,7 @@ const Game = (props) => {
     <>
       {props.userId ? (
         <div className="GameBox">
-          <canvas id="gameCanvas" width={500} height={500} className="GameCanvas"></canvas>
+          <canvas id="gameCanvas" className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}
         </div>
