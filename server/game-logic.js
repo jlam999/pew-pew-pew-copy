@@ -24,6 +24,12 @@ const startGame = () => {
   gameState.isActive = true;
 };
 
+const reset = () => {
+  gameState.winner = null;
+  gameState.isActive = false;
+  gameState.players = {};
+};
+
 const addPlayer = (id) => {
   newPlayer = new Player(INIT_HEALTH, 0, 0, id);
   gameState.players[id] = newPlayer;
@@ -100,4 +106,5 @@ module.exports = {
   removePlayer,
   updateGameState,
   packageGameState,
+  reset,
 };

@@ -77,10 +77,6 @@ const Game = (props) => {
       } else {
         setWinnerModal(<div className="Banner"> You Lost. {lobbyLink}</div>);
       }
-      setTimeout(() => {
-        updateStats(update);
-        navigate("/lobby");
-      }, 1000 * 10);
     }
 
     if (

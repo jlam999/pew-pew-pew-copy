@@ -1,3 +1,4 @@
+const { reset } = require("nodemon");
 const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
 const { remove } = require("./models/user");
@@ -13,6 +14,27 @@ const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const sendGameState = () => {
+  const package = gameLogic.packageGameState();
+  io.emit("update", package);
+};
+
+const startRunningGame = () => {
+  setInterval(() => {
+    if (gameLogic.gameState.isActive) {
+      sendGameState();
+      gameLogic.updateGameState();
+      // if (getAllConnectedUsers().length === 0) {
+      //   console.log("all players left");
+      //   gameLogic.reset();
+      // }
+    }
+  }, 1000 / FPS);
+};
+
+//Start running the game!
+startRunningGame();
 
 const lobbyPlayers = new Set();
 
@@ -40,21 +62,6 @@ const removePlayerFromLobby = (user) => {
   return lobbyPlayers;
 };
 
-const sendGameState = () => {
-  const package = gameLogic.packageGameState();
-  io.emit("update", package);
-};
-
-const startRunningGame = () => {
-  setInterval(() => {
-    sendGameState();
-    gameLogic.updateGameState();
-  }, 1000 / FPS);
-};
-
-//Start running the game!
-startRunningGame();
-
 const addUserToGame = (user) => {
   if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.addPlayer(user.googleid);
@@ -68,8 +75,8 @@ const removeUserFromGame = (user) => {
 };
 
 const startGame = () => {
-  io.emit("start game");
   gameLogic.startGame();
+  io.emit("start game");
 };
 
 const getGameState = () => {
@@ -106,6 +113,7 @@ module.exports = {
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
+        console.log("Socket has disconnected " + String(socket.id));
       });
       socket.on("move", (dir) => {
         const user = getUserFromSocketID(socket.id);
