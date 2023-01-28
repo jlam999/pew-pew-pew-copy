@@ -54,9 +54,15 @@ const Lobby = (props) => {
       <h2 className="Lobby-code">Code: ABCXYZ</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
       <p>Players:</p>
       {playerList}
-      <button className="Lobby-startButton" onClick={attemptGameStart}>
-        Start Game
-      </button>
+      {playerList.length < 2 ? (
+        <div className="Lobby-waitButton">
+          <p className="Lobby-waitText">Waiting...</p>
+        </div>
+      ) : (
+        <button className="Lobby-startButton" onClick={attemptGameStart}>
+          Start Game
+        </button>
+      )}
     </>
   );
 };
