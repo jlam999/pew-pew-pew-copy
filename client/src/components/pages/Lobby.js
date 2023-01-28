@@ -14,10 +14,11 @@ const Lobby = (props) => {
   useEffect(() => {
     document.title = "Lobby";
 
-    socket.on("start game", () => {
+    const bringToGame = () => {
       post("/api/spawn", { userid: props.userId });
       navigate("/game");
-    });
+    };
+    socket.on("start game", bringToGame);
 
     const updateLobby = (lobbyList) => {
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
@@ -34,6 +35,7 @@ const Lobby = (props) => {
 
     return () => {
       get("/api/leaveLobby");
+      socket.off("start game", bringToGame);
       socket.off("lobby", updateLobby);
     };
   }, []);
