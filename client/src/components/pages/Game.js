@@ -10,25 +10,31 @@ import "./Game.css";
 const Game = (props) => {
   const [winnerModal, setWinnerModal] = useState(null);
   const [aloneModal, setAloneModal] = useState(null);
-  const [joined, setJoined] = useState(false);
+  //const [joined, setJoined] = useState(false);
 
   // add event listener on mount
   useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId });
-      setJoined(false);
+      //setJoined(false);
     };
   }, []);
 
   // Turn on the socket to update the game periodically
   useEffect(() => {
-    socket.on("update", (update) => {
+    const dummy = (update) => {
       processUpdate(update);
-    });
+    };
+    socket.on("update", dummy);
+    return () => {
+      socket.off("update", dummy);
+    };
   }, []);
 
   const updateStats = (gameState) => {
@@ -46,18 +52,24 @@ const Game = (props) => {
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    const homeLink = (
-      <Link to="/">
-        <button onClick={() => updateStats(update)}>Please Return Home</button>
+    const leaveAfterGameOver = () => {
+      updateStats(update);
+      post("/api/despawn", { userid: props.userId });
+    };
+    const lobbyLink = (
+      <Link to="/lobby">
+        <button onClick={leaveAfterGameOver}>Please Return to Lobby</button>
       </Link>
     );
 
     if (update.winner === null || !Object.keys(update.players).includes(props.userId)) {
       setWinnerModal(null);
-    } else if (update.winner === props.userId) {
-      setWinnerModal(<div className="Banner"> You Won! {homeLink}</div>);
     } else {
-      setWinnerModal(<div className="Banner"> You Lost. {homeLink}</div>);
+      if (update.winner === props.userId) {
+        setWinnerModal(<div className="Banner"> You Won! {lobbyLink}</div>);
+      } else {
+        setWinnerModal(<div className="Banner"> You Lost. {lobbyLink}</div>);
+      }
     }
 
     if (
@@ -65,13 +77,13 @@ const Game = (props) => {
       Object.keys(update.players).length === 1 &&
       update.players[props.userId] !== undefined
     ) {
-      setAloneModal(<div>Your opponent has left! {homeLink}</div>);
+      setAloneModal(<div>Your opponent has left! {lobbyLink}</div>);
     } else {
       setAloneModal(null);
     }
     draw(update, props.userId);
   };
-  
+
   // const attemptJoinGame = () => {
   //   if (!joined) {
   //   get("/api/isActive").then((isActive) => {

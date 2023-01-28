@@ -73,6 +73,7 @@ const checkWin = () => {
 const removePlayer = (id) => {
   if (gameState.players[id] != undefined) {
     delete gameState.players[id];
+    console.log("player removed, id: " + String(id));
     if (Object.keys(gameState.players).length === 0) {
       gameState.isActive = false;
       gameState.winner = null;

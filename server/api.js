@@ -80,6 +80,7 @@ router.post("/spawn", (req, res) => {
 
 router.post("/despawn", (req, res) => {
   if (req.user) {
+    console.log("despawning" + String(req.user.name));
     socketManager.removeUserFromGame(req.user);
   }
   res.send({});
@@ -92,7 +93,21 @@ router.get("/gameState", (req, res) => {
 router.post("/startGame", (req, res) => {
   socketManager.startGame();
   res.send({});
-})
+});
+
+router.get("/joinLobby", (req, res) => {
+  if (req.user) {
+    const lobbyPlayers = socketManager.addPlayerToLobby(req.user);
+    res.send([...lobbyPlayers]);
+  }
+});
+
+router.get("/leaveLobby", (req, res) => {
+  if (req.user) {
+    const lobbyPlayers = socketManager.removePlayerFromLobby(req.user);
+    res.send([...lobbyPlayers]);
+  }
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

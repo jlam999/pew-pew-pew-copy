@@ -1,5 +1,6 @@
 const socket = require("socket.io-client/lib/socket");
 const gameLogic = require("./game-logic");
+const { remove } = require("./models/user");
 
 const FPS = 60;
 
@@ -11,6 +12,33 @@ const socketToUserMap = {}; // maps socket ID to user object
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
+
+const lobbyPlayers = new Set();
+
+const addPlayerToLobby = (user) => {
+  let alreadyAdded = false;
+  for (let player of lobbyPlayers) {
+    if (player.googleid === user.googleid) {
+      alreadyAdded = true;
+    }
+  }
+  if (!alreadyAdded) {
+    lobbyPlayers.add({ name: user.name, googleid: user.googleid });
+    io.emit("lobby", [...lobbyPlayers]);
+  }
+  return lobbyPlayers;
+};
+
+const removePlayerFromLobby = (user) => {
+  lobbyPlayers.forEach((player) => {
+    if (user.googleid === player.googleid) {
+      lobbyPlayers.delete(player);
+    }
+  });
+  console.log(lobbyPlayers);
+  io.emit("lobby", [...lobbyPlayers]);
+  return lobbyPlayers;
+};
 
 const sendGameState = () => {
   const package = gameLogic.packageGameState();
@@ -28,13 +56,17 @@ const startRunningGame = () => {
 startRunningGame();
 
 const addUserToGame = (user) => {
-  gameLogic.addPlayer(user.googleid);
-  io.emit("add user")
-  console.log("added user", user)
+  if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
+    gameLogic.addPlayer(user.googleid);
+    io.emit("add user");
+    console.log("added user", user);
+  }
 };
 
 const removeUserFromGame = (user) => {
-  gameLogic.removePlayer(user.googleid);
+  if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
+    gameLogic.removePlayer(user.googleid);
+  }
 };
 
 const startGame = () => {
@@ -51,7 +83,6 @@ const addUser = (user, socket) => {
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
-    //Can potentially change so user doesn't automatically die on refresh.
     oldSocket.disconnect();
     delete socketToUserMap[oldSocket.id];
   }
@@ -63,7 +94,6 @@ const addUser = (user, socket) => {
 const removeUser = (user, socket) => {
   if (user) {
     delete userToSocketMap[user.googleid];
-    removeUserFromGame(user);
   }
 
   delete socketToUserMap[socket.id];
@@ -101,4 +131,7 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
   getIo: () => io,
+
+  addPlayerToLobby: addPlayerToLobby,
+  removePlayerFromLobby: removePlayerFromLobby,
 };
