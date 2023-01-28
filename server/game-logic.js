@@ -30,9 +30,6 @@ const addPlayer = (id) => {
   numPlayers = Object.keys(gameState.players).length;
   init_position = spawnPositions[numPlayers - 1];
   newPlayer.setPosition(init_position.x, init_position.y);
-  // if (numPlayers >= 2) {
-  //   gameState.isActive = true;
-  // }
 };
 
 const movePlayer = (id, dir) => {

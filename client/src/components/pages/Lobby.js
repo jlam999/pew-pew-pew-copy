@@ -13,7 +13,6 @@ const Lobby = (props) => {
 
   useEffect(() => {
     document.title = "Lobby";
-    console.log("mounting");
 
     socket.on("start game", () => {
       post("/api/spawn", { userid: props.userId });
@@ -21,7 +20,6 @@ const Lobby = (props) => {
     });
 
     const updateLobby = (lobbyList) => {
-      console.log(lobbyList);
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
     };
 
@@ -31,7 +29,6 @@ const Lobby = (props) => {
     });
 
     return () => {
-      console.log("lobby dismounted");
       get("/api/leaveLobby");
       socket.off("lobby", updateLobby);
     };
@@ -39,7 +36,6 @@ const Lobby = (props) => {
 
   const attemptGameStart = () => {
     get("/api/gameState").then((gameState) => {
-      console.log(gameState);
       if (gameState.isActive) {
         alert("Game in Session; Cannot Join.");
       } else if (playerList.length < 2) {

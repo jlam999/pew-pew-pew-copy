@@ -35,7 +35,6 @@ const removePlayerFromLobby = (user) => {
       lobbyPlayers.delete(player);
     }
   });
-  console.log(lobbyPlayers);
   io.emit("lobby", [...lobbyPlayers]);
   return lobbyPlayers;
 };
