@@ -26,6 +26,7 @@ const addPlayerToLobby = (user) => {
     lobbyPlayers.add({ name: user.name, googleid: user.googleid });
     io.emit("lobby", [...lobbyPlayers]);
   }
+  return lobbyPlayers;
 };
 
 const removePlayerFromLobby = (user) => {
@@ -36,6 +37,7 @@ const removePlayerFromLobby = (user) => {
   });
   console.log(lobbyPlayers);
   io.emit("lobby", [...lobbyPlayers]);
+  return lobbyPlayers;
 };
 
 const sendGameState = () => {

@@ -28,11 +28,15 @@ const Lobby = (props) => {
     };
 
     socket.on("lobby", updateLobby);
-    post("/api/joinLobby");
+    get("/api/joinLobby").then((lobbyList) => {
+      setPlayerList(
+        lobbyList.map((player) => <PlayerBox key={player.googleid} name={player.name} />)
+      );
+    });
 
     return () => {
       console.log("lobby dismounted");
-      post("/api/leaveLobby");
+      get("/api/leaveLobby");
       socket.off("lobby", updateLobby);
     };
   }, []);

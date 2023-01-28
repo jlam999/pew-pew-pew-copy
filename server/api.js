@@ -95,15 +95,17 @@ router.post("/startGame", (req, res) => {
   res.send({});
 });
 
-router.post("/joinLobby", (req, res) => {
+router.get("/joinLobby", (req, res) => {
   if (req.user) {
-    socketManager.addPlayerToLobby(req.user);
+    const lobbyPlayers = socketManager.addPlayerToLobby(req.user);
+    res.send([...lobbyPlayers]);
   }
 });
 
-router.post("/leaveLobby", (req, res) => {
+router.get("/leaveLobby", (req, res) => {
   if (req.user) {
-    socketManager.removePlayerFromLobby(req.user);
+    const lobbyPlayers = socketManager.removePlayerFromLobby(req.user);
+    res.send([...lobbyPlayers]);
   }
 });
 
