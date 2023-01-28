@@ -20,15 +20,37 @@ const sendGameState = () => {
   io.emit("update", package);
 };
 
+//Returns true if at least one connected user is in the game.
+const checkUserConnection = () => {
+  for (let user of getAllConnectedUsers()) {
+    if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
+      return false;
+    }
+  }
+  // console.log("connected users: ");
+  // console.log(
+  //   getAllConnectedUsers().map((user) => {
+  //     return user.googleid;
+  //   })
+  // );
+  // console.log("users in game: ");
+  // console.log(Object.keys(gameLogic.gameState.players));
+  return true;
+};
+
 const startRunningGame = () => {
+  let frame_counter = 0;
   setInterval(() => {
     if (gameLogic.gameState.isActive) {
+      frame_counter++;
       sendGameState();
       gameLogic.updateGameState();
-      // if (getAllConnectedUsers().length === 0) {
-      //   console.log("all players left");
-      //   gameLogic.reset();
-      // }
+      if (frame_counter > FPS && checkUserConnection()) {
+        console.log("all players left");
+        gameLogic.reset();
+      }
+    } else {
+      frame_counter = 0;
     }
   }, 1000 / FPS);
 };
@@ -65,12 +87,14 @@ const removePlayerFromLobby = (user) => {
 const addUserToGame = (user) => {
   if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.addPlayer(user.googleid);
+    console.log(String(user.googleid) + " has been added to the game.");
   }
 };
 
 const removeUserFromGame = (user) => {
   if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.removePlayer(user.googleid);
+    console.log(String(user.googleid) + " has been removed to the game.");
   }
 };
 
