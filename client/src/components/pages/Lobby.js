@@ -25,6 +25,10 @@ const Lobby = (props) => {
 
     socket.on("lobby", updateLobby);
     get("/api/joinLobby").then((lobbyList) => {
+      if (lobbyList.length > 4) {
+        alert("Lobby is full.");
+        navigate("/");
+      }
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
     });
 
