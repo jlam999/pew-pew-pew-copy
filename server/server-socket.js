@@ -40,6 +40,7 @@ const checkUserConnection = () => {
 
 const startRunningGame = () => {
   let frame_counter = 0;
+  let win_count;
   setInterval(() => {
     if (gameLogic.gameState.isActive) {
       frame_counter++;
@@ -49,8 +50,16 @@ const startRunningGame = () => {
         console.log("all players left");
         gameLogic.reset();
       }
+      if (gameLogic.gameState.winner !== null) {
+        if (win_count === undefined) {
+          win_count = frame_counter;
+        } else if (frame_counter - win_count > FPS * 10) {
+          io.emit("end game");
+        }
+      }
     } else {
       frame_counter = 0;
+      win_count = undefined;
     }
   }, 1000 / FPS);
 };

@@ -39,8 +39,13 @@ const Game = (props) => {
       processUpdate(update);
     };
     socket.on("update", dummy);
+    const leaveGame = () => {
+      navigate("/lobby");
+    };
+    socket.on("end game", leaveGame);
     return () => {
       socket.off("update", dummy);
+      socket.off("end game", leaveGame);
     };
   }, []);
 
