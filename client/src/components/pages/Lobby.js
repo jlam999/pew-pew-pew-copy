@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
-import PlayerBox from "../modules/PlayerBox.js";
+import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
 
 import "./Lobby.css";
 
@@ -22,16 +22,12 @@ const Lobby = (props) => {
 
     const updateLobby = (lobbyList) => {
       console.log(lobbyList);
-      setPlayerList(
-        lobbyList.map((player) => <PlayerBox key={player.googleid} name={player.name} />)
-      );
+      setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
     };
 
     socket.on("lobby", updateLobby);
     get("/api/joinLobby").then((lobbyList) => {
-      setPlayerList(
-        lobbyList.map((player) => <PlayerBox key={player.googleid} name={player.name} />)
-      );
+      setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
     });
 
     return () => {

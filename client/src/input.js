@@ -11,6 +11,8 @@ export const handleKeyUp = (e) => {
     move({ left: false });
   } else if (e.key === "ArrowRight" || e.key === "d") {
     move({ right: false });
+  } else if (e.key === " " || e.key === "Space" || e.key === "Spacebar") {
+    move({ space: false });
   }
 };
 
@@ -23,6 +25,8 @@ export const handleKeyDown = (e) => {
     move({ left: true });
   } else if (e.key === "ArrowRight" || e.key === "d") {
     move({ right: true });
+  } else if (e.key === " " || e.key === "Space" || e.key === "Spacebar") {
+    move({ space: true });
   }
 };
 
