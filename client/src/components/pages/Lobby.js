@@ -11,42 +11,30 @@ const Lobby = (props) => {
   const navigate = useNavigate();
   const [playerList, setPlayerList] = useState([]);
 
-  // const getPlayers = () => {
-  //   get("/api/gameState").then((gameState) => {
-  //     const promiseArray = [];
-  //     for (let playerId of Object.keys(gameState.players)) {
-  //       let user = get("/api/user", { googleid: playerId });
-  //       promiseArray.push(user);
-  //     }
-  //     Promise.all(promiseArray).then((array) => {
-  //       let names = array.map((player) => {
-  //         return player.name;
-  //       });
-  //       setPlayerList(names);
-  //     });
-  //   });
-  // };
-
   useEffect(() => {
+    document.title = "Lobby";
+    console.log("mounting");
+
+    socket.on("start game", () => {
+      post("/api/spawn", { userid: props.userId });
+      navigate("/game");
+    });
+
     const updateLobby = (lobbyList) => {
       console.log(lobbyList);
-      setPlayerList(lobbyList.map((player) => <PlayerBox name={player.name} />));
+      setPlayerList(
+        lobbyList.map((player) => <PlayerBox key={player.googleid} name={player.name} />)
+      );
     };
+
     socket.on("lobby", updateLobby);
+    post("/api/joinLobby");
+
     return () => {
+      console.log("lobby dismounted");
       post("/api/leaveLobby");
       socket.off("lobby", updateLobby);
     };
-  }, []);
-
-  // console.log(players)
-
-  useEffect(() => {
-    document.title = "Lobby";
-    post("/api/joinLobby");
-    socket.on("start game", () => {
-      navigate("/game");
-    });
   }, []);
 
   const attemptGameStart = () => {

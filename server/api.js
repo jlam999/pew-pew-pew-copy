@@ -80,6 +80,7 @@ router.post("/spawn", (req, res) => {
 
 router.post("/despawn", (req, res) => {
   if (req.user) {
+    console.log("despawning" + String(req.user.name));
     socketManager.removeUserFromGame(req.user);
   }
   res.send({});

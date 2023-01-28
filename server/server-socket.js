@@ -16,9 +16,16 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 const lobbyPlayers = new Set();
 
 const addPlayerToLobby = (user) => {
-  lobbyPlayers.add({ name: user.name, googleid: user.googleid });
-  console.log(lobbyPlayers);
-  io.emit("lobby", [...lobbyPlayers]);
+  let alreadyAdded = false;
+  for (let player of lobbyPlayers) {
+    if (player.googleid === user.googleid) {
+      alreadyAdded = true;
+    }
+  }
+  if (!alreadyAdded) {
+    lobbyPlayers.add({ name: user.name, googleid: user.googleid });
+    io.emit("lobby", [...lobbyPlayers]);
+  }
 };
 
 const removePlayerFromLobby = (user) => {
@@ -27,6 +34,7 @@ const removePlayerFromLobby = (user) => {
       lobbyPlayers.delete(player);
     }
   });
+  console.log(lobbyPlayers);
   io.emit("lobby", [...lobbyPlayers]);
 };
 
@@ -46,13 +54,15 @@ const startRunningGame = () => {
 startRunningGame();
 
 const addUserToGame = (user) => {
-  if (!Object.keys(gameLogic.gameState).includes(user.googleid)) {
+  if (!Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
     gameLogic.addPlayer(user.googleid);
   }
 };
 
 const removeUserFromGame = (user) => {
-  gameLogic.removePlayer(user.googleid);
+  if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
+    gameLogic.removePlayer(user.googleid);
+  }
 };
 
 const startGame = () => {
