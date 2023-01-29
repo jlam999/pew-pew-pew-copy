@@ -9,6 +9,8 @@ let io;
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
+const codeToGameMap = {};
+const codeToPlayersMap = {};
 
 const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
@@ -67,10 +69,28 @@ const startRunningGame = () => {
 //Start running the game!
 startRunningGame();
 
-const lobbyPlayers = new Set();
+// const lobbyPlayers = new Set();
 
-const addPlayerToLobby = (user) => {
+
+const createLobby = (user, socket) => {
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    const char = String.fromCharCode((Math.random()*26)+65);
+    code += char;
+  }
+  codeToGameMap[code] = "Hi";
+  const lobbyPlayers = new Set();
+  codeToPlayersMap[code] = lobbyPlayers;
+  return code;
+}
+
+const addPlayerToLobby = async (user, socket, roomCode) => {
   let alreadyAdded = false;
+  const lobbyPlayers = codeToPlayersMap[roomCode];
+  console.log("code", JSON.stringify(roomCode))
+  // console.log(codeToPlayersMap);
+  // console.log("Players: ", lobbyPlayers)
+  // console.log(codeToGameMap);
   for (let player of lobbyPlayers) {
     if (player.googleid === user.googleid) {
       alreadyAdded = true;
@@ -78,18 +98,26 @@ const addPlayerToLobby = (user) => {
   }
   if (!alreadyAdded) {
     lobbyPlayers.add({ name: user.name, googleid: user.googleid });
-    io.emit("lobby", [...lobbyPlayers]);
+    socket.join(roomCode, function () {
+      console.log("Joined", roomCode);
+      console.log("rooms: ", socket.rooms)
+    });
+    io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   }
   return lobbyPlayers;
 };
 
-const removePlayerFromLobby = (user) => {
+const removePlayerFromLobby = (user, socket, roomCode) => {
+  const lobbyPlayers = codeToPlayersMap[roomCode]
   lobbyPlayers.forEach((player) => {
     if (user.googleid === player.googleid) {
       lobbyPlayers.delete(player);
     }
   });
-  io.emit("lobby", [...lobbyPlayers]);
+  socket.leave(roomCode, function () {
+    console.log("Left", roomCode)
+  })
+  io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   return lobbyPlayers;
 };
 
@@ -165,6 +193,7 @@ module.exports = {
   removeUserFromGame: removeUserFromGame,
   startGame: startGame,
   getGameState: getGameState,
+  createLobby: createLobby,
 
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,
