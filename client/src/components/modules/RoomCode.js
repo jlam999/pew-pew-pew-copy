@@ -13,12 +13,12 @@ const NewCodeInput = (props) => {
   const [roomCode, setRoomCode] = useState("");
 
   const handleChange = (event) => {
-    setRoomCode(event.target.roomCode);
+    setRoomCode(event.target.value);
   };
   const handleSubmit = (event) => {
+    console.log(roomCode)
     event.preventDefault();
-    props.onSubmit && props.onSubmit(code);
-    setValue("");
+    props.onSubmit(roomCode);
   };
 
   return (

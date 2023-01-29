@@ -94,19 +94,24 @@ router.post("/startGame", (req, res) => {
   res.send({});
 });
 
-router.get("/joinLobby", (req, res) => {
+router.get("/joinLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = socketManager.addPlayerToLobby(req.user);
+    const lobbyPlayers = await socketManager.addPlayerToLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
     res.send([...lobbyPlayers]);
   }
 });
 
-router.get("/leaveLobby", (req, res) => {
+router.get("/leaveLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = socketManager.removePlayerFromLobby(req.user);
+    const lobbyPlayers = await socketManager.removePlayerFromLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
     res.send([...lobbyPlayers]);
   }
 });
+
+router.post("/createLobby", (req, res) => {
+  const code = socketManager.createLobby();
+  res.send(JSON.stringify(code));
+})
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Router, useNavigate } from "@reach/router";
 import jwt_decode from "jwt-decode";
+import { socket } from "../client-socket.js";
+
 
 import NotFound from "./pages/NotFound.js";
 
@@ -12,13 +14,12 @@ import Profile from "./pages/Profile.js";
 import Game from "./pages/Game.js";
 import Lobby from "./pages/Lobby.js";
 
-import { socket } from "../client-socket.js";
-
 /**
  * Define the "App" component
  */
 const App = () => {
   const [userId, setUserId] = useState(null);
+  const [roomCode, setRoomCode] = useState(null);
 
   useEffect(() => {
     get("/api/whoami").then((user) => {
@@ -44,15 +45,33 @@ const App = () => {
     post("/api/logout");
   };
 
+  const createLobby = async () => {
+    const code = await post("/api/createLobby", { socketid: socket.id });
+    setRoomCode(code)
+    return code;
+  }
+
+  const joinLobby = async (code) => {
+    console.log(1)
+    // const roomCode = await get("/api/joinLobby", {socketid: socket.id, roomCode: code})
+    // post("/api/initsocket", { socketid: socket.id });
+    // post("/api/spawn", { userid: userId });
+    // console.log("h")
+    // console.log("hihihih", roomCode)
+    setRoomCode(code)
+    return code;
+  }
+
+
   return (
     <>
       {userId ? (
         <Router>
-          <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} />
+          <Home path="/" handleLogin={handleLogin} handleLogout={handleLogout} userId={userId} createLobby={createLobby} joinLobby={joinLobby}/>
           <Profile path={`/profile/${userId}`} userId={userId} />
           <Game path="/game" userId={userId} />
-          <Lobby path="/lobby" userId={userId} />
-          <NotFound default />
+          <Lobby path="/lobby" userId={userId} roomCode={roomCode}/>
+          <NotFound default userId={userId}/>
         </Router>
       ) : (
         <Router>

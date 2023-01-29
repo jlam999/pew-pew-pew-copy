@@ -22,19 +22,25 @@ const Lobby = (props) => {
 
     const updateLobby = (lobbyList) => {
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
+      for (let i = 0; i < lobbyList.length; i++) {
+        drawPlayer(lobbyList[i],i)
+    }
     };
 
     socket.on("lobby", updateLobby);
-    get("/api/joinLobby").then((lobbyList) => {
+    get("/api/joinLobby", {socketid: socket.id, roomCode: props.roomCode}).then((lobbyList) => {
       if (lobbyList.length > 4) {
         alert("Lobby is full.");
         navigate("/");
       }
       setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
+      for (let i = 0; i < lobbyList.length; i++) {
+          drawPlayer(lobbyList[i],i)
+      }
     });
 
     return () => {
-      get("/api/leaveLobby");
+      get("/api/leaveLobby", {socketid: socket.id, roomCode: props.roomCode});
       socket.off("start game", bringToGame);
       socket.off("lobby", updateLobby);
     };
@@ -51,24 +57,23 @@ const Lobby = (props) => {
       }
     });
   };
-
-  return (
-    <>
-      <h1 className="Lobby-title">Game Lobby</h1>
-      <h2 className="Lobby-code">Code: ABCXYZ</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
-      <p>Players:</p>
-      {playerList}
-      {playerList.length < 2 ? (
-        <div className="Lobby-waitButton">
-          <p className="Lobby-waitText">Waiting...</p>
-        </div>
-      ) : (
-        <button className="Lobby-startButton" onClick={attemptGameStart}>
-          Start Game
-        </button>
-      )}
-    </>
-  );
+    return (
+        <>
+            <h1 className="Lobby-title">Game Lobby</h1>
+            <h2 className="Lobby-code">Code: {props.roomCode}</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
+            {playerList}
+            {(playerList.length < 2) ? (
+                <div className="Lobby-waitButton">
+                    <p className="Lobby-waitText">Waiting...</p>
+                </div>
+            )   :   (
+                <button className="Lobby-startButton" onClick={attemptGameStart}>
+                    Start Game
+                </button>
+            )}
+            
+        </>
+    )
 };
 
 export default Lobby;
