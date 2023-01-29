@@ -18,13 +18,15 @@ const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
-const getCodeFromUserID = (userid) => userToCodeMap[userid];
+const getCodeFromUserID = (userid) => {
+  return userToCodeMap[userid];
+};
 
 const sendGameState = (code) => {
   const package = codeToGameMap[code].packageGameState();
   //console.log(package);
   //console.log("Sending to room code:", code);
-  io.to(code + " game").emit("update", package);
+  io.to(code).emit("update", package);
 };
 
 //Returns true if at least one connected user is in the game.
@@ -101,9 +103,9 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   let alreadyAdded = false;
   userToCodeMap[user.googleid] = roomCode;
   const lobbyPlayers = codeToLobbyMap[roomCode];
-  //console.log("code", JSON.stringify(roomCode));
+  // console.log("code", JSON.stringify(roomCode));
   // console.log(codeToLobbyMap);
-  // console.log("Players: ", lobbyPlayers)
+  // console.log("Players: ", lobbyPlayers);
   // console.log(codeToGameMap);
   for (let player of lobbyPlayers) {
     if (player.googleid === user.googleid) {
@@ -112,27 +114,28 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   }
   if (!alreadyAdded) {
     lobbyPlayers.add({ name: user.name, googleid: user.googleid });
-    socket.join(roomCode + " lobby", function () {
-      //console.log("Joined", roomCode);
-      //console.log("rooms: ", socket.rooms);
+    socket.join(roomCode, function () {
+      console.log("Joined", roomCode);
+      console.log("rooms: ", socket.rooms);
     });
-    io.to(roomCode + " lobby").emit("lobby", [...lobbyPlayers]);
+    io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   }
   return lobbyPlayers;
 };
 
 const removePlayerFromLobby = (user, socket, roomCode) => {
-  delete userToCodeMap[user.googleid];
   const lobbyPlayers = codeToLobbyMap[roomCode];
   lobbyPlayers.forEach((player) => {
     if (user.googleid === player.googleid) {
       lobbyPlayers.delete(player);
+      delete userToCodeMap[user.googleid];
+      console.log("delete roomCode");
+      socket.leave(roomCode, function () {
+        console.log("Left", roomCode);
+      });
     }
   });
-  socket.leave(roomCode + " lobby", function () {
-    //console.log("Left", roomCode);
-  });
-  io.to(roomCode + " lobby").emit("lobby", [...lobbyPlayers]);
+  io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   return lobbyPlayers;
 };
 
@@ -140,9 +143,9 @@ const addUserToGame = (user, socket, code) => {
   userToCodeMap[user.googleid] = code;
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].addPlayer(user.googleid);
-    socket.join(code + " game", () => {
-      // console.log("Joined Game", code);
-      // console.log("rooms: ", socket.rooms);
+    socket.join(code, () => {
+      console.log("Joined Game", code);
+      console.log("rooms: ", socket.rooms);
     });
     //console.log(String(user.googleid) + " has been added to the game. Code: " + String(code));
   }
@@ -152,8 +155,8 @@ const removeUserFromGame = (user, socket, code) => {
   delete userToCodeMap[user.googleid];
   if (Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].removePlayer(user.googleid);
-    socket.leave(code + " game", () => {
-      //console.log("Left Game", code);
+    socket.leave(code, () => {
+      console.log("Left Game", code);
     });
     //console.log(String(user.googleid) + " has been removed to the game. Code: " + String(code));
   }
@@ -162,7 +165,7 @@ const removeUserFromGame = (user, socket, code) => {
 const startGame = (code) => {
   codeToGameMap[code].startGame();
   //console.log("Game Started");
-  io.to(code + " lobby").emit("start game");
+  io.to(code).emit("start game");
 };
 
 const getGameState = (code) => {
@@ -180,6 +183,11 @@ const addUser = (user, socket) => {
 
   userToSocketMap[user.googleid] = socket;
   socketToUserMap[socket.id] = user;
+
+  roomCode = getCodeFromUserID(user.googleid);
+  if (roomCode !== undefined) {
+    socket.join(roomCode);
+  }
 };
 
 const removeUser = (user, socket) => {
@@ -229,6 +237,8 @@ module.exports = {
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
+  getCodeFromUserID: getCodeFromUserID,
+  userToCodeMap: userToCodeMap,
   getIo: () => io,
 
   addPlayerToLobby: addPlayerToLobby,

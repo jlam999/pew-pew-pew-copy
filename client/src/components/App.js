@@ -27,6 +27,12 @@ const App = () => {
         setUserId(user.googleid);
       }
     });
+    get("/api/roomCode").then((code) => {
+      console.log(" I HAVE A FUCKING CODE", code);
+      if (code !== "undefined") {
+        setRoomCode(code);
+      }
+    });
   }, []);
 
   const handleLogin = (credentialResponse) => {

@@ -71,6 +71,16 @@ router.post("/addGameStats", (req, res) => {
   });
 });
 
+router.get("/roomCode", (req, res) => {
+  if (req.user) {
+    const code = socketManager.getCodeFromUserID(String(req.user.googleid));
+    console.log(req.user.googleid);
+    console.log(socketManager.userToCodeMap);
+    console.log(code);
+    res.send(JSON.stringify(code));
+  }
+});
+
 router.post("/spawn", (req, res) => {
   if (req.user) {
     socketManager.addUserToGame(
@@ -120,6 +130,7 @@ router.get("/leaveLobby", async (req, res) => {
       socketManager.getSocketFromSocketID(req.query.socketid),
       req.query.roomCode
     );
+    console.log("Left lobby!");
     res.send([...lobbyPlayers]);
   }
 });

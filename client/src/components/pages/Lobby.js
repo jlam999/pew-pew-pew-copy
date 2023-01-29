@@ -12,44 +12,57 @@ const Lobby = (props) => {
   const [playerList, setPlayerList] = useState([]);
 
   useEffect(() => {
-    document.title = "Lobby";
+    if (props.roomCode === null) {
+      // alert("No Room Code");
+      // navigate("/");
+      console.log("no room code yet");
+    } else {
+      document.title = "Lobby";
 
-    const bringToGame = () => {
-      get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode }).then(
-        (lobbyPlayers) => {
-          navigate("/game");
+      const bringToGame = () => {
+        get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode }).then(
+          (lobbyPlayers) => {
+            navigate("/game");
+          }
+        );
+      };
+      socket.on("start game", bringToGame);
+
+      const updateLobby = (lobbyList) => {
+        setPlayerList(lobbyList);
+        console.log(playerList, " 3");
+        for (let i = 0; i < lobbyList.length; i++) {
+          drawPlayer(lobbyList[i], i);
         }
-      );
-    };
-    socket.on("start game", bringToGame);
+      };
 
-    const updateLobby = (lobbyList) => {
-      setPlayerList(lobbyList);
-      for (let i = 0; i < lobbyList.length; i++) {
-        drawPlayer(lobbyList[i], i);
-      }
-    };
+      socket.on("lobby", updateLobby);
 
-    socket.on("lobby", updateLobby);
-    get("/api/joinLobby", { socketid: socket.id, roomCode: props.roomCode }).then((lobbyList) => {
-      if (lobbyList.length > 4) {
-        alert("Lobby is full.");
-        navigate("/");
-      }
-      setPlayerList(lobbyList);
-      for (let i = 0; i < lobbyList.length; i++) {
-        drawPlayer(lobbyList[i], i);
-      }
-    });
+      get("/api/joinLobby", { socketid: socket.id, roomCode: props.roomCode }).then((lobbyList) => {
+        if (lobbyList.length > 4) {
+          alert("Lobby is full.");
+          navigate("/");
+        }
+        setPlayerList(lobbyList);
+        for (let i = 0; i < lobbyList.length; i++) {
+          drawPlayer(lobbyList[i], i);
+        }
+      });
 
-    return () => {
-      if (playerList.map((player) => player.google.id).includes(props.userId)) {
+      console.log(playerList, " 1");
+
+      return () => {
+        console.log("dismounting Lobby");
+        console.log(playerList);
+        // if (playerList.map((player) => player.google.id).includes(props.userId)) {
+        console.log("leave Lobby api called");
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
-      }
-      socket.off("start game", bringToGame);
-      socket.off("lobby", updateLobby);
-    };
-  }, []);
+        // }
+        socket.off("start game", bringToGame);
+        socket.off("lobby", updateLobby);
+      };
+    }
+  }, [props.roomCode]);
 
   const attemptGameStart = () => {
     get("/api/gameState", { code: props.roomCode }).then((gameState) => {
