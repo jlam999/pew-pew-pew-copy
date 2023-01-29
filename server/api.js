@@ -67,6 +67,7 @@ router.post("/addGameStats", (req, res) => {
     stats.games++;
     stats.wins += req.body.win;
     stats.kills += req.body.kills;
+    console.log(String(req.body.kills) + " kills added");
     stats.save();
   });
 });
@@ -96,14 +97,22 @@ router.post("/startGame", (req, res) => {
 
 router.get("/joinLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = await socketManager.addPlayerToLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
+    const lobbyPlayers = await socketManager.addPlayerToLobby(
+      req.user,
+      socketManager.getSocketFromSocketID(req.query.socketid),
+      req.query.roomCode
+    );
     res.send([...lobbyPlayers]);
   }
 });
 
 router.get("/leaveLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = await socketManager.removePlayerFromLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
+    const lobbyPlayers = await socketManager.removePlayerFromLobby(
+      req.user,
+      socketManager.getSocketFromSocketID(req.query.socketid),
+      req.query.roomCode
+    );
     res.send([...lobbyPlayers]);
   }
 });
@@ -111,7 +120,7 @@ router.get("/leaveLobby", async (req, res) => {
 router.post("/createLobby", (req, res) => {
   const code = socketManager.createLobby();
   res.send(JSON.stringify(code));
-})
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

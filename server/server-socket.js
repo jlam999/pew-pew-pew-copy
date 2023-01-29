@@ -56,7 +56,7 @@ const startRunningGame = () => {
         if (win_count === undefined) {
           win_count = frame_counter;
         } else if (frame_counter - win_count > FPS * 10) {
-          io.emit("end game");
+          io.emit("end game", gameLogic.packageGameState());
         }
       }
     } else {
@@ -71,23 +71,22 @@ startRunningGame();
 
 // const lobbyPlayers = new Set();
 
-
 const createLobby = (user, socket) => {
   let code = "";
   for (let i = 0; i < 6; i++) {
-    const char = String.fromCharCode((Math.random()*26)+65);
+    const char = String.fromCharCode(Math.random() * 26 + 65);
     code += char;
   }
   codeToGameMap[code] = "Hi";
   const lobbyPlayers = new Set();
   codeToPlayersMap[code] = lobbyPlayers;
   return code;
-}
+};
 
 const addPlayerToLobby = async (user, socket, roomCode) => {
   let alreadyAdded = false;
   const lobbyPlayers = codeToPlayersMap[roomCode];
-  console.log("code", JSON.stringify(roomCode))
+  console.log("code", JSON.stringify(roomCode));
   // console.log(codeToPlayersMap);
   // console.log("Players: ", lobbyPlayers)
   // console.log(codeToGameMap);
@@ -100,7 +99,7 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
     lobbyPlayers.add({ name: user.name, googleid: user.googleid });
     socket.join(roomCode, function () {
       console.log("Joined", roomCode);
-      console.log("rooms: ", socket.rooms)
+      console.log("rooms: ", socket.rooms);
     });
     io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   }
@@ -108,15 +107,15 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
 };
 
 const removePlayerFromLobby = (user, socket, roomCode) => {
-  const lobbyPlayers = codeToPlayersMap[roomCode]
+  const lobbyPlayers = codeToPlayersMap[roomCode];
   lobbyPlayers.forEach((player) => {
     if (user.googleid === player.googleid) {
       lobbyPlayers.delete(player);
     }
   });
   socket.leave(roomCode, function () {
-    console.log("Left", roomCode)
-  })
+    console.log("Left", roomCode);
+  });
   io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   return lobbyPlayers;
 };

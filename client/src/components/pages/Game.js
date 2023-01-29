@@ -39,7 +39,8 @@ const Game = (props) => {
       processUpdate(update);
     };
     socket.on("update", dummy);
-    const leaveGame = () => {
+    const leaveGame = (update) => {
+      updateStats(update);
       navigate("/lobby");
     };
     socket.on("end game", leaveGame);
@@ -52,11 +53,10 @@ const Game = (props) => {
   const updateStats = (gameState) => {
     const requestBody = {
       win: 0,
-      kills: 0,
+      kills: gameState.players[props.userId].kills,
     };
     if (props.userId === gameState.winner) {
       requestBody.win = 1;
-      requestBody.kills = 1;
     }
     post("/api/addGameStats", requestBody);
   };
