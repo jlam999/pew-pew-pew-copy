@@ -101,7 +101,7 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   let alreadyAdded = false;
   userToCodeMap[user.googleid] = roomCode;
   const lobbyPlayers = codeToLobbyMap[roomCode];
-  console.log("code", JSON.stringify(roomCode));
+  //console.log("code", JSON.stringify(roomCode));
   // console.log(codeToLobbyMap);
   // console.log("Players: ", lobbyPlayers)
   // console.log(codeToGameMap);
@@ -113,7 +113,7 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   if (!alreadyAdded) {
     lobbyPlayers.add({ name: user.name, googleid: user.googleid });
     socket.join(roomCode + " lobby", function () {
-      console.log("Joined", roomCode);
+      //console.log("Joined", roomCode);
       //console.log("rooms: ", socket.rooms);
     });
     io.to(roomCode + " lobby").emit("lobby", [...lobbyPlayers]);
@@ -130,7 +130,7 @@ const removePlayerFromLobby = (user, socket, roomCode) => {
     }
   });
   socket.leave(roomCode + " lobby", function () {
-    console.log("Left", roomCode);
+    //console.log("Left", roomCode);
   });
   io.to(roomCode + " lobby").emit("lobby", [...lobbyPlayers]);
   return lobbyPlayers;
@@ -138,14 +138,13 @@ const removePlayerFromLobby = (user, socket, roomCode) => {
 
 const addUserToGame = (user, socket, code) => {
   userToCodeMap[user.googleid] = code;
-  console.log("after add user to game:", userToCodeMap);
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].addPlayer(user.googleid);
     socket.join(code + " game", () => {
-      console.log("Joined Game", code);
-      console.log("rooms: ", socket.rooms);
+      // console.log("Joined Game", code);
+      // console.log("rooms: ", socket.rooms);
     });
-    console.log(String(user.googleid) + " has been added to the game. Code: " + String(code));
+    //console.log(String(user.googleid) + " has been added to the game. Code: " + String(code));
   }
 };
 
@@ -154,15 +153,15 @@ const removeUserFromGame = (user, socket, code) => {
   if (Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].removePlayer(user.googleid);
     socket.leave(code + " game", () => {
-      console.log("Left Game", code);
+      //console.log("Left Game", code);
     });
-    console.log(String(user.googleid) + " has been removed to the game. Code: " + String(code));
+    //console.log(String(user.googleid) + " has been removed to the game. Code: " + String(code));
   }
 };
 
 const startGame = (code) => {
   codeToGameMap[code].startGame();
-  console.log("Game Started");
+  //console.log("Game Started");
   io.to(code + " lobby").emit("start game");
 };
 
@@ -204,16 +203,16 @@ module.exports = {
       });
       socket.on("move", (dir) => {
         const user = getUserFromSocketID(socket.id);
-        console.log("after move attempt:", userToCodeMap);
+        //console.log("after move attempt:", userToCodeMap);
         const roomCode = getCodeFromUserID(user.googleid);
-        console.log("code:", roomCode);
+        //console.log("code:", roomCode);
         if (user) codeToGameMap[roomCode].movePlayer(user.googleid, dir);
       });
       socket.on("shoot", (position) => {
         const user = getUserFromSocketID(socket.id);
-        console.log("after shoot attempet:", userToCodeMap);
+        //console.log("after shoot attempet:", userToCodeMap);
         const roomCode = getCodeFromUserID(user.googleid);
-        console.log("code:", roomCode);
+        //console.log("code:", roomCode);
         if (user) codeToGameMap[roomCode].playerShoot(user.googleid, position);
       });
     });

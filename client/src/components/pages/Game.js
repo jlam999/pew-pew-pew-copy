@@ -26,7 +26,7 @@ const Game = (props) => {
     window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
-      console.log("dismounting");
+      //console.log("dismounting");
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
@@ -62,7 +62,6 @@ const Game = (props) => {
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
-    console.log(update);
     const leaveAfterGameOver = () => {
       updateStats(update);
       // post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });

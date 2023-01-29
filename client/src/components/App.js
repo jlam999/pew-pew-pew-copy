@@ -51,11 +51,6 @@ const App = () => {
   };
 
   const joinLobby = async (code) => {
-    console.log(1);
-    // const roomCode = await get("/api/joinLobby", {socketid: socket.id, roomCode: code})
-    // post("/api/initsocket", { socketid: socket.id });
-    // console.log("h")
-    // console.log("hihihih", roomCode)
     setRoomCode(code);
     return code;
   };

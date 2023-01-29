@@ -32,10 +32,10 @@ const Home = (props) => {
   };
 
   const enterLobby = async (code) => {
-    console.log(code);
+    //console.log(code);
     await props.joinLobby(code);
-    console.log("in lobby", code);
-    console.log(socket.id);
+    //console.log("in lobby", code);
+    //console.log(socket.id);
     get("/api/joinLobby", { socketid: socket.id, roomCode: code });
     navigate(`/lobby`);
   };
