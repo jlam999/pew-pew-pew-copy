@@ -5,6 +5,21 @@ MAP_LENGTH = 500;
 INIT_HEALTH = 100;
 SPAWN_DIFF = 50;
 
+//Object that stores game states by their room codes
+codeToGame = {};
+
+const addGameRoom = (code) => {
+  codeToGame[code] = {
+    winner: null,
+    players: {},
+    isActive: false,
+  };
+};
+
+const removeGameRoom = (code) => {
+  delete codeToGame[code];
+};
+
 //Game State
 gameState = {
   winner: null,

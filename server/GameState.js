@@ -17,11 +17,13 @@ class GameState {
   winner = null;
   isActive = false;
   players = {};
+  code;
 
-  constructor() {
+  constructor(code) {
     this.winner = null;
     this.isActive = false;
     this.players = {};
+    this.code = code;
   }
 
   startGame() {
@@ -35,10 +37,10 @@ class GameState {
   }
 
   addPlayer(id) {
-    newPlayer = new Player(INIT_HEALTH, 0, 0, id);
+    const newPlayer = new Player(INIT_HEALTH, 0, 0, id);
     this.players[id] = newPlayer;
-    numPlayers = Object.keys(this.players).length;
-    init_position = spawnPositions[numPlayers - 1];
+    const numPlayers = Object.keys(this.players).length;
+    const init_position = spawnPositions[numPlayers - 1]; //TO CHANGE
     newPlayer.setPosition(init_position.x, init_position.y);
   }
 
@@ -89,12 +91,12 @@ class GameState {
 
   updateGameState() {
     //make players move as well
-    checkWin();
+    this.checkWin();
     for (let p of Object.values(this.players)) p.updatePlayerState(this.players);
   }
 
   packageGameState() {
-    newPlayers = {};
+    const newPlayers = {};
     for (let player_id of Object.keys(this.players)) {
       newPlayers[player_id] = this.players[player_id].toObject();
     }

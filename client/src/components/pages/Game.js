@@ -14,12 +14,13 @@ const Game = (props) => {
 
   // add event listener on mount
   useEffect(() => {
-    get("/api/gameState").then((gameState) => {
-      if (!Object.keys(gameState.players).includes(props.userId)) {
-        alert("You are not part of this game");
-        navigate("/");
-      }
-    });
+    // get("/api/gameState", { code: props.roomCode }).then((gameState) => {
+    //   if (!Object.keys(gameState.players).includes(props.userId)) {
+    //     alert("You are not part of this game");
+    //     navigate("/");
+    //   }
+    // });
+    post("/api/spawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     window.addEventListener("click", handleClick);
@@ -29,22 +30,19 @@ const Game = (props) => {
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId });
+      post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     };
   }, []);
 
   // Turn on the socket to update the game periodically
   useEffect(() => {
-    const dummy = (update) => {
-      processUpdate(update);
-    };
-    socket.on("update", dummy);
+    socket.on("update", processUpdate);
     const leaveGame = () => {
       navigate("/lobby");
     };
     socket.on("end game", leaveGame);
     return () => {
-      socket.off("update", dummy);
+      socket.off("update", processUpdate);
       socket.off("end game", leaveGame);
     };
   }, []);
@@ -64,9 +62,10 @@ const Game = (props) => {
   //This function will redraw the canvas based on the update
   // update will be in the format of the gameState.
   const processUpdate = (update) => {
+    console.log(update);
     const leaveAfterGameOver = () => {
       updateStats(update);
-      // post("/api/despawn", { userid: props.userId });
+      // post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     };
     const lobbyLink = (
       <Link to="/lobby">
@@ -92,15 +91,15 @@ const Game = (props) => {
       setWinnerModal(null);
     }
 
-    if (
-      update.isActive &&
-      Object.keys(update.players).length === 1 &&
-      update.players[props.userId] !== undefined
-    ) {
-      setAloneModal(<div> Your opponent(s) left! {lobbyLink}</div>);
-    } else {
-      setAloneModal(null);
-    }
+    // if (
+    //   update.isActive &&
+    //   Object.keys(update.players).length === 1 &&
+    //   update.players[props.userId] !== undefined
+    // ) {
+    //   setAloneModal(<div> Your opponent(s) left! {lobbyLink}</div>);
+    // } else {
+    //   setAloneModal(null);
+    // }
     draw(update, props.userId);
   };
 
