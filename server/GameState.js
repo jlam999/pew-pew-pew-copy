@@ -19,6 +19,7 @@ class GameState {
   players = {};
   code;
   frame_count = 0;
+  win_frame = undefined;
 
   constructor(code) {
     this.winner = null;

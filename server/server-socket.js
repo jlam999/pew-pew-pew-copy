@@ -71,11 +71,19 @@ const startRunningGame = () => {
           console.log("all players left");
           gameState.reset();
         }
+        if (gameState.winner !== null) {
+          if (gameState.win_frame === undefined) {
+            gameState.win_frame = gameState.frame_count;
+          } else if (gameState.frame_count - gameState.win_frame > FPS * 10) {
+            io.emit("end game");
+          }
+        }
         sendGameState(gameState.code);
         gameState.updateGameState();
         gameState.frame_count++;
       } else {
         gameState.frame_count = 0;
+        gameState.win_frame = undefined;
       }
     });
   }, 1000 / FPS);
