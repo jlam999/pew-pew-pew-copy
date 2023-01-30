@@ -32,24 +32,6 @@ const sendGameState = (code) => {
   io.to(code).emit("update", package);
 };
 
-//Returns true if at least one connected user is in the game.
-// const checkUserConnection = () => {
-//   for (let user of getAllConnectedUsers()) {
-//     if (Object.keys(gameLogic.gameState.players).includes(user.googleid)) {
-//       return false;
-//     }
-//   }
-//   // console.log("connected users: ");
-//   // console.log(
-//   //   getAllConnectedUsers().map((user) => {
-//   //     return user.googleid;
-//   //   })
-//   // );
-//   // console.log("users in game: ");
-//   // console.log(Object.keys(gameLogic.gameState.players));
-//   return true;
-// };
-
 const usersAreConnected = (gameState) => {
   for (let playerid of Object.keys(gameState.players)) {
     if (
@@ -87,36 +69,10 @@ const startRunningGame = () => {
       }
     });
   }, 1000 / FPS);
-
-  // let frame_counter = 0;
-  // let win_count;
-  // setInterval(() => {
-  //   if (gameLogic.gameState.isActive) {
-  //     frame_counter++;
-  //     sendGameState();
-  //     gameLogic.updateGameState();
-  //     if (frame_counter > FPS && checkUserConnection()) {
-  //       console.log("all players left");
-  //       gameLogic.reset();
-  //     }
-  //     if (gameLogic.gameState.winner !== null) {
-  //       if (win_count === undefined) {
-  //         win_count = frame_counter;
-  //       } else if (frame_counter - win_count > FPS * 10) {
-  //         io.emit("end game");
-  //       }
-  //     }
-  //   } else {
-  //     frame_counter = 0;
-  //     win_count = undefined;
-  //   }
-  // }, 1000 / FPS);
 };
 
 //Start running the game!
 startRunningGame();
-
-// const lobbyPlayers = new Set();
 
 const createLobby = (user, socket) => {
   let code = "";

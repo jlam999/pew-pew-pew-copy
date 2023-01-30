@@ -72,19 +72,29 @@ const Lobby = (props) => {
   };
   return (
     <>
-      <h1 className="Lobby-title">Game Lobby</h1>
-      <h2 className="Lobby-code">Code: {props.roomCode}</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
-      {playerList.map((player) => (
-        <PlayerBox key={player.googleid} player={player} />
-      ))}
-      {playerList.length < 2 ? (
-        <div className="Lobby-waitButton">
-          <p className="Lobby-waitText">Waiting...</p>
-        </div>
+      {props.roomCode !== null ? (
+        <>
+          <h1 className="Lobby-title">Game Lobby</h1>
+          <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
+          {/*TO BE REPLACED WITH ROOM CODES*/}
+          {playerList.map((player) => (
+            <PlayerBox key={player.googleid} player={player} />
+          ))}
+          {playerList.length < 2 ? (
+            <div className="Lobby-waitButton">
+              <p className="Lobby-waitText">Waiting...</p>
+            </div>
+          ) : (
+            <button className="Lobby-startButton" onClick={attemptGameStart}>
+              Start Game
+            </button>
+          )}
+        </>
       ) : (
-        <button className="Lobby-startButton" onClick={attemptGameStart}>
-          Start Game
-        </button>
+        <>
+          <div>You don't have a room code.</div>
+          <Link to="/">Please Return Home.</Link>
+        </>
       )}
     </>
   );

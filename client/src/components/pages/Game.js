@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
@@ -95,7 +95,12 @@ const Game = (props) => {
       Object.keys(update.players).length === 1 &&
       update.players[props.userId] !== undefined
     ) {
-      setAloneModal(<div className="Banner"> Your opponent(s) left! {lobbyLink}</div>);
+      setAloneModal(
+        <div className="Banner">
+          <div>Your opponent(s) left.</div>
+          {lobbyLink}
+        </div>
+      );
     } else {
       setAloneModal(null);
     }
