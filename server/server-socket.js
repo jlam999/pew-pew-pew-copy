@@ -50,12 +50,32 @@ const sendGameState = (code) => {
 //   return true;
 // };
 
+const usersAreConnected = (gameState) => {
+  for (let playerid of Object.keys(gameState.players)) {
+    if (
+      getAllConnectedUsers()
+        .map((user) => user.googleid)
+        .includes(playerid)
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const startRunningGame = () => {
   setInterval(() => {
-    const gameStates = Object.values(codeToGameMap).forEach((gameState) => {
+    Object.values(codeToGameMap).forEach((gameState) => {
       if (gameState.isActive) {
+        if (gameState.frame_count > FPS && !usersAreConnected(gameState)) {
+          console.log("all players left");
+          gameState.reset();
+        }
         sendGameState(gameState.code);
         gameState.updateGameState();
+        gameState.frame_count++;
+      } else {
+        gameState.frame_count = 0;
       }
     });
   }, 1000 / FPS);

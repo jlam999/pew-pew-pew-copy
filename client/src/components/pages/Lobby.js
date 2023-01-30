@@ -30,7 +30,6 @@ const Lobby = (props) => {
 
       const updateLobby = (lobbyList) => {
         setPlayerList(lobbyList);
-        console.log(playerList, " 3");
         for (let i = 0; i < lobbyList.length; i++) {
           drawPlayer(lobbyList[i], i);
         }
@@ -49,13 +48,9 @@ const Lobby = (props) => {
         }
       });
 
-      console.log(playerList, " 1");
-
       return () => {
-        console.log("dismounting Lobby");
-        console.log(playerList);
+        // console.log("dismounting Lobby");
         // if (playerList.map((player) => player.google.id).includes(props.userId)) {
-        console.log("leave Lobby api called");
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
         // }
         socket.off("start game", bringToGame);

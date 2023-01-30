@@ -112,9 +112,7 @@ router.post("/startGame", (req, res) => {
 
 router.get("/joinLobby", async (req, res) => {
   if (req.user) {
-    console.log(socketManager.getAllRoomCodes(), req.query.roomCode);
     if (socketManager.getAllRoomCodes().includes(req.query.roomCode)) {
-      console.log("room code exists!");
       const lobbyPlayers = await socketManager.addPlayerToLobby(
         req.user,
         socketManager.getSocketFromSocketID(req.query.socketid),
@@ -122,7 +120,6 @@ router.get("/joinLobby", async (req, res) => {
       );
       res.send([...lobbyPlayers]);
     } else {
-      console.log("room does not exist.");
       res.send({});
     }
   }
@@ -135,7 +132,7 @@ router.get("/leaveLobby", async (req, res) => {
       socketManager.getSocketFromSocketID(req.query.socketid),
       req.query.roomCode
     );
-    console.log("Left lobby!");
+    //console.log("Left lobby!");
     res.send([...lobbyPlayers]);
   }
 });
