@@ -25,19 +25,21 @@ const Home = (props) => {
 
   const createNewLobby = async () => {
     const code = await props.createLobby();
-    get("/api/joinLobby", { socketid: socket.id, roomCode: code });
+    await get("/api/joinLobby", { socketid: socket.id, roomCode: code });
     // console.log("HIHIHI")
     // console.log(code)
     navigate(`/lobby`);
   };
 
   const enterLobby = async (code) => {
-    //console.log(code);
-    await props.joinLobby(code);
-    //console.log("in lobby", code);
-    //console.log(socket.id);
-    get("/api/joinLobby", { socketid: socket.id, roomCode: code });
-    navigate(`/lobby`);
+    const response = await get("/api/joinLobby", { socketid: socket.id, roomCode: code });
+    console.log(JSON.stringify(response));
+    if (JSON.stringify(response) !== "{}") {
+      await props.joinLobby(code);
+      navigate(`/lobby`);
+    } else {
+      alert("Invalid Room Code");
+    }
   };
 
   return (

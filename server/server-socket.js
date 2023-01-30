@@ -21,6 +21,9 @@ const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 const getCodeFromUserID = (userid) => {
   return userToCodeMap[userid];
 };
+const getAllRoomCodes = () => {
+  return Object.keys(codeToLobbyMap);
+};
 
 const sendGameState = (code) => {
   const package = codeToGameMap[code].packageGameState();
@@ -242,7 +245,7 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
   getCodeFromUserID: getCodeFromUserID,
-  userToCodeMap: userToCodeMap,
+  getAllRoomCodes: getAllRoomCodes,
   getIo: () => io,
 
   addPlayerToLobby: addPlayerToLobby,
