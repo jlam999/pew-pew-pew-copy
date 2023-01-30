@@ -1,7 +1,4 @@
-const BULLET_RADIUS = 5;
-const BORDER_MAX_X = 500;
-const BORDER_MAX_Y = 500;
-
+const consts = require("../client/const.json");
 class Bullet {
   #position = 0;
   #angle = 0;
@@ -73,7 +70,7 @@ class Bullet {
       let distance = Math.sqrt(
         (playerPos.x - this.#position.x) ** 2 + (playerPos.y - this.#position.y) ** 2
       );
-      if (distance < BULLET_RADIUS + player.getRadius()) {
+      if (distance < consts.BULLET_RADIUS + player.getRadius()) {
         if (player.getId() === this.#owner) {
           player.absorb();
         } else {
@@ -89,10 +86,10 @@ class Bullet {
   }
 
   checkWallCollision() {
-    if (!(Math.abs(BORDER_MAX_X / 2 - this.#position.x) < BORDER_MAX_X / 2 - BULLET_RADIUS)) {
+    if (!(Math.abs(consts.BORDER_MAX_X / 2 - this.#position.x) < consts.BORDER_MAX_X / 2 - consts.BULLET_RADIUS)) {
       this.#angle = Math.PI - this.#angle;
     }
-    if (!(Math.abs(BORDER_MAX_Y / 2 - this.#position.y) < BORDER_MAX_Y / 2 - BULLET_RADIUS)) {
+    if (!(Math.abs(consts.BORDER_MAX_Y / 2 - this.#position.y) < consts.BORDER_MAX_Y / 2 - consts.BULLET_RADIUS)) {
       this.#angle = -this.#angle;
     }
   }
@@ -100,7 +97,7 @@ class Bullet {
   toObject() {
     return {
       position: this.#position,
-      radius: BULLET_RADIUS,
+      radius: consts.BULLET_RADIUS,
       owner: this.#owner,
     };
   }

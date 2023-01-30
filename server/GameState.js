@@ -1,14 +1,11 @@
 //Constants
-MAP_LENGTH = 500;
-INIT_HEALTH = 100;
-SPAWN_DIFF = 50;
-
+const consts = require("../client/const.json");
 //Determines the spawn locations of all four players
 const spawnPositions = [
-  { x: SPAWN_DIFF, y: SPAWN_DIFF },
-  { x: MAP_LENGTH - SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
-  { x: SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
-  { x: MAP_LENGTH - SPAWN_DIFF, y: SPAWN_DIFF },
+  { x: consts.SPAWN_DIFF, y: consts.SPAWN_DIFF },
+  { x: consts.BORDER_MAX_X - consts.SPAWN_DIFF, y: consts.BORDER_MAX_Y - consts.SPAWN_DIFF },
+  { x: consts.SPAWN_DIFF, y: consts.BORDER_MAX_Y - consts.SPAWN_DIFF },
+  { x: consts.BORDER_MAX_X - consts.SPAWN_DIFF, y: consts.SPAWN_DIFF },
 ];
 
 const Player = require("./Player");
@@ -39,7 +36,7 @@ class GameState {
   }
 
   addPlayer(id) {
-    const newPlayer = new Player(INIT_HEALTH, 0, 0, id);
+    const newPlayer = new Player(consts.INIT_HEALTH, 0, 0, id);
     this.players[id] = newPlayer;
     const numPlayers = Object.keys(this.players).length;
     const init_position = spawnPositions[numPlayers - 1]; //TO CHANGE
