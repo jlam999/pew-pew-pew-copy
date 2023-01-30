@@ -143,7 +143,7 @@ const addUserToGame = (user, socket, code) => {
 
 const removeUserFromGame = (user, socket) => {
   const code = userToCodeMap[user.googleid];
-  if (Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
+  if (code !== undefined && Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].removePlayer(user.googleid);
     socket.leave(code, () => {
       console.log("Left Game", code);

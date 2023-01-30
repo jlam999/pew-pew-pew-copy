@@ -14,23 +14,25 @@ const Game = (props) => {
 
   // add event listener on mount
   useEffect(() => {
-    // get("/api/gameState", { code: props.roomCode }).then((gameState) => {
-    //   if (!Object.keys(gameState.players).includes(props.userId)) {
-    //     alert("You are not part of this game");
-    //     navigate("/");
-    //   }
-    // });
-    post("/api/spawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    window.addEventListener("click", handleClick);
+    if (props.roomCode !== null) {
+      get("/api/gameState", { code: props.roomCode }).then((gameState) => {
+        if (!gameState.isActive || !Object.keys(gameState.players).includes(props.userId)) {
+          alert("Cannot enter game");
+          navigate("/");
+        } else {
+          window.addEventListener("keydown", handleKeyDown);
+          window.addEventListener("keyup", handleKeyUp);
+          window.addEventListener("click", handleClick);
+        }
+      });
+    }
     // remove event listener on unmount
     return () => {
       //console.log("dismounting");
+      post("/api/despawn", { userid: props.userId, socketid: socket.id });
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId, socketid: socket.id });
     };
   }, []);
 
@@ -109,14 +111,17 @@ const Game = (props) => {
 
   return (
     <>
-      {props.userId ? (
+      {props.roomCode !== null ? (
         <div className="GameBox">
           <canvas id="gameCanvas" className="GameCanvas"></canvas>
           {winnerModal}
           {aloneModal}
         </div>
       ) : (
-        <div>Please Login First!</div>
+        <>
+          <div>You don't have a room code.</div>
+          <Link to="/">Please Return Home.</Link>
+        </>
       )}
     </>
   );

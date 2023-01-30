@@ -13,18 +13,18 @@ const Lobby = (props) => {
 
   useEffect(() => {
     if (props.roomCode === null) {
-      // alert("No Room Code");
-      // navigate("/");
       console.log("no room code yet");
     } else {
       document.title = "Lobby";
 
-      const bringToGame = () => {
-        get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode }).then(
-          (lobbyPlayers) => {
-            navigate("/game");
-          }
-        );
+      const bringToGame = async () => {
+        await get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
+        await post("/api/spawn", {
+          userid: props.userId,
+          socketid: socket.id,
+          code: props.roomCode,
+        });
+        navigate("/game");
       };
       socket.on("start game", bringToGame);
 
@@ -49,7 +49,7 @@ const Lobby = (props) => {
       });
 
       return () => {
-        // console.log("dismounting Lobby");
+        console.log("dismounting Lobby");
         // if (playerList.map((player) => player.google.id).includes(props.userId)) {
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
         // }
@@ -76,7 +76,6 @@ const Lobby = (props) => {
         <>
           <h1 className="Lobby-title">Game Lobby</h1>
           <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
-          {/*TO BE REPLACED WITH ROOM CODES*/}
           {playerList.map((player) => (
             <PlayerBox key={player.googleid} player={player} />
           ))}
