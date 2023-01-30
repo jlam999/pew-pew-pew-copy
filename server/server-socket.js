@@ -140,9 +140,12 @@ const removePlayerFromLobby = (user, socket, roomCode) => {
 };
 
 const addUserToGame = (user, socket, code) => {
-  userToCodeMap[user.googleid] = code;
+  if (code === null) {
+    code = getCodeFromUserID(user.googleid);
+  }
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].addPlayer(user.googleid);
+    userToCodeMap[user.googleid] = code;
     socket.join(code, () => {
       console.log("Joined Game", code);
       console.log("rooms: ", socket.rooms);
@@ -151,13 +154,14 @@ const addUserToGame = (user, socket, code) => {
   }
 };
 
-const removeUserFromGame = (user, socket, code) => {
-  delete userToCodeMap[user.googleid];
+const removeUserFromGame = (user, socket) => {
+  const code = userToCodeMap[user.googleid];
   if (Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].removePlayer(user.googleid);
     socket.leave(code, () => {
       console.log("Left Game", code);
     });
+    delete userToCodeMap[user.googleid];
     //console.log(String(user.googleid) + " has been removed to the game. Code: " + String(code));
   }
 };

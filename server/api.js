@@ -96,8 +96,7 @@ router.post("/despawn", (req, res) => {
   if (req.user) {
     socketManager.removeUserFromGame(
       req.user,
-      socketManager.getSocketFromSocketID(req.body.socketid),
-      req.body.code
+      socketManager.getSocketFromSocketID(req.body.socketid)
     );
   }
   res.send({});

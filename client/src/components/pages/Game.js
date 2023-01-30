@@ -30,7 +30,7 @@ const Game = (props) => {
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
+      post("/api/despawn", { userid: props.userId, socketid: socket.id });
     };
   }, []);
 
@@ -90,15 +90,15 @@ const Game = (props) => {
       setWinnerModal(null);
     }
 
-    // if (
-    //   update.isActive &&
-    //   Object.keys(update.players).length === 1 &&
-    //   update.players[props.userId] !== undefined
-    // ) {
-    //   setAloneModal(<div> Your opponent(s) left! {lobbyLink}</div>);
-    // } else {
-    //   setAloneModal(null);
-    // }
+    if (
+      update.isActive &&
+      Object.keys(update.players).length === 1 &&
+      update.players[props.userId] !== undefined
+    ) {
+      setAloneModal(<div className="Banner"> Your opponent(s) left! {lobbyLink}</div>);
+    } else {
+      setAloneModal(null);
+    }
     draw(update, props.userId);
   };
 
