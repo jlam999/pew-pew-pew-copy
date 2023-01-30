@@ -71,39 +71,65 @@ router.post("/addGameStats", (req, res) => {
   });
 });
 
+router.get("/roomCode", (req, res) => {
+  if (req.user) {
+    const code = socketManager.getCodeFromUserID(String(req.user.googleid));
+    console.log(req.user.googleid);
+    console.log(socketManager.userToCodeMap);
+    console.log(code);
+    res.send(JSON.stringify(code));
+  }
+});
+
 router.post("/spawn", (req, res) => {
   if (req.user) {
-    socketManager.addUserToGame(req.user);
+    socketManager.addUserToGame(
+      req.user,
+      socketManager.getSocketFromSocketID(req.body.socketid),
+      req.body.code
+    );
   }
   res.send({});
 });
 
 router.post("/despawn", (req, res) => {
   if (req.user) {
-    socketManager.removeUserFromGame(req.user);
+    socketManager.removeUserFromGame(
+      req.user,
+      socketManager.getSocketFromSocketID(req.body.socketid)
+    );
   }
   res.send({});
 });
 
 router.get("/gameState", (req, res) => {
-  res.send(socketManager.getGameState());
+  res.send(socketManager.getGameState(req.query.code));
 });
 
 router.post("/startGame", (req, res) => {
-  socketManager.startGame();
+  socketManager.startGame(req.body.code);
   res.send({});
 });
 
 router.get("/joinLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = await socketManager.addPlayerToLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
+    const lobbyPlayers = await socketManager.addPlayerToLobby(
+      req.user,
+      socketManager.getSocketFromSocketID(req.query.socketid),
+      req.query.roomCode
+    );
     res.send([...lobbyPlayers]);
   }
 });
 
 router.get("/leaveLobby", async (req, res) => {
   if (req.user) {
-    const lobbyPlayers = await socketManager.removePlayerFromLobby(req.user, socketManager.getSocketFromSocketID(req.query.socketid), req.query.roomCode);
+    const lobbyPlayers = await socketManager.removePlayerFromLobby(
+      req.user,
+      socketManager.getSocketFromSocketID(req.query.socketid),
+      req.query.roomCode
+    );
+    console.log("Left lobby!");
     res.send([...lobbyPlayers]);
   }
 });
@@ -111,7 +137,7 @@ router.get("/leaveLobby", async (req, res) => {
 router.post("/createLobby", (req, res) => {
   const code = socketManager.createLobby();
   res.send(JSON.stringify(code));
-})
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

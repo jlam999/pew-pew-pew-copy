@@ -18,36 +18,37 @@ import "./Home.css";
  */
 
 const Home = (props) => {
-  const connectSocket = () => {
-    post("/api/spawn", { userid: props.userId });
-  };
+  // const connectSocket = () => {
+  //   post("/api/spawn", { userid: props.userId });
+  // };
   const navigate = useNavigate();
 
   const createNewLobby = async () => {
     const code = await props.createLobby();
-    get("/api/joinLobby", {socketid: socket.id, roomCode: code});
+    get("/api/joinLobby", { socketid: socket.id, roomCode: code });
     // console.log("HIHIHI")
     // console.log(code)
-    navigate(`/lobby`)
-  }
-  
+    navigate(`/lobby`);
+  };
+
   const enterLobby = async (code) => {
-    console.log(code)
+    //console.log(code);
     await props.joinLobby(code);
-    console.log("in lobby", code)
-    get("/api/joinLobby", {socketid: socket.id, roomCode: code});
-    navigate(`/lobby`)
-  }
-  
+    //console.log("in lobby", code);
+    //console.log(socket.id);
+    get("/api/joinLobby", { socketid: socket.id, roomCode: code });
+    navigate(`/lobby`);
+  };
+
   return (
     <div className="Home-titleContainer">
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
       {/* <Link to="/lobby"> */}
-        <button className="Home-buttonContainer" onClick={createNewLobby}>
-          <h3 className="Home-buttonText">Join a Game</h3>
-        </button>
+      <button className="Home-buttonContainer" onClick={createNewLobby}>
+        <h3 className="Home-buttonText">Create a Game</h3>
+      </button>
       {/* </Link> */}
       <div>
         <h4>OR</h4>

@@ -12,68 +12,87 @@ const Lobby = (props) => {
   const [playerList, setPlayerList] = useState([]);
 
   useEffect(() => {
-    document.title = "Lobby";
+    if (props.roomCode === null) {
+      // alert("No Room Code");
+      // navigate("/");
+      console.log("no room code yet");
+    } else {
+      document.title = "Lobby";
 
-    const bringToGame = () => {
-      post("/api/spawn", { userid: props.userId });
-      navigate("/game");
-    };
-    socket.on("start game", bringToGame);
+      const bringToGame = () => {
+        get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode }).then(
+          (lobbyPlayers) => {
+            navigate("/game");
+          }
+        );
+      };
+      socket.on("start game", bringToGame);
 
-    const updateLobby = (lobbyList) => {
-      setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
-      for (let i = 0; i < lobbyList.length; i++) {
-        drawPlayer(lobbyList[i],i)
+      const updateLobby = (lobbyList) => {
+        setPlayerList(lobbyList);
+        console.log(playerList, " 3");
+        for (let i = 0; i < lobbyList.length; i++) {
+          drawPlayer(lobbyList[i], i);
+        }
+      };
+
+      socket.on("lobby", updateLobby);
+
+      get("/api/joinLobby", { socketid: socket.id, roomCode: props.roomCode }).then((lobbyList) => {
+        if (lobbyList.length > 4) {
+          alert("Lobby is full.");
+          navigate("/");
+        }
+        setPlayerList(lobbyList);
+        for (let i = 0; i < lobbyList.length; i++) {
+          drawPlayer(lobbyList[i], i);
+        }
+      });
+
+      console.log(playerList, " 1");
+
+      return () => {
+        console.log("dismounting Lobby");
+        console.log(playerList);
+        // if (playerList.map((player) => player.google.id).includes(props.userId)) {
+        console.log("leave Lobby api called");
+        get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
+        // }
+        socket.off("start game", bringToGame);
+        socket.off("lobby", updateLobby);
+      };
     }
-    };
-
-    socket.on("lobby", updateLobby);
-    get("/api/joinLobby", {socketid: socket.id, roomCode: props.roomCode}).then((lobbyList) => {
-      if (lobbyList.length > 4) {
-        alert("Lobby is full.");
-        navigate("/");
-      }
-      setPlayerList(lobbyList.map((player) => <PlayerBox key={player.googleid} player={player} />));
-      for (let i = 0; i < lobbyList.length; i++) {
-          drawPlayer(lobbyList[i],i)
-      }
-    });
-
-    return () => {
-      get("/api/leaveLobby", {socketid: socket.id, roomCode: props.roomCode});
-      socket.off("start game", bringToGame);
-      socket.off("lobby", updateLobby);
-    };
-  }, []);
+  }, [props.roomCode]);
 
   const attemptGameStart = () => {
-    get("/api/gameState").then((gameState) => {
+    get("/api/gameState", { code: props.roomCode }).then((gameState) => {
       if (gameState.isActive) {
         alert("Game in Session; Cannot Join.");
       } else if (playerList.length < 2) {
         alert("Not enough players!");
       } else {
-        post("/api/startGame", {});
+        post("/api/startGame", { code: props.roomCode });
       }
     });
   };
-    return (
-        <>
-            <h1 className="Lobby-title">Game Lobby</h1>
-            <h2 className="Lobby-code">Code: {props.roomCode}</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
-            {playerList}
-            {(playerList.length < 2) ? (
-                <div className="Lobby-waitButton">
-                    <p className="Lobby-waitText">Waiting...</p>
-                </div>
-            )   :   (
-                <button className="Lobby-startButton" onClick={attemptGameStart}>
-                    Start Game
-                </button>
-            )}
-            
-        </>
-    )
+  return (
+    <>
+      <h1 className="Lobby-title">Game Lobby</h1>
+      <h2 className="Lobby-code">Code: {props.roomCode}</h2> {/*TO BE REPLACED WITH ROOM CODES*/}
+      {playerList.map((player) => (
+        <PlayerBox key={player.googleid} player={player} />
+      ))}
+      {playerList.length < 2 ? (
+        <div className="Lobby-waitButton">
+          <p className="Lobby-waitText">Waiting...</p>
+        </div>
+      ) : (
+        <button className="Lobby-startButton" onClick={attemptGameStart}>
+          Start Game
+        </button>
+      )}
+    </>
+  );
 };
 
 export default Lobby;

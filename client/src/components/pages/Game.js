@@ -14,37 +14,35 @@ const Game = (props) => {
 
   // add event listener on mount
   useEffect(() => {
-    get("/api/gameState").then((gameState) => {
-      if (!Object.keys(gameState.players).includes(props.userId)) {
-        alert("You are not part of this game");
-        navigate("/");
-      }
-    });
+    // get("/api/gameState", { code: props.roomCode }).then((gameState) => {
+    //   if (!Object.keys(gameState.players).includes(props.userId)) {
+    //     alert("You are not part of this game");
+    //     navigate("/");
+    //   }
+    // });
+    post("/api/spawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     window.addEventListener("click", handleClick);
     // remove event listener on unmount
     return () => {
-      console.log("dismounting");
+      //console.log("dismounting");
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
-      post("/api/despawn", { userid: props.userId });
+      post("/api/despawn", { userid: props.userId, socketid: socket.id });
     };
   }, []);
 
   // Turn on the socket to update the game periodically
   useEffect(() => {
-    const dummy = (update) => {
-      processUpdate(update);
-    };
-    socket.on("update", dummy);
+    socket.on("update", processUpdate);
     const leaveGame = () => {
       navigate("/lobby");
     };
     socket.on("end game", leaveGame);
     return () => {
-      socket.off("update", dummy);
+      socket.off("update", processUpdate);
       socket.off("end game", leaveGame);
     };
   }, []);
@@ -66,7 +64,7 @@ const Game = (props) => {
   const processUpdate = (update) => {
     const leaveAfterGameOver = () => {
       updateStats(update);
-      // post("/api/despawn", { userid: props.userId });
+      // post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     };
     const lobbyLink = (
       <Link to="/lobby">
@@ -97,7 +95,7 @@ const Game = (props) => {
       Object.keys(update.players).length === 1 &&
       update.players[props.userId] !== undefined
     ) {
-      setAloneModal(<div> Your opponent(s) left! {lobbyLink}</div>);
+      setAloneModal(<div className="Banner"> Your opponent(s) left! {lobbyLink}</div>);
     } else {
       setAloneModal(null);
     }
