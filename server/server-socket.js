@@ -57,7 +57,7 @@ const startRunningGame = () => {
           if (gameState.win_frame === undefined) {
             gameState.win_frame = gameState.frame_count;
           } else if (gameState.frame_count - gameState.win_frame > FPS * 10) {
-            io.emit("end game");
+            io.emit("end game", gameLogic.packageGameState());
           }
         }
         sendGameState(gameState.code);

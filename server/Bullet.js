@@ -77,7 +77,11 @@ class Bullet {
         if (player.getId() === this.#owner) {
           player.absorb();
         } else {
-          player.getsHit();
+          const killed = player.getsHit();
+          if (killed) {
+            players[this.#owner].incrementKills();
+            console.log("There was a kill");
+          }
         }
         this.#isActive = false;
       }

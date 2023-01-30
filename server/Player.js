@@ -12,6 +12,7 @@ class Player {
   #isDead = false;
   #directions = { up: false, down: false, left: false, right: false, space: false };
   #speed = { up: 0, down: 0, left: 0, right: 0, space: false };
+  #kills = 0;
 
   constructor(health, x, y, id) {
     this.#health = health;
@@ -53,20 +54,6 @@ class Player {
     return this.#isDead;
   }
 
-  // /**
-  //  * @param {Number} theta: The angle that the player will shoot towards
-  //  */
-  // shoot(theta) {
-  //   // mouse direction
-  //   this.#health--;
-  //   this.#bullets.push(
-  //     new Bullet(
-  //       this.#base[0] + (this.#radius() + this.#speed()) * Math.cos(theta),
-  //       this.#base[1] + (this.#radius + this.#speed()) * Math.sin(theta),
-  //       theta
-  //     )
-  //   );
-  // }
   /**
    * @param {Number} theta: The angle that the player will shoot towards
    */
@@ -88,13 +75,6 @@ class Player {
   /**
    * @param {Number} theta: The angle that the player will move in
    */
-  // move(theta) {
-  //   // pi/4 increments because if like up & left are pressed, we xget a 3pi/4 angle --- keyboard directions
-  //   if (theta !== undefined) {
-  //     this.#base[0] += this.#speed() * Math.cos(theta);
-  //     this.#base[1] += this.#speed() * Math.sin(theta);
-  //   }
-  // }
   move(dir) {
     // pi/4 increments because if like up & left are pressed, we get a 3pi/4
     // angle --- keyboard directions
@@ -149,8 +129,7 @@ class Player {
   }
 
   /**
-   * Used to draw bullets toward player base --- call when Ctrl key or
-   something is pressed
+   * Used to draw bullets toward player base --- call when space key is pressed
    * @param {Number} index
    */
   moveBullets(players) {
@@ -178,11 +157,19 @@ class Player {
     this.#health -= 5;
     if (this.#health <= 0) {
       this.#isDead = true;
+      return true;
     }
+    return false;
   }
 
   absorb() {
     this.#health++;
+  }
+
+  incrementKills() {
+    this.#kills++;
+    console.log("player " + String(this.#id) + " just got a kill.");
+    console.log("they now have " + String(this.#kills) + " kills.");
   }
 
   toObject() {
@@ -196,6 +183,7 @@ class Player {
       health: this.#health,
       bullets: bulletObjs,
       id: this.#id,
+      kills: this.#kills,
     };
   }
 }

@@ -67,6 +67,7 @@ router.post("/addGameStats", (req, res) => {
     stats.games++;
     stats.wins += req.body.win;
     stats.kills += req.body.kills;
+    console.log(String(req.body.kills) + " kills added");
     stats.save();
   });
 });
@@ -132,7 +133,6 @@ router.get("/leaveLobby", async (req, res) => {
       socketManager.getSocketFromSocketID(req.query.socketid),
       req.query.roomCode
     );
-    //console.log("Left lobby!");
     res.send([...lobbyPlayers]);
   }
 });
