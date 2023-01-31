@@ -59,6 +59,7 @@ class Player {
    */
   shoot(theta) {
     // mouse direction
+    theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
       this.#health--;
       this.#bullets.push(
