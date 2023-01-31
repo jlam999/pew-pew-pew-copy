@@ -112,7 +112,7 @@ router.post("/startGame", (req, res) => {
 });
 
 router.get("/joinLobby", async (req, res) => {
-  if (req.user) {
+  if (req.user && socketManager.getUserFromSocketID(req.query.socketid) !== undefined) {
     if (socketManager.getAllRoomCodes().includes(req.query.roomCode)) {
       const lobbyPlayers = await socketManager.addPlayerToLobby(
         req.user,

@@ -1,7 +1,6 @@
 import React from "react";
 import "./PlayerBox.css"
-
-const playerColors = ["rgba(199, 225, 29, 0.5)", "rgba(46, 134, 171, 0.5)", "rgba(241, 240, 1, 0.5)", "rgba(162, 59, 114, 0.5)"];
+const consts = require("../../../const.json");
 
 const PlayerBox = (props) => {
     // drawPlayer(props);
@@ -34,7 +33,7 @@ export const drawPlayer = (player, playerNum) => {
 
         ctx.beginPath();
         ctx.arc(25, 25, 16, 0, 2 * Math.PI, true);
-        ctx.fillStyle = playerColors[playerNum];
+        ctx.fillStyle = consts.playerColors[playerNum];
         ctx.fill();
         ctx.closePath();
     }

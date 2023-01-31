@@ -1,5 +1,7 @@
 import socketIOClient from "socket.io-client";
 import { post } from "./utilities";
+import { width, height } from "../src/components/GameCanvas.js";
+
 const endpoint = window.location.hostname + ":" + window.location.port;
 export const socket = socketIOClient(endpoint);
 socket.on("connect", () => {
@@ -11,6 +13,6 @@ export const move = (dir) => {
   socket.emit("move", dir);
 };
 
-export const shoot = (x, y) => {
-  socket.emit("shoot", { x: x, y: y });
+export const shoot = (xPos, yPos) => {
+  socket.emit("shoot", { x: xPos - width, y: yPos - height });
 };

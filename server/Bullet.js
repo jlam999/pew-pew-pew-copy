@@ -1,7 +1,4 @@
-const BULLET_RADIUS = 5;
-const BORDER_MAX_X = 500;
-const BORDER_MAX_Y = 500;
-
+const consts = require("../client/const.json");
 class Bullet {
   #position = 0;
   #angle = 0;
@@ -12,7 +9,7 @@ class Bullet {
   constructor(x, y, theta, owner) {
     this.#position = { x: x, y: y };
     this.#angle = theta;
-    this.#speed = 20 / Math.sqrt(2); // start at 100/sqrt(2) and decrease exponentially
+    this.#speed = consts.collisionError;
     this.#owner = owner;
   }
 
@@ -32,18 +29,6 @@ class Bullet {
     return this.#isActive;
   }
 
-  // Will implement later:
-  //   adjustPath(theta, health) {
-  //     // the speed at which the bullet is drawn toward a player is inversely proportional to the root of the player's health
-  //     speed = 100 / Math.sqrt(health);
-  //     vec = [
-  //       this.speed * Math.cos(this.angle) + speed * Math.cos(this.angle),
-  //       this.speed * Math.sin(this.angle) + speed * Math.sin(this.angle),
-  //     ];
-  //     this.angle = Math.tan(vec[1] / vec[0]); // update angle
-  //     this.speed += speed / 0.95; // TODO: rewrite for projection calculations
-  //   }
-
   //Updates bullet's position and speed based on current position and speed
   //Be sure to use checkWallCollision()
   update(players, parentSpeed, parentLoc) {
@@ -60,7 +45,7 @@ class Bullet {
     };
     this.checkWallCollision();
     this.checkCollision(players);
-    this.#speed *= 0.95;
+    this.#speed *= consts.bulletFriction;
   }
 
   /**
@@ -73,7 +58,7 @@ class Bullet {
       let distance = Math.sqrt(
         (playerPos.x - this.#position.x) ** 2 + (playerPos.y - this.#position.y) ** 2
       );
-      if (distance < BULLET_RADIUS + player.getRadius()) {
+      if (!player.getIsDead() && distance < consts.BULLET_RADIUS + player.getRadius()) {
         if (player.getId() === this.#owner) {
           player.absorb();
         } else {
@@ -89,10 +74,20 @@ class Bullet {
   }
 
   checkWallCollision() {
-    if (!(Math.abs(BORDER_MAX_X / 2 - this.#position.x) < BORDER_MAX_X / 2 - BULLET_RADIUS)) {
+    if (
+      !(
+        Math.abs(consts.BORDER_MAX_X / 2 - this.#position.x) <
+        consts.BORDER_MAX_X / 2 - consts.BULLET_RADIUS
+      )
+    ) {
       this.#angle = Math.PI - this.#angle;
     }
-    if (!(Math.abs(BORDER_MAX_Y / 2 - this.#position.y) < BORDER_MAX_Y / 2 - BULLET_RADIUS)) {
+    if (
+      !(
+        Math.abs(consts.BORDER_MAX_Y / 2 - this.#position.y) <
+        consts.BORDER_MAX_Y / 2 - consts.BULLET_RADIUS
+      )
+    ) {
       this.#angle = -this.#angle;
     }
   }
@@ -100,7 +95,7 @@ class Bullet {
   toObject() {
     return {
       position: this.#position,
-      radius: BULLET_RADIUS,
+      radius: consts.BULLET_RADIUS,
       owner: this.#owner,
     };
   }

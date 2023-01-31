@@ -27,8 +27,6 @@ const getAllRoomCodes = () => {
 
 const sendGameState = (code) => {
   const package = codeToGameMap[code].packageGameState();
-  //console.log(package);
-  //console.log("Sending to room code:", code);
   io.to(code).emit("update", package);
 };
 
@@ -45,6 +43,12 @@ const usersAreConnected = (gameState) => {
   return false;
 };
 
+const addPowerUps = (gameState) => {
+  if (gameState.powerUps.length < 3) {
+    gameState.spawnPowerUp();
+  }
+};
+
 const startRunningGame = () => {
   setInterval(() => {
     Object.values(codeToGameMap).forEach((gameState) => {
@@ -57,11 +61,14 @@ const startRunningGame = () => {
           if (gameState.win_frame === undefined) {
             gameState.win_frame = gameState.frame_count;
           } else if (gameState.frame_count - gameState.win_frame > FPS * 10) {
-            io.emit("end game", gameLogic.packageGameState());
+            io.emit("end game", gameState.packageGameState());
           }
         }
         sendGameState(gameState.code);
         gameState.updateGameState();
+        if (gameState.frame_count % (FPS * 10) === 0) {
+          addPowerUps(gameState);
+        }
         gameState.frame_count++;
       } else {
         gameState.frame_count = 0;
@@ -131,7 +138,7 @@ const addUserToGame = (user, socket, code) => {
     code = getCodeFromUserID(user.googleid);
   }
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
-    codeToGameMap[code].addPlayer(user.googleid);
+    codeToGameMap[code].addPlayer(user.googleid, user.name);
     userToCodeMap[user.googleid] = code;
     socket.join(code, () => {
       console.log("Joined Game", code);
@@ -169,6 +176,7 @@ const addUser = (user, socket) => {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
     oldSocket.disconnect();
+    console.log("Old Socket disconnected. ID:", oldSocket.id);
     delete socketToUserMap[oldSocket.id];
   }
 

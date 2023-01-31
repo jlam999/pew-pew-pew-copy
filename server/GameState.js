@@ -1,14 +1,11 @@
 //Constants
-MAP_LENGTH = 500;
-INIT_HEALTH = 100;
-SPAWN_DIFF = 50;
-
+const consts = require("../client/const.json");
 //Determines the spawn locations of all four players
 const spawnPositions = [
-  { x: SPAWN_DIFF, y: SPAWN_DIFF },
-  { x: MAP_LENGTH - SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
-  { x: SPAWN_DIFF, y: MAP_LENGTH - SPAWN_DIFF },
-  { x: MAP_LENGTH - SPAWN_DIFF, y: SPAWN_DIFF },
+  { x: consts.SPAWN_DIFF, y: consts.SPAWN_DIFF },
+  { x: consts.BORDER_MAX_X - consts.SPAWN_DIFF, y: consts.BORDER_MAX_Y - consts.SPAWN_DIFF },
+  { x: consts.SPAWN_DIFF, y: consts.BORDER_MAX_Y - consts.SPAWN_DIFF },
+  { x: consts.BORDER_MAX_X - consts.SPAWN_DIFF, y: consts.SPAWN_DIFF },
 ];
 
 const Player = require("./Player");
@@ -20,12 +17,20 @@ class GameState {
   code;
   frame_count = 0;
   win_frame = undefined;
+  powerUps = [];
 
   constructor(code) {
     this.winner = null;
     this.isActive = false;
     this.players = {};
     this.code = code;
+  }
+
+  getRandomPosition() {
+    return {
+      x: Math.floor(Math.random() * consts.BORDER_MAX_X),
+      y: Math.floor(Math.random() * consts.BORDER_MAX_Y),
+    };
   }
 
   startGame() {
@@ -36,10 +41,11 @@ class GameState {
     this.winner = null;
     this.isActive = false;
     this.players = {};
+    this.powerUps = [];
   }
 
-  addPlayer(id) {
-    const newPlayer = new Player(INIT_HEALTH, 0, 0, id);
+  addPlayer(id, name) {
+    const newPlayer = new Player(consts.INIT_HEALTH, 0, 0, id, name);
     this.players[id] = newPlayer;
     const numPlayers = Object.keys(this.players).length;
     const init_position = spawnPositions[numPlayers - 1]; //TO CHANGE
@@ -60,6 +66,29 @@ class GameState {
       const diffY = playerPos.y - position.y;
       let angle = Math.atan2(diffY, diffX);
       player.shoot(angle);
+    }
+  }
+
+  spawnPowerUp() {
+    this.powerUps.push({
+      position: this.getRandomPosition(),
+    });
+  }
+
+  checkPowerUpTouch() {
+    for (let i = 0; i < this.powerUps.length; i++) {
+      for (let player of Object.values(this.players)) {
+        const powerup = this.powerUps[i];
+        const playerPos = player.getPosition();
+        const dist = Math.sqrt(
+          (powerup.position.x - playerPos.x) ** 2 + (powerup.position.y - playerPos.y) ** 2
+        );
+        if (dist < consts.POWER_UP_RADIUS + player.getRadius()) {
+          player.boostHealth();
+          this.powerUps.splice(i, 1);
+          break;
+        }
+      }
     }
   }
 
@@ -95,6 +124,7 @@ class GameState {
     //make players move as well
     this.checkWin();
     for (let p of Object.values(this.players)) p.updatePlayerState(this.players);
+    this.checkPowerUpTouch();
   }
 
   packageGameState() {
@@ -102,7 +132,12 @@ class GameState {
     for (let player_id of Object.keys(this.players)) {
       newPlayers[player_id] = this.players[player_id].toObject();
     }
-    return { winner: this.winner, players: newPlayers, isActive: this.isActive };
+    return {
+      winner: this.winner,
+      players: newPlayers,
+      isActive: this.isActive,
+      powerUps: this.powerUps,
+    };
   }
 }
 

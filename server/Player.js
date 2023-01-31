@@ -1,12 +1,11 @@
 const Bullet = require("./Bullet.js");
-const BORDER_MAX_X = 500;
-const BORDER_MAX_Y = 500;
-const MAX_SPEED = 1000;
+const consts = require("../client/const.json");
 class Player {
   #position = { x: 0, y: 0 };
   #health = 0; // max health should be 100 and the bullet speed should be the
   // same speed as somebody at 2 health (100/sqrt(2))
   #id = 0;
+  #name;
   #bullets = [];
   #initHealth = 0;
   #isDead = false;
@@ -14,11 +13,12 @@ class Player {
   #speed = { up: 0, down: 0, left: 0, right: 0, space: false };
   #kills = 0;
 
-  constructor(health, x, y, id) {
+  constructor(health, x, y, id, name) {
     this.#health = health;
     this.#initHealth = health;
     this.#position = { x: x, y: y };
     this.#id = id;
+    this.#name = name;
   }
 
   getPosition() {
@@ -59,6 +59,7 @@ class Player {
    */
   shoot(theta) {
     // mouse direction
+    theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
       this.#health--;
       this.#bullets.push(
@@ -76,8 +77,6 @@ class Player {
    * @param {Number} theta: The angle that the player will move in
    */
   move(dir) {
-    // pi/4 increments because if like up & left are pressed, we get a 3pi/4
-    // angle --- keyboard directions
     this.#directions[Object.keys(dir)[0]] = Object.values(dir)[0];
     //    if (theta !== undefined) {
     //      this.#position.x += this.getSpeed() * Math.cos(theta);
@@ -89,40 +88,41 @@ class Player {
 
   updatePlayerState(players) {
     for (let dir of Object.keys(this.#directions)) {
-      if (this.#directions[dir]) this.#speed[dir] = Math.min(this.#speed[dir] + 1, MAX_SPEED);
+      if (this.#directions[dir])
+        this.#speed[dir] = Math.min(this.#speed[dir] + 1, consts.MAX_SPEED);
       else this.#speed[dir] = Math.max(this.#speed[dir] - 1, 0);
     }
     if (this.#directions.space === false && this.#bullets.length === 0) this.#speed.space = 0;
     this.#position = {
-      x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / MAX_SPEED,
-      y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / MAX_SPEED,
+      x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / consts.MAX_SPEED,
+      y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / consts.MAX_SPEED,
     };
-    if (this.#position.x >= BORDER_MAX_X - this.getRadius()) {
-      this.#position.x = BORDER_MAX_X - this.getRadius();
-      this.#speed.left = Math.min(this.#speed.right * 0.5 + this.#speed.left, MAX_SPEED); //kickback
+    if (this.#position.x >= consts.BORDER_MAX_X - this.getRadius()) {
+      this.#position.x = consts.BORDER_MAX_X - this.getRadius();
+      this.#speed.left = Math.min(this.#speed.right * 0.5 + this.#speed.left, consts.MAX_SPEED); //kickback
       this.#speed.right = 0;
     }
     if (this.#position.x <= this.getRadius()) {
       this.#position.x = this.getRadius();
-      this.#speed.right = Math.min(this.#speed.left * 0.5 + this.#speed.right, MAX_SPEED); //kickback
+      this.#speed.right = Math.min(this.#speed.left * 0.5 + this.#speed.right, consts.MAX_SPEED); //kickback
       this.#speed.left = 0;
     }
     if (this.#position.y <= this.getRadius()) {
       this.#position.y = this.getRadius();
-      this.#speed.down = Math.min(this.#speed.up * 0.5 + this.#speed.down, MAX_SPEED); //kickback
+      this.#speed.down = Math.min(this.#speed.up * 0.5 + this.#speed.down, consts.MAX_SPEED); //kickback
       this.#speed.up = 0;
     }
-    if (this.#position.y >= BORDER_MAX_Y - this.getRadius()) {
-      this.#position.y = BORDER_MAX_Y - this.getRadius();
-      this.#speed.up = Math.min(this.#speed.down * 0.5 + this.#speed.up, MAX_SPEED); //kickback
+    if (this.#position.y >= consts.BORDER_MAX_Y - this.getRadius()) {
+      this.#position.y = consts.BORDER_MAX_Y - this.getRadius();
+      this.#speed.up = Math.min(this.#speed.down * 0.5 + this.#speed.up, consts.MAX_SPEED); //kickback
       this.#speed.down = 0;
     }
     this.#position.x = Math.max(
-      Math.min(BORDER_MAX_X - this.getRadius(), this.#position.x),
+      Math.min(consts.BORDER_MAX_X - this.getRadius(), this.#position.x),
       0 + this.getRadius()
     );
     this.#position.y = Math.max(
-      Math.min(BORDER_MAX_Y - this.getRadius(), this.#position.y),
+      Math.min(consts.BORDER_MAX_Y - this.getRadius(), this.#position.y),
       0 + this.getRadius()
     );
     this.moveBullets(players);
@@ -137,24 +137,15 @@ class Player {
       //pos = this.#bullets[i].getPosition();
       //vec = [pos[0] - this.base[0], pos[1] - this.base[1]];
       //this.#bullets[i].getPosition(Math.tan(vec[1] / vec[0]), this.#health);
-      this.#bullets[i].update(players, (50 * this.#speed.space) / MAX_SPEED, this.#position);
+      this.#bullets[i].update(players, (50 * this.#speed.space) / consts.MAX_SPEED, this.#position);
     }
     this.#bullets = this.#bullets.filter((bullet) => {
       return bullet.getIsActive();
     });
   }
 
-  // /**
-  //  * @param {Boolean} whether or not to pull bullets
-  //  * @param {Number} theta nonempty for movement of base
-  //  */
-  // move(pull, theta) {
-  //   if (theta !== undefined) this.#move(theta);
-  //   this.#moveBullets();
-  // }
-
   getsHit() {
-    this.#health -= 5;
+    this.#health -= consts.BULLET_DAMAGE;
     if (this.#health <= 0) {
       this.#isDead = true;
       return true;
@@ -163,13 +154,17 @@ class Player {
   }
 
   absorb() {
-    this.#health++;
+    this.#health = Math.min(this.#initHealth, this.#health + 1);
   }
 
   incrementKills() {
     this.#kills++;
     console.log("player " + String(this.#id) + " just got a kill.");
     console.log("they now have " + String(this.#kills) + " kills.");
+  }
+
+  boostHealth() {
+    this.#health = Math.min(this.#health + 10, this.#initHealth);
   }
 
   toObject() {
@@ -184,6 +179,7 @@ class Player {
       bullets: bulletObjs,
       id: this.#id,
       kills: this.#kills,
+      name: this.#name,
     };
   }
 }

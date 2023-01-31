@@ -4,6 +4,7 @@ import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
 import { handleKeyUp, handleKeyDown, handleClick } from "../../input.js";
 import { Link, useNavigate } from "@reach/router";
+import NoRoomCode from "./NoRoomCode.js";
 
 import "./Game.css";
 
@@ -66,7 +67,6 @@ const Game = (props) => {
   const processUpdate = (update) => {
     const leaveAfterGameOver = () => {
       updateStats(update);
-      // post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     };
     const lobbyLink = (
       <Link to="/lobby">
@@ -99,7 +99,7 @@ const Game = (props) => {
     ) {
       setAloneModal(
         <div className="Banner">
-          <div>Your opponent(s) left.</div>
+          <div>Your opponent(s) left the game room.</div>
           {lobbyLink}
         </div>
       );
@@ -118,10 +118,7 @@ const Game = (props) => {
           {aloneModal}
         </div>
       ) : (
-        <>
-          <div>You don't have a room code.</div>
-          <Link to="/">Please Return Home.</Link>
-        </>
+        <NoRoomCode />
       )}
     </>
   );
