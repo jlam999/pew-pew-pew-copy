@@ -4,6 +4,7 @@ import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
+import NoRoomCode from "./NoRoomCode.js";
 
 import "./Lobby.css";
 
@@ -90,10 +91,7 @@ const Lobby = (props) => {
           )}
         </>
       ) : (
-        <>
-          <div>You don't have a room code.</div>
-          <Link to="/">Please Return Home.</Link>
-        </>
+        <NoRoomCode />
       )}
     </>
   );

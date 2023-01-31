@@ -4,6 +4,7 @@ import { get, post } from "../../utilities";
 import { draw } from "../GameCanvas.js";
 import { handleKeyUp, handleKeyDown, handleClick } from "../../input.js";
 import { Link, useNavigate } from "@reach/router";
+import NoRoomCode from "./NoRoomCode.js";
 
 import "./Game.css";
 
@@ -117,10 +118,7 @@ const Game = (props) => {
           {aloneModal}
         </div>
       ) : (
-        <>
-          <div>You don't have a room code.</div>
-          <Link to="/">Please Return Home.</Link>
-        </>
+        <NoRoomCode />
       )}
     </>
   );
