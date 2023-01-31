@@ -6,6 +6,13 @@
   font-size: 48px;
 }
 
+.Lobby-all {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
 .Lobby-waitButton {
   margin: auto;
   position: relative;
@@ -36,4 +43,76 @@
   color: var(--primaryText);
   border-radius: 32px;
   text-align: center;
+}
+
+.Lobby-main {
+  flex-grow: 2;
+  flex-basis: auto;
+}
+
+.Lobby-side {
+  flex-shrink: 2;
+  flex-basis: auto;
+  order: 2;
+}
+
+#HowToPlay-Menu {
+  height: 100%;
+  position: fixed;
+  right: 0;
+  width: 300px;
+  background-color: #555555;
+  transform: translateX(+300px);
+  transition: transform 250ms ease-in-out;
+  border-radius: 8px 0px 0px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.HowToPlay-Box {
+  width: 90%;
+  height: 30%;
+  padding: 4px;
+  margin: 4px;
+  border-color: #272822;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 4px;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  top: 12px;
+  right: 0px;
+  width: 24px;
+  height: 100%;
+  transition: right 250ms ease-in-out;
+  appearance: none;
+}
+
+input[type="checkbox"]:checked ~ #HowToPlay-Menu {
+  transform: translateX(0);
+}
+
+input[type="checkbox"]:checked {
+  right: 300px;
+}
+
+input[type="checkbox"]:checked ~ .Lobby-HowToPlayLabel {
+  right: 300px;
+}
+
+.Lobby-HowToPlayLabel {
+  position: absolute;
+  padding: 12px;
+  top: 50px;
+  right: 0px;
+  width: 50px;
+  transition: right 250ms ease-in-out;
+  writing-mode: vertical-rl;
+  font-size: 40px;
+  background-color: #555555;
+  border-radius: 8px 0px 0px 8px;
 }
