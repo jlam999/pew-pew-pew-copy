@@ -1,6 +1,62 @@
+#HowToPlay-Menu {
+  height: 100%;
+  position: fixed;
+  right: 0;
+  width: 300px;
+  background-color: #555555;
+  transform: translateX(+300px);
+  transition: transform 250ms ease-in-out;
+  border-radius: 8px 0px 0px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .HowToPlay-Box {
-  width: 200px;
+  width: 90%;
+  height: 23%;
   padding: 4px;
-  border-color: aquamarine;
+  margin: 4px;
+  border-color: #272822;
   border-style: solid;
+  border-radius: 8px;
+  border-width: 4px;
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  top: 12px;
+  right: 300px;
+  width: 24px;
+  height: 100%;
+  transform: translateX(+300px);
+  transition: transform 250ms ease-in-out;
+  appearance: none;
+}
+
+input[type="checkbox"]:checked ~ #HowToPlay-Menu {
+  transform: translateX(0);
+}
+
+input[type="checkbox"]:checked {
+  transform: translateX(0);
+}
+
+input[type="checkbox"]:checked ~ .HowToPlay-Label {
+  transform: translateX(0);
+}
+
+.HowToPlay-Label {
+  position: absolute;
+  padding: 12px;
+  top: 50px;
+  right: 300px;
+  width: 50px;
+  transform: translateX(+300px);
+  transition: transform 250ms ease-in-out;
+  writing-mode: vertical-rl;
+  font-size: 40px;
+  background-color: #555555;
+  border-radius: 8px 0px 0px 8px;
 }
