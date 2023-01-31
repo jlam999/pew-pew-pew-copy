@@ -87,7 +87,8 @@ class Player {
 
   updatePlayerState(players) {
     for (let dir of Object.keys(this.#directions)) {
-      if (this.#directions[dir]) this.#speed[dir] = Math.min(this.#speed[dir] + 1, consts.MAX_SPEED);
+      if (this.#directions[dir])
+        this.#speed[dir] = Math.min(this.#speed[dir] + 1, consts.MAX_SPEED);
       else this.#speed[dir] = Math.max(this.#speed[dir] - 1, 0);
     }
     if (this.#directions.space === false && this.#bullets.length === 0) this.#speed.space = 0;

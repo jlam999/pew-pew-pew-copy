@@ -7,6 +7,9 @@ const consts = require("../../const.json");
 let mouseX = 0;
 let mouseY = 0;
 
+export let width = undefined;
+export let height = undefined;
+
 window.onmousemove = function (e) {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
@@ -16,13 +19,19 @@ const draw = (gameState, userId) => {
   const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
 
+  let xx = gameState.players[userId].position.x;
+  let yy = gameState.players[userId].position.y;
   canvas.width = self.innerWidth;
   canvas.height = self.innerHeight;
+  width = canvas.width / 2 - xx;
+  height = canvas.height / 2 - yy;
 
-  window.onresize = function (event) {
-    canvas.width = self.innerWidth;
-    canvas.height = self.innerHeight;
-  };
+  //window.onresize = function (event) {
+  //  canvas.width = self.innerWidth;
+  //  canvas.height = self.innerHeight;
+  //  width = canvas.width;
+  //  height = canvas.height;
+  //};
   const ctx = canvas.getContext("2d");
 
   ctx.clearRect(-canvas.width, -canvas.height, canvas.width, canvas.height);
@@ -80,8 +89,6 @@ const draw = (gameState, userId) => {
       ctx.closePath();
     }
 
-    let xx = gameState.players[userId].position.x;
-    let yy = gameState.players[userId].position.y;
     let offX =
       xx + (consts.shadowFactor * (xx - consts.BORDER_MAX_X / 2)) / (consts.BORDER_MAX_X / 2);
     let offY =
