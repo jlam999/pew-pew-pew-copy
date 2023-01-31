@@ -27,8 +27,6 @@ const getAllRoomCodes = () => {
 
 const sendGameState = (code) => {
   const package = codeToGameMap[code].packageGameState();
-  //console.log(package);
-  //console.log("Sending to room code:", code);
   io.to(code).emit("update", package);
 };
 
@@ -48,7 +46,6 @@ const usersAreConnected = (gameState) => {
 const addPowerUps = (gameState) => {
   if (gameState.powerUps.length < 3) {
     gameState.spawnPowerUp();
-    console.log("Spawning Power-Up");
   }
 };
 

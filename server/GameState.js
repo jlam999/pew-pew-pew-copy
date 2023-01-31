@@ -72,7 +72,6 @@ class GameState {
     this.powerUps.push({
       position: this.getRandomPosition(),
     });
-    console.log(this.powerUps);
   }
 
   checkPowerUpTouch() {
