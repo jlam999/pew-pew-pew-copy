@@ -8,7 +8,6 @@ import NoRoomCode from "./NoRoomCode.js";
 
 import HowToPlay from "../modules/HowToPlay.js";
 import BackButton from "../modules/BackButton.js";
-import BackButtonImg from "../../public/back-arrow.jpg";
 
 import "./Lobby.css";
 import "../../utilities.css";
@@ -80,18 +79,8 @@ const Lobby = (props) => {
     <>
       {props.roomCode !== null ? (
         <div className="Lobby-all">
-          <div className="Lobby-side">
-            <input type="checkbox" id="Lobby-openSidebar" />
-            <label className="Lobby-HowToPlayLabel" for="Lobby-openSidebar">
-              How To Play
-            </label>
-            <div id="HowToPlay-Menu">
-              <div className="HowToPlay-Box">Use WASD to move</div>
-              <div className="HowToPlay-Box">Use mouse to aim and shoot</div>
-              <div className="HowToPlay-Box">Use the space bar to pull your bullets back</div>
-            </div>
-          </div>
-          <div className="Lobby-main">
+          <HowToPlay />
+          <div>
             <BackButton className="BackButton-container" />
             <h1 className="Lobby-title">Game Lobby</h1>
             <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
