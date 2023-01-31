@@ -42,18 +42,17 @@ const Lobby = (props) => {
         if (lobbyList.length > 4) {
           alert("Lobby is full.");
           navigate("/");
-        }
-        setPlayerList(lobbyList);
-        for (let i = 0; i < lobbyList.length; i++) {
-          drawPlayer(lobbyList[i], i);
+        } else {
+          setPlayerList(lobbyList);
+          for (let i = 0; i < lobbyList.length; i++) {
+            drawPlayer(lobbyList[i], i);
+          }
         }
       });
 
       return () => {
         console.log("dismounting Lobby");
-        // if (playerList.map((player) => player.google.id).includes(props.userId)) {
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
-        // }
         socket.off("start game", bringToGame);
         socket.off("lobby", updateLobby);
       };
