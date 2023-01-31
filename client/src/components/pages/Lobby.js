@@ -4,6 +4,7 @@ import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
 import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
+import NoRoomCode from "./NoRoomCode.js";
 
 import "./Lobby.css";
 
@@ -41,18 +42,17 @@ const Lobby = (props) => {
         if (lobbyList.length > 4) {
           alert("Lobby is full.");
           navigate("/");
-        }
-        setPlayerList(lobbyList);
-        for (let i = 0; i < lobbyList.length; i++) {
-          drawPlayer(lobbyList[i], i);
+        } else {
+          setPlayerList(lobbyList);
+          for (let i = 0; i < lobbyList.length; i++) {
+            drawPlayer(lobbyList[i], i);
+          }
         }
       });
 
       return () => {
         console.log("dismounting Lobby");
-        // if (playerList.map((player) => player.google.id).includes(props.userId)) {
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
-        // }
         socket.off("start game", bringToGame);
         socket.off("lobby", updateLobby);
       };
@@ -90,10 +90,7 @@ const Lobby = (props) => {
           )}
         </>
       ) : (
-        <>
-          <div>You don't have a room code.</div>
-          <Link to="/">Please Return Home.</Link>
-        </>
+        <NoRoomCode />
       )}
     </>
   );

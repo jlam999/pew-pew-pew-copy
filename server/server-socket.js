@@ -138,7 +138,7 @@ const addUserToGame = (user, socket, code) => {
     code = getCodeFromUserID(user.googleid);
   }
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
-    codeToGameMap[code].addPlayer(user.googleid);
+    codeToGameMap[code].addPlayer(user.googleid, user.name);
     userToCodeMap[user.googleid] = code;
     socket.join(code, () => {
       console.log("Joined Game", code);
@@ -176,6 +176,7 @@ const addUser = (user, socket) => {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
     oldSocket.disconnect();
+    console.log("Old Socket disconnected. ID:", oldSocket.id);
     delete socketToUserMap[oldSocket.id];
   }
 

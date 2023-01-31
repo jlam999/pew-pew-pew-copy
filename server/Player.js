@@ -5,6 +5,7 @@ class Player {
   #health = 0; // max health should be 100 and the bullet speed should be the
   // same speed as somebody at 2 health (100/sqrt(2))
   #id = 0;
+  #name;
   #bullets = [];
   #initHealth = 0;
   #isDead = false;
@@ -12,11 +13,12 @@ class Player {
   #speed = { up: 0, down: 0, left: 0, right: 0, space: false };
   #kills = 0;
 
-  constructor(health, x, y, id) {
+  constructor(health, x, y, id, name) {
     this.#health = health;
     this.#initHealth = health;
     this.#position = { x: x, y: y };
     this.#id = id;
+    this.#name = name;
   }
 
   getPosition() {
@@ -57,6 +59,7 @@ class Player {
    */
   shoot(theta) {
     // mouse direction
+    theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
       this.#health--;
       this.#bullets.push(
@@ -176,6 +179,7 @@ class Player {
       bullets: bulletObjs,
       id: this.#id,
       kills: this.#kills,
+      name: this.#name,
     };
   }
 }

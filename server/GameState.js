@@ -41,10 +41,11 @@ class GameState {
     this.winner = null;
     this.isActive = false;
     this.players = {};
+    this.powerUps = [];
   }
 
-  addPlayer(id) {
-    const newPlayer = new Player(consts.INIT_HEALTH, 0, 0, id);
+  addPlayer(id, name) {
+    const newPlayer = new Player(consts.INIT_HEALTH, 0, 0, id, name);
     this.players[id] = newPlayer;
     const numPlayers = Object.keys(this.players).length;
     const init_position = spawnPositions[numPlayers - 1]; //TO CHANGE
