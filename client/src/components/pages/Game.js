@@ -66,7 +66,6 @@ const Game = (props) => {
   const processUpdate = (update) => {
     const leaveAfterGameOver = () => {
       updateStats(update);
-      // post("/api/despawn", { userid: props.userId, socketid: socket.id, code: props.roomCode });
     };
     const lobbyLink = (
       <Link to="/lobby">
@@ -99,7 +98,7 @@ const Game = (props) => {
     ) {
       setAloneModal(
         <div className="Banner">
-          <div>Your opponent(s) left.</div>
+          <div>Your opponent(s) left the game room.</div>
           {lobbyLink}
         </div>
       );

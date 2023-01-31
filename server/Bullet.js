@@ -58,7 +58,7 @@ class Bullet {
       let distance = Math.sqrt(
         (playerPos.x - this.#position.x) ** 2 + (playerPos.y - this.#position.y) ** 2
       );
-      if (distance < consts.BULLET_RADIUS + player.getRadius()) {
+      if (!player.getIsDead() && distance < consts.BULLET_RADIUS + player.getRadius()) {
         if (player.getId() === this.#owner) {
           player.absorb();
         } else {
