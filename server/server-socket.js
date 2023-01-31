@@ -176,6 +176,7 @@ const addUser = (user, socket) => {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
     oldSocket.disconnect();
+    console.log("Old Socket disconnected. ID:", oldSocket.id);
     delete socketToUserMap[oldSocket.id];
   }
 
