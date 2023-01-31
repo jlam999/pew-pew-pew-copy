@@ -15,6 +15,19 @@ window.onmousemove = function (e) {
   mouseY = e.offsetY;
 };
 
+const drawPowerUp = (context, position) => {
+  context.beginPath();
+  context.arc(position.x, position.y, consts.POWER_UP_RADIUS, 0, 2 * Math.PI, true);
+  context.fillStyle = "#FFFFFF";
+  context.fill();
+  context.closePath();
+  context.font = "bold 30px Arial";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = "#FF0000";
+  context.fillText("+", position.x, position.y);
+};
+
 const draw = (gameState, userId) => {
   const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
@@ -69,6 +82,7 @@ const draw = (gameState, userId) => {
     ctx.fillText("Waiting for another player...", 25, 200);
   } else {
     let i = 0;
+
     for (let player of Object.values(gameState.players)) {
       // shadows
       ctx.beginPath();
@@ -134,6 +148,11 @@ const draw = (gameState, userId) => {
       }
       i++;
     }
+    //Draw powerups
+    gameState.powerUps.forEach((powerup) => {
+      drawPowerUp(ctx, powerup.position);
+    });
+
     //draw triangle
     ctx.beginPath();
     ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
@@ -144,6 +163,7 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
+
     ctx.beginPath();
     ctx.rect(
       consts.BORDER_MAX_X,
@@ -160,6 +180,7 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = consts.newBlack;
     ctx.fill();
     ctx.closePath();
+
     //move canvas
     let X = canvas.width / 2 - gameState.players[userId].position.x;
     let Y = canvas.height / 2 - gameState.players[userId].position.y;

@@ -27,8 +27,6 @@ const getAllRoomCodes = () => {
 
 const sendGameState = (code) => {
   const package = codeToGameMap[code].packageGameState();
-  //console.log(package);
-  //console.log("Sending to room code:", code);
   io.to(code).emit("update", package);
 };
 
@@ -43,6 +41,12 @@ const usersAreConnected = (gameState) => {
     }
   }
   return false;
+};
+
+const addPowerUps = (gameState) => {
+  if (gameState.powerUps.length < 3) {
+    gameState.spawnPowerUp();
+  }
 };
 
 const startRunningGame = () => {
@@ -62,6 +66,9 @@ const startRunningGame = () => {
         }
         sendGameState(gameState.code);
         gameState.updateGameState();
+        if (gameState.frame_count % (FPS * 10) === 0) {
+          addPowerUps(gameState);
+        }
         gameState.frame_count++;
       } else {
         gameState.frame_count = 0;
