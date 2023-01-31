@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NewCodeInput from "../modules/RoomCode.js";
 import ProfileButton from "../modules/ProfileButton.js";
 import { Link, useNavigate } from "@reach/router";
@@ -22,6 +22,7 @@ const Home = (props) => {
   //   post("/api/spawn", { userid: props.userId });
   // };
   const navigate = useNavigate();
+  const [videoSource, setVideoSource] = useState(null)
 
   const createNewLobby = async () => {
     const code = await props.createLobby();
@@ -42,8 +43,20 @@ const Home = (props) => {
     }
   };
 
+  // let videoSource = "./video1.mp4";
+  useEffect(() => {
+    setInterval(() => {
+      const picker = Math.floor(Math.random()*6)+1
+      const url = "./video" + picker + ".mp4"
+      setVideoSource(url)
+    }, 10000)
+  }, [videoSource])
+
   return (
     <div className="Home-titleContainer">
+      <video autoPlay loop muted src={videoSource} type="video/mp4" className="Home-backgroundVid">
+        {/* <source src={videoSource}  */}
+      </video>
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
