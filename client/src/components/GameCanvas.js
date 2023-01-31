@@ -7,29 +7,33 @@ const consts = require("../../const.json");
 let mouseX = 0;
 let mouseY = 0;
 
-window.onmousemove = function(e){
+window.onmousemove = function (e) {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
 };
-
 
 const draw = (gameState, userId) => {
   const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
 
-   canvas.width = self.innerWidth;
-   canvas.height = self.innerHeight;
+  canvas.width = self.innerWidth;
+  canvas.height = self.innerHeight;
 
-   window.onresize = function(event){
-     canvas.width = self.innerWidth;
-     canvas.height = self.innerHeight;
-   };
+  window.onresize = function (event) {
+    canvas.width = self.innerWidth;
+    canvas.height = self.innerHeight;
+  };
   const ctx = canvas.getContext("2d");
 
   ctx.clearRect(-canvas.width, -canvas.height, canvas.width, canvas.height);
 
   ctx.beginPath();
-  ctx.rect(-canvas.width, -canvas.height, consts.BORDER_MAX_X + 2*canvas.width, consts.BORDER_MAX_Y + 2*canvas.height);
+  ctx.rect(
+    -canvas.width,
+    -canvas.height,
+    consts.BORDER_MAX_X + 2 * canvas.width,
+    consts.BORDER_MAX_Y + 2 * canvas.height
+  );
   ctx.fillStyle = consts.newBlack;
   ctx.fill();
   ctx.closePath();
@@ -56,36 +60,51 @@ const draw = (gameState, userId) => {
     ctx.fillText("Waiting for another player...", 25, 200);
   } else {
     let i = 0;
-    const shadowFactor = 25;
-    for(let player of Object.values(gameState.players)){ // shadows
+    for (let player of Object.values(gameState.players)) {
+      // shadows
       ctx.beginPath();
-      ctx.arc(player.position.x + shadowFactor*(player.position.x - consts.BORDER_MAX_X/2)/(consts.BORDER_MAX_X/2), player.position.y + shadowFactor*(player.position.y - consts.BORDER_MAX_Y/2)/(consts.BORDER_MAX_Y/2), player.radius, 0, 2 * Math.PI, true);
+      ctx.arc(
+        player.position.x +
+          (consts.shadowFactor * (player.position.x - consts.BORDER_MAX_X / 2)) /
+            (consts.BORDER_MAX_X / 2),
+        player.position.y +
+          (consts.shadowFactor * (player.position.y - consts.BORDER_MAX_Y / 2)) /
+            (consts.BORDER_MAX_Y / 2),
+        player.radius,
+        0,
+        2 * Math.PI,
+        true
+      );
       ctx.fillStyle = "black";
       ctx.fill();
       ctx.closePath();
     }
-    
+
     let xx = gameState.players[userId].position.x;
     let yy = gameState.players[userId].position.y;
-    let offX = xx + shadowFactor*(xx - consts.BORDER_MAX_X/2)/(consts.BORDER_MAX_X/2);
-    let offY = yy + shadowFactor*(yy - consts.BORDER_MAX_Y/2)/(consts.BORDER_MAX_Y/2);
-    let vec = [mouseX - canvas.width/2, mouseY - canvas.height/2];
-    let len = Math.sqrt(vec[0]**2 + vec[1]**2);
-    vec = [vec[0]/len, vec[1]/len];
+    let offX =
+      xx + (consts.shadowFactor * (xx - consts.BORDER_MAX_X / 2)) / (consts.BORDER_MAX_X / 2);
+    let offY =
+      yy + (consts.shadowFactor * (yy - consts.BORDER_MAX_Y / 2)) / (consts.BORDER_MAX_Y / 2);
+    let vec = [mouseX - canvas.width / 2, mouseY - canvas.height / 2];
+    let len = Math.sqrt(vec[0] ** 2 + vec[1] ** 2);
+    vec = [vec[0] / len, vec[1] / len];
     let rad = gameState.players[userId].radius;
-    { // shadow for mouse arrow
-    ctx.beginPath();
-    ctx.moveTo(offX + vec[0]*(rad + 20), offY + vec[1]*(rad+20));
-    ctx.lineTo(offX + vec[0]*(rad+10) - 5*vec[1], offY + vec[1]*(rad+10) + 5*vec[0]);
-//    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
-    ctx.lineTo(offX + vec[0]*(rad+10) + 5*vec[1], offY + vec[1]*(rad+10) - 5*vec[0]);
-    ctx.lineTo(offX + vec[0]*(rad + 20), offY + vec[1]*(rad+20));
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
+    {
+      // shadow for mouse arrow
+      ctx.beginPath();
+      ctx.moveTo(offX + vec[0] * (rad + 20), offY + vec[1] * (rad + 20));
+      ctx.lineTo(offX + vec[0] * (rad + 10) - 5 * vec[1], offY + vec[1] * (rad + 10) + 5 * vec[0]);
+      //    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
+      ctx.lineTo(offX + vec[0] * (rad + 10) + 5 * vec[1], offY + vec[1] * (rad + 10) - 5 * vec[0]);
+      ctx.lineTo(offX + vec[0] * (rad + 20), offY + vec[1] * (rad + 20));
+      ctx.fillStyle = "black";
+      ctx.fill();
+      ctx.closePath();
     }
 
-    for(let player of Object.values(gameState.players)){ // rendering white background before drawing circles to contrast with dark background
+    for (let player of Object.values(gameState.players)) {
+      // rendering white background before drawing circles to contrast with dark background
       ctx.beginPath();
       ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
       ctx.fillStyle = "white";
@@ -110,17 +129,33 @@ const draw = (gameState, userId) => {
     }
     //draw triangle
     ctx.beginPath();
-    ctx.moveTo(xx + vec[0]*(rad + 20), yy + vec[1]*(rad+20));
-    ctx.lineTo(xx + vec[0]*(rad+10) - 5*vec[1], yy + vec[1]*(rad+10) + 5*vec[0]);
-//    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
-    ctx.lineTo(xx + vec[0]*(rad+10) + 5*vec[1], yy + vec[1]*(rad+10) - 5*vec[0]);
-    ctx.lineTo(xx + vec[0]*(rad + 20), yy + vec[1]*(rad+20));
+    ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
+    ctx.lineTo(xx + vec[0] * (rad + 10) - 5 * vec[1], yy + vec[1] * (rad + 10) + 5 * vec[0]);
+    //    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
+    ctx.lineTo(xx + vec[0] * (rad + 10) + 5 * vec[1], yy + vec[1] * (rad + 10) - 5 * vec[0]);
+    ctx.lineTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(
+      consts.BORDER_MAX_X,
+      0,
+      consts.shadowFactor,
+      consts.shadowFactor + consts.BORDER_MAX_Y
+    );
+    ctx.rect(
+      0,
+      consts.BORDER_MAX_Y,
+      consts.shadowFactor + consts.BORDER_MAX_X,
+      consts.shadowFactor
+    );
+    ctx.fillStyle = consts.newBlack;
+    ctx.fill();
+    ctx.closePath();
     //move canvas
-    let X = canvas.width/2 - gameState.players[userId].position.x;
-    let Y = canvas.height/2 - gameState.players[userId].position.y;
+    let X = canvas.width / 2 - gameState.players[userId].position.x;
+    let Y = canvas.height / 2 - gameState.players[userId].position.y;
     let tmp = ctx.globalCompositeOperation;
     ctx.globalCompositeOperation = "copy";
     ctx.drawImage(canvas, X, Y);

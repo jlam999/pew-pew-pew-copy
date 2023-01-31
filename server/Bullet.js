@@ -9,7 +9,7 @@ class Bullet {
   constructor(x, y, theta, owner) {
     this.#position = { x: x, y: y };
     this.#angle = theta;
-    this.#speed = 20 / Math.sqrt(2); // start at 100/sqrt(2) and decrease exponentially
+    this.#speed = consts.collisionError;
     this.#owner = owner;
   }
 
@@ -57,7 +57,7 @@ class Bullet {
     };
     this.checkWallCollision();
     this.checkCollision(players);
-    this.#speed *= 0.95;
+    this.#speed *= consts.bulletFriction;
   }
 
   /**
