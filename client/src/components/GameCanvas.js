@@ -17,11 +17,15 @@ window.onmousemove = function (e) {
 
 const drawPowerUp = (context, position) => {
   context.beginPath();
-  context.arc(position.x, position.y, 5, 0, 2 * Math.PI, true); // Move powerup size to consts json
+  context.arc(position.x, position.y, 15, 0, 2 * Math.PI, true); // Move powerup size to consts json
   context.fillStyle = "#FFFFFF";
   context.fill();
   context.closePath();
-  console.log("Powerup Drawn at position", x, y);
+  context.font = "bold 30px Arial";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = "#FF0000";
+  context.fillText("+", position.x, position.y);
 };
 
 const draw = (gameState, userId) => {
@@ -144,6 +148,11 @@ const draw = (gameState, userId) => {
       }
       i++;
     }
+    //Draw powerups
+    gameState.powerUps.forEach((powerup) => {
+      drawPowerUp(ctx, powerup.position);
+    });
+
     //draw triangle
     ctx.beginPath();
     ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
@@ -154,11 +163,6 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
-
-    // //Draw powerups
-    // gameState.powerUps.forEach((powerup) => {
-    //   drawPowerUp(ctx, powerup.position);
-    // });
 
     ctx.beginPath();
     ctx.rect(
