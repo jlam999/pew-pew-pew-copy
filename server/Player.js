@@ -151,7 +151,7 @@ class Player {
   }
 
   absorb() {
-    this.#health++;
+    this.#health = Math.min(this.#initHealth, this.#health + 1);
   }
 
   incrementKills() {
