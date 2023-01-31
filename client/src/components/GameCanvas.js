@@ -146,6 +146,13 @@ const draw = (gameState, userId) => {
         ctx.fill();
         ctx.closePath();
       }
+      if (player.health > 0) {
+        ctx.font = "18px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(player.name, player.position.x, player.position.y);
+      }
       i++;
     }
     //Draw powerups

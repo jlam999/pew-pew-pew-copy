@@ -138,7 +138,7 @@ const addUserToGame = (user, socket, code) => {
     code = getCodeFromUserID(user.googleid);
   }
   if (!Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
-    codeToGameMap[code].addPlayer(user.googleid);
+    codeToGameMap[code].addPlayer(user.googleid, user.name);
     userToCodeMap[user.googleid] = code;
     socket.join(code, () => {
       console.log("Joined Game", code);
