@@ -12,13 +12,15 @@ class Player {
   #directions = { up: false, down: false, left: false, right: false, space: false };
   #speed = { up: 0, down: 0, left: 0, right: 0, space: false };
   #kills = 0;
+  #color;
 
-  constructor(health, x, y, id, name) {
+  constructor(health, x, y, id, name, color) {
     this.#health = health;
     this.#initHealth = health;
     this.#position = { x: x, y: y };
     this.#id = id;
     this.#name = name;
+    this.#color = color;
   }
 
   getPosition() {
@@ -180,6 +182,7 @@ class Player {
       id: this.#id,
       kills: this.#kills,
       name: this.#name,
+      color: this.#color,
     };
   }
 }

@@ -136,13 +136,13 @@ const draw = (gameState, userId) => {
       ctx.beginPath();
       //ctx.rect(player.position.x-player.radius, player.position.y-player.radius, 2*player.radius, 2*player.radius);
       ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
-      ctx.fillStyle = consts.playerColors[i]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
+      ctx.fillStyle = player.color; //consts.playerColors[i]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
       ctx.fill();
       ctx.closePath();
       for (let bullet of player.bullets) {
         ctx.beginPath();
         ctx.arc(bullet.position.x, bullet.position.y, bullet.radius, 0, 2 * Math.PI, true);
-        ctx.fillStyle = consts.playerColors[i];
+        ctx.fillStyle = player.color; //consts.playerColors[i];
         ctx.fill();
         ctx.closePath();
       }
