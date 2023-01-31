@@ -74,8 +74,6 @@ class Player {
    * @param {Number} theta: The angle that the player will move in
    */
   move(dir) {
-    // pi/4 increments because if like up & left are pressed, we get a 3pi/4
-    // angle --- keyboard directions
     this.#directions[Object.keys(dir)[0]] = Object.values(dir)[0];
     //    if (theta !== undefined) {
     //      this.#position.x += this.getSpeed() * Math.cos(theta);
@@ -143,17 +141,8 @@ class Player {
     });
   }
 
-  // /**
-  //  * @param {Boolean} whether or not to pull bullets
-  //  * @param {Number} theta nonempty for movement of base
-  //  */
-  // move(pull, theta) {
-  //   if (theta !== undefined) this.#move(theta);
-  //   this.#moveBullets();
-  // }
-
   getsHit() {
-    this.#health -= 5;
+    this.#health -= consts.BULLET_DAMAGE;
     if (this.#health <= 0) {
       this.#isDead = true;
       return true;

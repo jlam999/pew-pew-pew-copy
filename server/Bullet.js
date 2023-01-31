@@ -29,18 +29,6 @@ class Bullet {
     return this.#isActive;
   }
 
-  // Will implement later:
-  //   adjustPath(theta, health) {
-  //     // the speed at which the bullet is drawn toward a player is inversely proportional to the root of the player's health
-  //     speed = 100 / Math.sqrt(health);
-  //     vec = [
-  //       this.speed * Math.cos(this.angle) + speed * Math.cos(this.angle),
-  //       this.speed * Math.sin(this.angle) + speed * Math.sin(this.angle),
-  //     ];
-  //     this.angle = Math.tan(vec[1] / vec[0]); // update angle
-  //     this.speed += speed / 0.95; // TODO: rewrite for projection calculations
-  //   }
-
   //Updates bullet's position and speed based on current position and speed
   //Be sure to use checkWallCollision()
   update(players, parentSpeed, parentLoc) {
