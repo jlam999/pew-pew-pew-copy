@@ -17,7 +17,7 @@ window.onmousemove = function (e) {
 
 const drawPowerUp = (context, position) => {
   context.beginPath();
-  context.arc(position.x, position.y, 15, 0, 2 * Math.PI, true); // Move powerup size to consts json
+  context.arc(position.x, position.y, consts.POWER_UP_RADIUS, 0, 2 * Math.PI, true);
   context.fillStyle = "#FFFFFF";
   context.fill();
   context.closePath();

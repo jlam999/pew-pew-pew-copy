@@ -171,6 +171,10 @@ class Player {
     console.log("they now have " + String(this.#kills) + " kills.");
   }
 
+  boostHealth() {
+    this.#health = Math.min(this.#health + 10, this.#initHealth);
+  }
+
   toObject() {
     const bulletObjs = [];
     for (let bullet of this.#bullets) {
