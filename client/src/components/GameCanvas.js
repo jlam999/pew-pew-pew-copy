@@ -21,11 +21,10 @@ const drawPowerUp = (context, position) => {
   context.fillStyle = "#FFFFFF";
   context.fill();
   context.closePath();
-  context.font = "bold 30px Arial";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
+
   context.fillStyle = "#FF0000";
-  context.fillText("+", position.x, position.y);
+  context.fillRect(position.x - 10, position.y - 3, 20, 6);
+  context.fillRect(position.x - 3, position.y - 10, 6, 20);
 };
 
 const draw = (gameState, userId) => {
