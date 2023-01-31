@@ -17,12 +17,20 @@ class GameState {
   code;
   frame_count = 0;
   win_frame = undefined;
+  powerUps = [];
 
   constructor(code) {
     this.winner = null;
     this.isActive = false;
     this.players = {};
     this.code = code;
+  }
+
+  getRandomPosition() {
+    return {
+      x: Math.floor(Math.random() * consts.BORDER_MAX_X),
+      y: Math.floor(Math.random() * consts.BORDER_MAX_Y),
+    };
   }
 
   startGame() {
@@ -58,6 +66,13 @@ class GameState {
       let angle = Math.atan2(diffY, diffX);
       player.shoot(angle);
     }
+  }
+
+  spawnPowerUp() {
+    this.powerUps.push({
+      position: this.getRandomPosition(),
+    });
+    console.log(this.powerUps);
   }
 
   //There can only be a winner if there is more than one player in the game.
@@ -99,7 +114,12 @@ class GameState {
     for (let player_id of Object.keys(this.players)) {
       newPlayers[player_id] = this.players[player_id].toObject();
     }
-    return { winner: this.winner, players: newPlayers, isActive: this.isActive };
+    return {
+      winner: this.winner,
+      players: newPlayers,
+      isActive: this.isActive,
+      powerUps: this.powerUps,
+    };
   }
 }
 

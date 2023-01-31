@@ -15,6 +15,15 @@ window.onmousemove = function (e) {
   mouseY = e.offsetY;
 };
 
+const drawPowerUp = (context, position) => {
+  context.beginPath();
+  context.arc(position.x, position.y, 5, 0, 2 * Math.PI, true); // Move powerup size to consts json
+  context.fillStyle = "#FFFFFF";
+  context.fill();
+  context.closePath();
+  console.log("Powerup Drawn at position", x, y);
+};
+
 const draw = (gameState, userId) => {
   const canvas = document.getElementById("gameCanvas");
   if (!canvas) return;
@@ -69,6 +78,7 @@ const draw = (gameState, userId) => {
     ctx.fillText("Waiting for another player...", 25, 200);
   } else {
     let i = 0;
+
     for (let player of Object.values(gameState.players)) {
       // shadows
       ctx.beginPath();
@@ -144,6 +154,12 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
+
+    // //Draw powerups
+    // gameState.powerUps.forEach((powerup) => {
+    //   drawPowerUp(ctx, powerup.position);
+    // });
+
     ctx.beginPath();
     ctx.rect(
       consts.BORDER_MAX_X,
@@ -160,6 +176,7 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = consts.newBlack;
     ctx.fill();
     ctx.closePath();
+
     //move canvas
     let X = canvas.width / 2 - gameState.players[userId].position.x;
     let Y = canvas.height / 2 - gameState.players[userId].position.y;
