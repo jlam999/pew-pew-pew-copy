@@ -159,6 +159,30 @@ const draw = (gameState, userId) => {
       drawPowerUp(ctx, powerup.position);
     });
 
+
+    for (let i = 0; i < consts.obstacles[0].map.length; i++) {
+      for (let j = 0; j < consts.obstacles[0].map[i].length; j++) {
+        if (consts.obstacles[0].map[i][j] == 0) continue;
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(225, 225, 255, 0.5)";
+        ctx.fillRect(
+          i * consts.obstacles[0].blockSize,
+          j * consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize
+        );
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(
+          i * consts.obstacles[0].blockSize,
+          j * consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize
+        );
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
     //draw triangle
     ctx.beginPath();
     ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
@@ -174,14 +198,14 @@ const draw = (gameState, userId) => {
     ctx.rect(
       consts.BORDER_MAX_X,
       0,
-      consts.shadowFactor,
-      consts.shadowFactor + consts.BORDER_MAX_Y
+      2 * consts.shadowFactor,
+      2 * consts.shadowFactor + consts.BORDER_MAX_Y
     );
     ctx.rect(
       0,
       consts.BORDER_MAX_Y,
-      consts.shadowFactor + consts.BORDER_MAX_X,
-      consts.shadowFactor
+      2 * consts.shadowFactor + consts.BORDER_MAX_X,
+      2 * consts.shadowFactor
     );
     ctx.fillStyle = consts.newBlack;
     ctx.fill();

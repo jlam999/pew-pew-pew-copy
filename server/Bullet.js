@@ -9,7 +9,7 @@ class Bullet {
   constructor(x, y, theta, owner) {
     this.#position = { x: x, y: y };
     this.#angle = theta;
-    this.#speed = consts.collisionError;
+    this.#speed = consts.bulletSpeed;
     this.#owner = owner;
   }
 
@@ -45,6 +45,7 @@ class Bullet {
     };
     this.checkWallCollision();
     this.checkCollision(players);
+    this.checkMapCollision();
     this.#speed *= consts.bulletFriction;
   }
 
@@ -74,21 +75,48 @@ class Bullet {
   }
 
   checkWallCollision() {
-    if (
-      !(
-        Math.abs(consts.BORDER_MAX_X / 2 - this.#position.x) <
-        consts.BORDER_MAX_X / 2 - consts.BULLET_RADIUS
-      )
-    ) {
+    if (consts.BORDER_MAX_X < this.#position.x || this.#position.x < 0) {
       this.#angle = Math.PI - this.#angle;
     }
-    if (
-      !(
-        Math.abs(consts.BORDER_MAX_Y / 2 - this.#position.y) <
-        consts.BORDER_MAX_Y / 2 - consts.BULLET_RADIUS
-      )
-    ) {
+    if (consts.BORDER_MAX_Y < this.#position.y || this.#position.y < 0) {
       this.#angle = -this.#angle;
+    }
+    this.#position.x = Math.max(0, Math.min(this.#position.x, consts.BORDER_MAX_X - 0.0001));
+    this.#position.y = Math.max(0, Math.min(this.#position.y, consts.BORDER_MAX_Y - 0.0001));
+  }
+
+  checkMapCollision() {
+    let ll = Math.floor(this.#position.x / consts.obstacles[0].blockSize);
+    let uu = Math.floor(this.#position.y / consts.obstacles[0].blockSize);
+    let blockSize = consts.obstacles[0].blockSize;
+    if (consts.obstacles[0].map[ll][uu] == 1) {
+      //console.log(this.#position, "Before");
+      let xOrY = false;
+      if (
+        Math.min(
+          blockSize * (ll + 1) - (this.#position.x + consts.BULLET_RADIUS),
+          this.#position.x - consts.BULLET_RADIUS - blockSize * ll
+        ) <
+        Math.min(
+          blockSize * (uu + 1) - (this.#position.y + consts.BULLET_RADIUS),
+          this.#position.y - consts.BULLET_RADIUS - blockSize * uu
+        )
+      )
+        xOrY = true;
+      if (xOrY) {
+        this.#angle = Math.PI - this.#angle;
+        this.#position.x =
+          blockSize * (ll + 1) - this.#position.x < this.#position.x - blockSize * ll
+            ? blockSize * (ll + 1) + consts.BULLET_RADIUS
+            : blockSize * ll - consts.BULLET_RADIUS;
+      } else {
+        this.#angle = -this.#angle;
+        this.#position.y =
+          blockSize * (uu + 1) - this.#position.y < this.#position.y - blockSize * uu
+            ? blockSize * (uu + 1) + consts.BULLET_RADIUS
+            : blockSize * uu - consts.BULLET_RADIUS;
+      }
+      //console.log(this.#position, "After");
     }
   }
 

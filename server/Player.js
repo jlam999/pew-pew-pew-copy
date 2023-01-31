@@ -61,15 +61,32 @@ class Player {
     // mouse direction
     theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
-      this.#health--;
-      this.#bullets.push(
-        new Bullet(
-          this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta),
-          this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta),
-          theta,
-          this.#id
-        )
+      let ll = Math.floor(
+        (this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta)) /
+          consts.obstacles[0].blockSize
       );
+      let uu = Math.floor(
+        (this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta)) /
+          consts.obstacles[0].blockSize
+      );
+      let shit =
+        this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) > 0 &&
+        this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) <
+          consts.BORDER_MAX_X &&
+        this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) > 0 &&
+        this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) <
+          consts.BORDER_MAX_Y;
+      if (this.#health > 2 && shit && consts.obstacles[0].map[ll][uu] == 0) {
+        this.#health--;
+        this.#bullets.push(
+          new Bullet(
+            this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta),
+            this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta),
+            theta,
+            this.#id
+          )
+        );
+      }
     }
   }
 
@@ -94,27 +111,43 @@ class Player {
     }
     if (this.#directions.space === false && this.#bullets.length === 0) this.#speed.space = 0;
     this.#position = {
-      x: this.#position.x + (100 * (this.#speed.right - this.#speed.left)) / consts.MAX_SPEED,
-      y: this.#position.y + (100 * (this.#speed.down - this.#speed.up)) / consts.MAX_SPEED,
+      x:
+        this.#position.x +
+        (consts.MAX_SPEED_REL * (this.#speed.right - this.#speed.left)) / consts.MAX_SPEED,
+      y:
+        this.#position.y +
+        (consts.MAX_SPEED_REL * (this.#speed.down - this.#speed.up)) / consts.MAX_SPEED,
     };
     if (this.#position.x >= consts.BORDER_MAX_X - this.getRadius()) {
       this.#position.x = consts.BORDER_MAX_X - this.getRadius();
-      this.#speed.left = Math.min(this.#speed.right * 0.5 + this.#speed.left, consts.MAX_SPEED); //kickback
+      this.#speed.left = Math.min(
+        this.#speed.right * consts.kickback + this.#speed.left,
+        consts.MAX_SPEED
+      ); //kickback
       this.#speed.right = 0;
     }
     if (this.#position.x <= this.getRadius()) {
       this.#position.x = this.getRadius();
-      this.#speed.right = Math.min(this.#speed.left * 0.5 + this.#speed.right, consts.MAX_SPEED); //kickback
+      this.#speed.right = Math.min(
+        this.#speed.left * consts.kickback + this.#speed.right,
+        consts.MAX_SPEED
+      );
       this.#speed.left = 0;
     }
     if (this.#position.y <= this.getRadius()) {
       this.#position.y = this.getRadius();
-      this.#speed.down = Math.min(this.#speed.up * 0.5 + this.#speed.down, consts.MAX_SPEED); //kickback
+      this.#speed.down = Math.min(
+        this.#speed.up * consts.kickback + this.#speed.down,
+        consts.MAX_SPEED
+      );
       this.#speed.up = 0;
     }
     if (this.#position.y >= consts.BORDER_MAX_Y - this.getRadius()) {
       this.#position.y = consts.BORDER_MAX_Y - this.getRadius();
-      this.#speed.up = Math.min(this.#speed.down * 0.5 + this.#speed.up, consts.MAX_SPEED); //kickback
+      this.#speed.up = Math.min(
+        this.#speed.down * consts.kickback + this.#speed.up,
+        consts.MAX_SPEED
+      );
       this.#speed.down = 0;
     }
     this.#position.x = Math.max(
