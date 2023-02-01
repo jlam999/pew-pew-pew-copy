@@ -62,8 +62,12 @@ const Home = (props) => {
         type="video/mp4"
         className="Home-backgroundVid"
       />
-      <div className="Home-title">
-        <h1>Pew Pew Pew</h1>
+      <div>
+        <h1 className="Home-title">
+          <span className="Home-pew1">Pew </span>
+          <span className="Home-pew2">Pew </span>
+          <span className="Home-pew3">Pew</span>
+        </h1>
       </div>
       {props.userId ? (
         <div>
@@ -76,7 +80,7 @@ const Home = (props) => {
           <NewCodeInput onSubmit={enterLobby} /> {/*NEED TO CODE SUBISSION OF ROOM CODE*/}
         </div>
       ) : (
-        <h1>Please Login First!</h1>
+        <h1>Login to Play!</h1>
       )}
       <ProfileButton
         handleLogin={props.handleLogin}

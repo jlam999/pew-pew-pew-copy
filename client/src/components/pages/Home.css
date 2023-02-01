@@ -11,9 +11,9 @@
   --m: 16px;
   --l: 24px;
 
-  --textLarge: 48px;
-  --textMedium: 32px;
-  --textSmall: 24px;
+  --textLarge: 54px;
+  --textMedium: 40px;
+  --textSmall: 32px;
 }
 
 body {
@@ -43,9 +43,35 @@ body {
   width: 60%;
 }
 
+@keyframes expand {
+  from {
+    font-size: 4px;
+    min-width: 20px;
+  }
+  to {
+    font-size: 100px;
+    min-width: 480px;
+  }
+}
+
 .Home-title {
   font-size: var(--textLarge);
   min-width: 480px;
+}
+
+.Home-pew1 {
+  animation-duration: 1s;
+  animation-name: expand;
+}
+
+.Home-pew2 {
+  animation-duration: 2s;
+  animation-name: expand;
+}
+
+.Home-pew3 {
+  animation-duration: 3s;
+  animation-name: expand;
 }
 
 .Home-buttonContainer {
