@@ -11,9 +11,11 @@
   --m: 16px;
   --l: 24px;
 
-  --textLarge: 54px;
+  --textLarge: 100px;
   --textMedium: 40px;
   --textSmall: 32px;
+
+  --textTitle: 20vh;
 }
 
 body {
@@ -39,39 +41,80 @@ body {
 
 .Home-titleContainer {
   max-width: 640px;
-  margin: auto;
+  margin: 48px auto;
   width: 60%;
 }
 
-@keyframes expand {
-  from {
-    font-size: 4px;
+@keyframes expand1 {
+  0% {
+    font-size: 2px;
+  }
+  40% {
+    font-size: 2px;
+  }
+  70% {
+    font-size: calc(var(--textLarge) + 8px);
+  }
+  100% {
+    font-size: var(--textLarge);
+  }
+}
+
+@keyframes expand2 {
+  0% {
+    font-size: 2px;
     min-width: 20px;
   }
-  to {
-    font-size: 100px;
+  50% {
+    font-size: 2px;
+    min-width: 20px;
+  }
+  80% {
+    font-size: calc(var(--textLarge) + 8px);
+  }
+  100% {
+    font-size: var(--textLarge);
     min-width: 480px;
   }
 }
 
-.Home-title {
-  font-size: var(--textLarge);
-  min-width: 480px;
+@keyframes expand3 {
+  0% {
+    font-size: 2px;
+    min-width: 20px;
+  }
+  60% {
+    font-size: 2px;
+    min-width: 20px;
+  }
+  90% {
+    font-size: calc(var(--textLarge) + 8px);
+  }
+  100% {
+    font-size: var(--textLarge);
+    min-width: 480px;
+  }
 }
 
 .Home-pew1 {
   animation-duration: 1s;
-  animation-name: expand;
+  animation-name: expand1;
+  font-size: var(--textLarge);
+  min-width: 480px;
 }
 
 .Home-pew2 {
-  animation-duration: 2s;
-  animation-name: expand;
+  animation-duration: 1s;
+  animation-name: expand2;
+  font-size: var(--textLarge);
+  min-width: 480px;
 }
 
 .Home-pew3 {
-  animation-duration: 3s;
-  animation-name: expand;
+  animation-duration: 1s;
+  animation-name: expand3;
+  font-size: var(--textLarge);
+  min-width: 480px;
 }
 
 .Home-buttonContainer {

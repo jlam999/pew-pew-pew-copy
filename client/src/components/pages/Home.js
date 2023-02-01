@@ -66,7 +66,7 @@ const Home = (props) => {
         <h1 className="Home-title">
           <span className="Home-pew1">Pew </span>
           <span className="Home-pew2">Pew </span>
-          <span className="Home-pew3">Pew</span>
+          <span className="Home-pew3">Pew </span>
         </h1>
       </div>
       {props.userId ? (
