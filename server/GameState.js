@@ -53,7 +53,7 @@ class GameState {
       init_position.y,
       id,
       name,
-      consts.playerColors[numPlayers]
+      numPlayers //index of color array.
     );
     this.players[id] = newPlayer;
   }
