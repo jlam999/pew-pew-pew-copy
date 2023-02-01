@@ -29,10 +29,16 @@ const Lobby = (props) => {
       };
       socket.on("start game", bringToGame);
 
-      const updateLobby = (lobbyList) => {
-        setPlayerList(lobbyList);
-        for (let i = 0; i < lobbyList.length; i++) {
-          drawPlayer(lobbyList[i], i);
+      const updateLobby = (newLobbyList) => {
+        // const emptyArray = [];
+        // for (let j = 0; j < 4-lobbyList.length; j++) {
+        //   emptyArray.push(undefined)
+        // }
+        // const newLobbyList = lobbyList.concat(emptyArray)
+        setPlayerList(newLobbyList);
+        for (let i = 0; i < 4; i++) {
+          console.log(newLobbyList[i])
+          drawPlayer(newLobbyList[i], i);
         }
       };
 
@@ -45,6 +51,7 @@ const Lobby = (props) => {
         } else {
           setPlayerList(lobbyList);
           for (let i = 0; i < lobbyList.length; i++) {
+            console.log(lobbyList[i])
             drawPlayer(lobbyList[i], i);
           }
         }
@@ -77,7 +84,7 @@ const Lobby = (props) => {
           <h1 className="Lobby-title">Game Lobby</h1>
           <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
           {playerList.map((player) => (
-            <PlayerBox key={player.googleid} player={player} />
+            <PlayerBox player={player}/>
           ))}
           {playerList.length < 2 ? (
             <div className="Lobby-waitButton">
