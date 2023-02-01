@@ -18,3 +18,6 @@ We hope you enjoy!
 
 ## Website Link
 To navigate to the deployed version of the website, use this link: https://pew-pew-pew-deploy.herokuapp.com/
+
+## Libraries used
+To construct this website, we used a variety of tools. Most notably, we used React.js (including Google OAuth) on the frontend and Express.js on the backend. MongoDB is the database we used to store all user and stats information. For fast bidirectional client and server communication, we used Websockets (Socket.io).
