@@ -43,7 +43,7 @@ const Home = (props) => {
 
   // let videoSource = "./video1.mp4";
   useEffect(() => {
-    const picker = Math.floor(Math.random() * 6) + 1;
+    const picker = Math.floor(Math.random() * 9) + 1;
     const url = "./video" + picker + ".mp4";
     setVideoSource(url);
     setInterval(() => {
