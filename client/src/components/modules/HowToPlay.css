@@ -11,6 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .HowToPlay-Box {
@@ -22,6 +23,11 @@
   border-style: solid;
   border-radius: 8px;
   border-width: 4px;
+}
+
+.HowToPlay-Text {
+  white-space: nowrap;
+  margin: 0px;
 }
 
 input[type="checkbox"] {
@@ -59,4 +65,10 @@ input[type="checkbox"]:checked ~ .HowToPlay-Label {
   font-size: 40px;
   background-color: #555555;
   border-radius: 8px 0px 0px 8px;
+}
+
+@media (max-height: 600px) {
+  #HowToPlay-Menu {
+    height: 600px;
+  }
 }

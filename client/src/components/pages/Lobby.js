@@ -82,20 +82,22 @@ const Lobby = (props) => {
           <HowToPlay />
           <div>
             <BackButton className="BackButton-container" />
-            <h1 className="Lobby-title">Game Lobby</h1>
-            <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
-            {playerList.map((player) => (
-              <PlayerBox key={player.googleid} player={player} />
-            ))}
-            {playerList.length < 2 ? (
-              <div className="Lobby-waitButton">
-                <p className="Lobby-waitText">Waiting...</p>
-              </div>
-            ) : (
-              <button className="Lobby-startButton" onClick={attemptGameStart}>
-                Start Game
-              </button>
-            )}
+            <div className="Lobby-centerText">
+              <h1 className="Lobby-title">Game Lobby</h1>
+              <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
+              {playerList.map((player) => (
+                <PlayerBox key={player.googleid} player={player} />
+              ))}
+              {playerList.length < 2 ? (
+                <div className="Lobby-waitButton">
+                  <p className="Lobby-waitText">Waiting...</p>
+                </div>
+              ) : (
+                <button className="Lobby-startButton" onClick={attemptGameStart}>
+                  Start Game
+                </button>
+              )}
+            </div>
           </div>
         </div>
       ) : (

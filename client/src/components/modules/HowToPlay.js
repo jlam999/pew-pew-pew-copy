@@ -9,7 +9,7 @@ const HowToPlay = () => {
     <div>
       <input type="checkbox" id="openSidebar" />
       <label className="HowToPlay-Label" for="openSidebar">
-        How To Play
+        <p className="HowToPlay-Text">How To Play</p>
       </label>
       <div id="HowToPlay-Menu">
         <div className="HowToPlay-Box">Use WASD or Arrow Keys to move</div>
