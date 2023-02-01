@@ -43,6 +43,9 @@ const Home = (props) => {
 
   // let videoSource = "./video1.mp4";
   useEffect(() => {
+    const picker = Math.floor(Math.random() * 6) + 1;
+    const url = "./video" + picker + ".mp4";
+    setVideoSource(url);
     setInterval(() => {
       const picker = Math.floor(Math.random() * 6) + 1;
       const url = "./video" + picker + ".mp4";
@@ -52,21 +55,23 @@ const Home = (props) => {
 
   return (
     <div className="Home-titleContainer">
-      <video autoPlay loop muted src={videoSource} type="video/mp4" className="Home-backgroundVid">
-        {/* <source src={videoSource}  */}
-      </video>
+      <video autoPlay loop muted src={videoSource} type="video/mp4" className="Home-backgroundVid"/>
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
-      {/* <Link to="/lobby"> */}
-      <button className="Home-buttonContainer" onClick={createNewLobby}>
-        <h3 className="Home-buttonText">Create a Game</h3>
-      </button>
-      {/* </Link> */}
-      <div>
-        <h4>OR</h4>
+      {props.userId ? (
+        <div> 
+          <button className="Home-buttonContainer" onClick={createNewLobby}>
+            <h3 className="Home-buttonText">Create a Game</h3>
+          </button>
+          <div>
+            <h4>OR</h4>
+          </div>
+        <NewCodeInput onSubmit={enterLobby} /> {/*NEED TO CODE SUBISSION OF ROOM CODE*/}
       </div>
-      <NewCodeInput onSubmit={enterLobby} /> {/*NEED TO CODE SUBISSION OF ROOM CODE*/}
+      )   :   (
+        <h1>Please Login First!</h1>
+      )}
       <ProfileButton
         handleLogin={props.handleLogin}
         handleLogout={props.handleLogout}
