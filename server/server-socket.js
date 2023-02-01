@@ -1,8 +1,6 @@
 const { reset } = require("nodemon");
 const socket = require("socket.io-client/lib/socket");
-//const gameLogic = require("./game-logic");
 const GameState = require("./GameState");
-const { remove } = require("./models/user");
 
 const FPS = 60;
 
@@ -55,7 +53,6 @@ const startRunningGame = () => {
       emitted = false;
       if (gameState.isActive) {
         if (gameState.frame_count > FPS && !usersAreConnected(gameState)) {
-          console.log("all players left");
           gameState.reset();
         }
         if (gameState.winner !== null) {
@@ -99,10 +96,6 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   userToCodeMap[user.googleid] = roomCode;
   const lobbyPlayers = codeToLobbyMap[roomCode];
   let emptyArray = [];
-  // console.log("code", JSON.stringify(roomCode));
-  // console.log(codeToLobbyMap);
-  // console.log("Players: ", lobbyPlayers);
-  // console.log(codeToGameMap);
   for (let player of lobbyPlayers) {
     if (player.googleid === user.googleid) {
       // for (let j = 0; j < 4-lobbyPlayers.size; j++) {
@@ -117,15 +110,14 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
     } else {
       lobbyPlayers.push({ name: user.name, googleid: user.googleid });
       socket.join(roomCode, function () {
-        console.log("Joined", roomCode);
-        console.log("rooms: ", socket.rooms);
+        // console.log("Joined", roomCode);
+        // console.log("rooms: ", socket.rooms);
       });
     }
   }
   for (let j = 0; j < 4 - lobbyPlayers.length; j++) {
     emptyArray.push(undefined);
   }
-  //console.log([...lobbyPlayers].concat(emptyArray));
   io.to(roomCode).emit("lobby", [...lobbyPlayers].concat(emptyArray));
   return [...lobbyPlayers].concat(emptyArray);
 };
@@ -135,9 +127,8 @@ const removePlayerFromLobby = (user, socket, roomCode) => {
   lobbyPlayers = lobbyPlayers.filter((player) => {
     if (user.googleid === player.googleid) {
       delete userToCodeMap[user.googleid];
-      console.log("delete roomCode");
       socket.leave(roomCode, function () {
-        console.log("Left", roomCode);
+        //console.log("Left", roomCode);
       });
       return false;
     }
@@ -160,10 +151,9 @@ const addUserToGame = (user, socket, code) => {
     codeToGameMap[code].addPlayer(user.googleid, user.name);
     userToCodeMap[user.googleid] = code;
     socket.join(code, () => {
-      console.log("Joined Game", code);
-      console.log("rooms: ", socket.rooms);
+      // console.log("Joined Game", code);
+      // console.log("rooms: ", socket.rooms);
     });
-    //console.log(String(user.googleid) + " has been added to the game. Code: " + String(code));
   }
 };
 
@@ -172,16 +162,14 @@ const removeUserFromGame = (user, socket) => {
   if (code !== undefined && Object.keys(codeToGameMap[code].players).includes(user.googleid)) {
     codeToGameMap[code].removePlayer(user.googleid);
     socket.leave(code, () => {
-      console.log("Left Game", code);
+      //console.log("Left Game", code);
     });
     delete userToCodeMap[user.googleid];
-    //console.log(String(user.googleid) + " has been removed to the game. Code: " + String(code));
   }
 };
 
 const startGame = (code) => {
   codeToGameMap[code].startGame();
-  //console.log("Game Started");
   io.to(code).emit("start game");
 };
 
@@ -229,16 +217,12 @@ module.exports = {
       });
       socket.on("move", (dir) => {
         const user = getUserFromSocketID(socket.id);
-        //console.log("after move attempt:", userToCodeMap);
         const roomCode = getCodeFromUserID(user.googleid);
-        //console.log("code:", roomCode);
         if (user) codeToGameMap[roomCode].movePlayer(user.googleid, dir);
       });
       socket.on("shoot", (position) => {
         const user = getUserFromSocketID(socket.id);
-        //console.log("after shoot attempet:", userToCodeMap);
         const roomCode = getCodeFromUserID(user.googleid);
-        //console.log("code:", roomCode);
         if (user) codeToGameMap[roomCode].playerShoot(user.googleid, position);
       });
     });

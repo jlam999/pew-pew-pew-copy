@@ -68,7 +68,6 @@ router.post("/addGameStats", (req, res) => {
     stats.games++;
     stats.wins += req.body.win;
     stats.kills += req.body.kills;
-    console.log(String(req.body.kills) + " kills added");
     stats.save();
   });
 });
@@ -81,8 +80,6 @@ router.get("/roomCodeExists", (req, res) => {
 router.get("/getUserRoomCode", (req, res) => {
   if (req.user) {
     const code = socketManager.getCodeFromUserID(String(req.user.googleid));
-    // console.log(req.user.googleid);
-    // console.log(code);
     res.send(JSON.stringify(code));
   }
 });
@@ -120,7 +117,6 @@ router.post("/startGame", (req, res) => {
 router.get("/joinLobby", async (req, res) => {
   if (req.user && socketManager.getUserFromSocketID(req.query.socketid) !== undefined) {
     if (socketManager.getAllRoomCodes().includes(req.query.roomCode)) {
-      console.log("api join lobby called.");
       const lobbyPlayers = await socketManager.addPlayerToLobby(
         req.user,
         socketManager.getSocketFromSocketID(req.query.socketid),
@@ -129,7 +125,6 @@ router.get("/joinLobby", async (req, res) => {
       if (lobbyPlayers === "Lobby is full.") {
         res.send([0, 0, 0, 0, 0]);
       } else {
-        console.log("thingy", lobbyPlayers);
         res.send([...lobbyPlayers]);
       }
     } else {

@@ -194,8 +194,6 @@ class Player {
 
   incrementKills() {
     this.#kills++;
-    console.log("player " + String(this.#id) + " just got a kill.");
-    console.log("they now have " + String(this.#kills) + " kills.");
   }
 
   boostHealth() {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Router, useNavigate } from "@reach/router";
+import { Router } from "@reach/router";
 import jwt_decode from "jwt-decode";
 import { socket } from "../client-socket.js";
 
@@ -29,7 +29,6 @@ const App = () => {
     });
 
     get("/api/getUserRoomCode").then((code) => {
-      console.log(" I HAVE A FUCKING CODE", code);
       if (code !== "undefined") {
         setRoomCode(code);
       }

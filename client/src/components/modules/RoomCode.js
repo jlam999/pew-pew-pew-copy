@@ -16,7 +16,6 @@ const NewCodeInput = (props) => {
     setRoomCode(event.target.value);
   };
   const handleSubmit = (event) => {
-    console.log(roomCode)
     event.preventDefault();
     props.onSubmit(roomCode);
   };

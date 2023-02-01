@@ -1,8 +1,7 @@
-import { Redirect, Link, useNavigate } from "@reach/router";
+import { Link, useNavigate } from "@reach/router";
 import React, { useState, useEffect } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities.js";
-import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
 import NoRoomCode from "./NoRoomCode.js";
 
@@ -37,7 +36,6 @@ const Lobby = (props) => {
       const updateLobby = (newLobbyList) => {
         setPlayerList(newLobbyList);
         for (let i = 0; i < 4; i++) {
-          //console.log(newLobbyList[i])
           drawPlayer(newLobbyList[i], i);
         }
       };
@@ -51,14 +49,12 @@ const Lobby = (props) => {
         } else {
           setPlayerList(lobbyList);
           for (let i = 0; i < lobbyList.length; i++) {
-            console.log(lobbyList[i]);
             drawPlayer(lobbyList[i], i);
           }
         }
       });
 
       return () => {
-        console.log("dismounting Lobby");
         get("/api/leaveLobby", { socketid: socket.id, roomCode: props.roomCode });
         socket.off("start game", bringToGame);
         socket.off("lobby", updateLobby);

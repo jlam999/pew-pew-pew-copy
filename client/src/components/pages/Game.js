@@ -29,7 +29,6 @@ const Game = (props) => {
     }
     // remove event listener on unmount
     return () => {
-      console.log("dismounting");
       post("/api/despawn", { userid: props.userId, socketid: socket.id });
       window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("keydown", handleKeyDown);
@@ -70,7 +69,9 @@ const Game = (props) => {
     };
     const lobbyLink = (
       <Link to="/lobby">
-        <button onClick={leaveAfterGameOver} className="returnHome">Return Home</button>
+        <button onClick={leaveAfterGameOver} className="returnHome">
+          Return Home
+        </button>
       </Link>
     );
 
