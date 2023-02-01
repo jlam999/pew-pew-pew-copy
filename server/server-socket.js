@@ -120,7 +120,7 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   for (let j = 0; j < 4 - lobbyPlayers.size; j++) {
     emptyArray.push(undefined);
   }
-  console.log([...lobbyPlayers].concat(emptyArray));
+  //console.log([...lobbyPlayers].concat(emptyArray));
   io.to(roomCode).emit("lobby", [...lobbyPlayers].concat(emptyArray));
   return [...lobbyPlayers].concat(emptyArray);
 };
