@@ -6,9 +6,8 @@ const PlayerBox = (props) => {
     // drawPlayer(props);
     return (
         <section>
-            {(props.player === undefined) ? (
+            {(props.player === null) ? (
                 <div className="emptyContainer">
-                    {/* <canvas id={"emptySlot"+props.playerNum} width={50} height={50} className="playerAvatar"/> */}
                     <div className="emptySlot">Empty Slot</div>
                 </div>
             )   :   (

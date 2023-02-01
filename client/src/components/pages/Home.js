@@ -26,7 +26,7 @@ const Home = (props) => {
 
   const createNewLobby = async () => {
     const code = await props.createLobby();
-    await get("/api/joinLobby", { socketid: socket.id, roomCode: code });
+    // await get("/api/joinLobby", { socketid: socket.id, roomCode: code });
     navigate(`/lobby`);
   };
 
