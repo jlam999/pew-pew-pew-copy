@@ -2,16 +2,16 @@
 
 .googleLoginButton {
   position: absolute;
-  right: 24px;
-  top: 120px;
+  right: 36px;
+  top: 150px;
 }
 
 .profileImgButton {
   position: absolute;
   right: 40px;
   top: 40px;
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
 }
 
@@ -19,8 +19,8 @@
   position: relative;
   right: 8px;
   bottom: 3px;
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
 }
 
@@ -43,12 +43,12 @@
 @media (max-width: 800px) {
   .googleLoginButton {
     position: fixed;
-    left: 680px;
-    top: 120px;
+    left: 664px;
+    top: 150px;
   }
   .profileImgButton {
     position: fixed;
-    left: 696px;
+    left: 664px;
     top: 40px;
   }
 }
