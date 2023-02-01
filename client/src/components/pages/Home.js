@@ -50,7 +50,7 @@ const Home = (props) => {
       const picker = Math.floor(Math.random() * 6) + 1;
       const url = "./video" + picker + ".mp4";
       setVideoSource(url);
-    }, 10000);
+    }, 15000);
   }, [videoSource]);
 
   return (
