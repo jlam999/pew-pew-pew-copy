@@ -35,11 +35,6 @@ const Lobby = (props) => {
       socket.on("start game", bringToGame);
 
       const updateLobby = (newLobbyList) => {
-        // const emptyArray = [];
-        // for (let j = 0; j < 4-lobbyList.length; j++) {
-        //   emptyArray.push(undefined)
-        // }
-        // const newLobbyList = lobbyList.concat(emptyArray)
         setPlayerList(newLobbyList);
         for (let i = 0; i < 4; i++) {
           //console.log(newLobbyList[i])
