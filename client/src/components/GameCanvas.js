@@ -61,16 +61,16 @@ const draw = (gameState, userId) => {
   ctx.fill();
   ctx.closePath();
 
-  // const gradient = ctx.createLinearGradient(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  const gradient = ctx.createLinearGradient(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
-  // // Add three color stops
-  // gradient.addColorStop(0, "#334455");
-  // gradient.addColorStop(0.5, "#334477");
-  // gradient.addColorStop(1, "#334499");
+  // Add three color stops
+  gradient.addColorStop(0, "#334455");
+  gradient.addColorStop(0.5, "#334477");
+  gradient.addColorStop(1, "#334499");
 
   // Set the fill style and draw a rectangle
-  ctx.fillStyle = "#383A31";
-  ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
   ctx.fillStyle = "#383A31";
   ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
@@ -147,13 +147,13 @@ const draw = (gameState, userId) => {
       ctx.beginPath();
       //ctx.rect(player.position.x-player.radius, player.position.y-player.radius, 2*player.radius, 2*player.radius);
       ctx.arc(player.position.x - X, player.position.y - Y, player.radius, 0, 2 * Math.PI, true);
-      ctx.fillStyle = consts.canvasPlayerColors[player.colorid]; //consts.playerColors[i]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
+      ctx.fillStyle = consts.canvasPlayerColors[player.colorid]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
       ctx.fill();
       ctx.closePath();
       for (let bullet of player.bullets) {
         ctx.beginPath();
         ctx.arc(bullet.position.x - X, bullet.position.y - Y, bullet.radius, 0, 2 * Math.PI, true);
-        ctx.fillStyle = consts.rawPlayerColors[player.colorid]; //consts.playerColors[i];
+        ctx.fillStyle = consts.rawPlayerColors[player.colorid];
         ctx.fill();
         ctx.closePath();
       }
