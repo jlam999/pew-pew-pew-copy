@@ -2,32 +2,38 @@
   "BULLET_RADIUS" : 5,
   "BULLET_DAMAGE": 5,
   "POWER_UP_RADIUS": 15,
-  "BORDER_MAX_X": 800,
-  "BORDER_MAX_Y": 800,
+  "BORDER_MAX_X": 1000,
+  "BORDER_MAX_Y": 1000,
   "MAX_SPEED": 1000,
+  "MAX_SPEED_REL": 100,
   "INIT_HEALTH": 100,
   "SPAWN_DIFF": 150,
   "rawPlayerColors": ["#FE4133", "#3066BE", "#76CE3B", "#FOE142"],
   "canvasPlayerColors": ["rgba(235, 22, 0, 0.75)",  "rgba(0, 51, 168, 0.75)", "rgba(72, 190, 0, 0.75)", "rgba(235, 215, 3, 0.75)"],
   "newBlack": "#272822",
+  "newBlackTrans": "rgba(39, 40, 34, 0.0)",
   "obstacles": [
     {
-      "blockSize": 80,
+      "blockSize": 100,
       "map": [
-        [0,1,0,0,0,1,0,0,0,0],
-        [0,1,0,0,0,1,0,0,0,0],
-        [0,1,1,0,0,1,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0],
+        [0,0,0,0,0,1,0,0,0,0],
         [0,1,1,1,0,1,0,0,0,0],
         [0,1,1,1,0,1,0,0,0,0],
         [0,0,1,1,1,1,0,0,0,1],
         [0,1,0,0,0,1,0,0,1,1],
-        [0,1,0,0,0,1,0,1,1,1],
-        [0,1,0,0,0,1,1,1,1,1],
-        [0,1,1,1,1,1,1,1,1,1]
+        [0,1,0,0,0,1,0,0,0,0],
+        [0,1,0,0,0,0,0,0,0,0],
+        [0,1,1,1,1,0,0,0,0,0]
       ]
     }
   ],
-  "collisionError": 10,
+  "collisionError": 5,
+  "bulletSpeed": 15,
   "bulletFriction": 0.97,
-  "shadowFactor": 25
+  "shadowFactor": 25,
+  "kickback": 0.5,
+  "innerFog": 400,
+  "outerFog": 600
 }

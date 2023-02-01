@@ -6,7 +6,7 @@
   height: 64px;
   border-radius: 16px;
   font-size: 32px;
-  text-align: center;
+  text-align: left;
   margin: auto;
   margin-top: 8px;
 }
@@ -14,6 +14,7 @@
 .emptySlot {
   position: relative;
   top: 12px;
+  left: 72px;
 }
 
 .playerContainer {

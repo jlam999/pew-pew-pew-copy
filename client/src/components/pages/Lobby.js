@@ -6,7 +6,12 @@ import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
 import NoRoomCode from "./NoRoomCode.js";
 
+import HowToPlay from "../modules/HowToPlay.js";
+import BackButton from "../modules/BackButton.js";
+
 import "./Lobby.css";
+import "../../utilities.css";
+import "../modules/BackButton.css";
 
 const Lobby = (props) => {
   const navigate = useNavigate();
@@ -29,10 +34,16 @@ const Lobby = (props) => {
       };
       socket.on("start game", bringToGame);
 
-      const updateLobby = (lobbyList) => {
-        setPlayerList(lobbyList);
-        for (let i = 0; i < lobbyList.length; i++) {
-          drawPlayer(lobbyList[i], i);
+      const updateLobby = (newLobbyList) => {
+        // const emptyArray = [];
+        // for (let j = 0; j < 4-lobbyList.length; j++) {
+        //   emptyArray.push(undefined)
+        // }
+        // const newLobbyList = lobbyList.concat(emptyArray)
+        setPlayerList(newLobbyList);
+        for (let i = 0; i < 4; i++) {
+          console.log(newLobbyList[i])
+          drawPlayer(newLobbyList[i], i);
         }
       };
 
@@ -45,6 +56,7 @@ const Lobby = (props) => {
         } else {
           setPlayerList(lobbyList);
           for (let i = 0; i < lobbyList.length; i++) {
+            console.log(lobbyList[i])
             drawPlayer(lobbyList[i], i);
           }
         }
@@ -60,11 +72,10 @@ const Lobby = (props) => {
   }, [props.roomCode]);
 
   const attemptGameStart = () => {
+
     get("/api/gameState", { code: props.roomCode }).then((gameState) => {
       if (gameState.isActive) {
         alert("Game in Session; Cannot Join.");
-      } else if (playerList.length < 2) {
-        alert("Not enough players!");
       } else {
         post("/api/startGame", { code: props.roomCode });
       }
@@ -73,22 +84,28 @@ const Lobby = (props) => {
   return (
     <>
       {props.roomCode !== null ? (
-        <>
-          <h1 className="Lobby-title">Game Lobby</h1>
-          <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
-          {playerList.map((player) => (
-            <PlayerBox key={player.googleid} player={player} />
-          ))}
-          {playerList.length < 2 ? (
-            <div className="Lobby-waitButton">
-              <p className="Lobby-waitText">Waiting...</p>
+        <div className="Lobby-all">
+          <HowToPlay />
+          <div>
+            <BackButton className="BackButton-container" />
+            <div className="Lobby-centerText">
+              <h1 className="Lobby-title">Game Lobby</h1>
+              <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
+              {playerList.map((player) => (
+                <PlayerBox player={player}/>
+              ))}
+              {playerList.filter((player) => {return player !== null}).length < 2 ? (
+                <div className="Lobby-waitButton">
+                  <p className="Lobby-waitText">Waiting...</p>
+                </div>
+              ) : (
+                <button className="Lobby-startButton" onClick={attemptGameStart}>
+                  Start Game
+                </button>
+              )}
             </div>
-          ) : (
-            <button className="Lobby-startButton" onClick={attemptGameStart}>
-              Start Game
-            </button>
-          )}
-        </>
+          </div>
+        </div>
       ) : (
         <NoRoomCode />
       )}
