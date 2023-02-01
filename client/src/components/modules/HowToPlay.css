@@ -24,6 +24,7 @@
   border-style: solid;
   border-radius: 8px;
   border-width: 4px;
+  z-index: 1;
 }
 
 .HowToPlay-Text {
@@ -72,6 +73,7 @@ input[type="checkbox"]:checked ~ .HowToPlay-Label {
   font-size: 40px;
   background-color: #555555;
   border-radius: 8px 0px 0px 8px;
+  z-index: 1;
 }
 
 .demoVid1 {

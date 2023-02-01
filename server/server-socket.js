@@ -52,6 +52,7 @@ const addPowerUps = (gameState) => {
 const startRunningGame = () => {
   setInterval(() => {
     Object.values(codeToGameMap).forEach((gameState) => {
+      emitted = false;
       if (gameState.isActive) {
         if (gameState.frame_count > FPS && !usersAreConnected(gameState)) {
           console.log("all players left");
@@ -60,7 +61,7 @@ const startRunningGame = () => {
         if (gameState.winner !== null) {
           if (gameState.win_frame === undefined) {
             gameState.win_frame = gameState.frame_count;
-          } else if (gameState.frame_count - gameState.win_frame > FPS * 10) {
+          } else if (gameState.frame_count - gameState.win_frame === FPS * 10) {
             io.emit("end game", gameState.packageGameState());
           }
         }
