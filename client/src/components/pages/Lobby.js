@@ -6,7 +6,12 @@ import { handleKeyDown, handleKeyUp, handleClick } from "../../input.js";
 import PlayerBox, { drawPlayer } from "../modules/PlayerBox.js";
 import NoRoomCode from "./NoRoomCode.js";
 
+import HowToPlay from "../modules/HowToPlay.js";
+import BackButton from "../modules/BackButton.js";
+
 import "./Lobby.css";
+import "../../utilities.css";
+import "../modules/BackButton.css";
 
 const Lobby = (props) => {
   const navigate = useNavigate();
@@ -80,22 +85,28 @@ const Lobby = (props) => {
   return (
     <>
       {props.roomCode !== null ? (
-        <>
-          <h1 className="Lobby-title">Game Lobby</h1>
-          <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
-          {playerList.map((player) => (
-            <PlayerBox player={player}/>
-          ))}
-          {playerList.length < 2 ? (
-            <div className="Lobby-waitButton">
-              <p className="Lobby-waitText">Waiting...</p>
+        <div className="Lobby-all">
+          <HowToPlay />
+          <div>
+            <BackButton className="BackButton-container" />
+            <div className="Lobby-centerText">
+              <h1 className="Lobby-title">Game Lobby</h1>
+              <h2 className="Lobby-code">Code: {props.roomCode}</h2>{" "}
+              {playerList.map((player) => (
+                <PlayerBox player={player}/>
+              ))}
+              {playerList.length < 2 ? (
+                <div className="Lobby-waitButton">
+                  <p className="Lobby-waitText">Waiting...</p>
+                </div>
+              ) : (
+                <button className="Lobby-startButton" onClick={attemptGameStart}>
+                  Start Game
+                </button>
+              )}
             </div>
-          ) : (
-            <button className="Lobby-startButton" onClick={attemptGameStart}>
-              Start Game
-            </button>
-          )}
-        </>
+          </div>
+        </div>
       ) : (
         <NoRoomCode />
       )}

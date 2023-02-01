@@ -6,6 +6,13 @@
   font-size: 48px;
 }
 
+.Lobby-all {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
 .Lobby-waitButton {
   margin: auto;
   position: relative;
@@ -36,4 +43,13 @@
   color: var(--primaryText);
   border-radius: 32px;
   text-align: center;
+}
+
+@media (max-width: 800px) {
+  .Lobby-centerText {
+    position: fixed;
+    left: 160px;
+    width: 480px;
+    z-index: -1;
+  }
 }
