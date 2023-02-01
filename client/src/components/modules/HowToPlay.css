@@ -76,6 +76,10 @@ input[type="checkbox"]:checked ~ .HowToPlay-Label {
   z-index: 1;
 }
 
+.HowToPlay-Label:hover {
+  opacity: 0.7;
+}
+
 .demoVid1 {
   position: relative;
   top: 5%;
@@ -94,12 +98,3 @@ input[type="checkbox"]:checked ~ .HowToPlay-Label {
     margin: 4px;
   }
 }
-/* 
-@media (min-height: 720px) {
-  #HowToPlay-Menu {
-    height: 720px;
-  }
-  .HowToPlay-Box {
-    height: 180px;
-  }
-} */
