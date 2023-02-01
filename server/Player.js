@@ -61,14 +61,14 @@ class Player {
     // mouse direction
     theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
-      let ll = Math.floor(
-        (this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta)) /
-          consts.obstacles[0].blockSize
-      );
-      let uu = Math.floor(
-        (this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta)) /
-          consts.obstacles[0].blockSize
-      );
+      // let ll = Math.floor(
+      //   (this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta)) /
+      //     consts.obstacles[0].blockSize
+      // );
+      // let uu = Math.floor(
+      //   (this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta)) /
+      //     consts.obstacles[0].blockSize
+      // );
       let shit =
         this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) > 0 &&
         this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) <
