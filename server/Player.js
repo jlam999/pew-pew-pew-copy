@@ -76,7 +76,7 @@ class Player {
         this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) > 0 &&
         this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) <
           consts.BORDER_MAX_Y;
-      if (this.#health > 2 && shit && consts.obstacles[0].map[ll][uu] == 0) {
+      if (this.#health > 2 && shit) {
         this.#health--;
         this.#bullets.push(
           new Bullet(
