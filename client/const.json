@@ -8,7 +8,7 @@
   "MAX_SPEED_REL": 100,
   "INIT_HEALTH": 100,
   "SPAWN_DIFF": 150,
-  "rawPlayerColors": ["#FE4133", "#3066BE", "#76CE3B", "#FOE142"],
+  "rawPlayerColors": ["#FE4133", "#3066BE", "#76CE3B", "#F0E142"],
   "canvasPlayerColors": ["rgba(235, 22, 0, 0.75)",  "rgba(0, 51, 168, 0.75)", "rgba(72, 190, 0, 0.75)", "rgba(235, 215, 3, 0.75)"],
   "newBlack": "#272822",
   "newBlackTrans": "rgba(39, 40, 34, 0.0)",

@@ -111,11 +111,15 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
     }
   }
   if (!alreadyAdded) {
-    lobbyPlayers.add({ name: user.name, googleid: user.googleid });
-    socket.join(roomCode, function () {
-      console.log("Joined", roomCode);
-      console.log("rooms: ", socket.rooms);
-    });
+    if (lobbyPlayers.size === 4) {
+      return "Lobby is full.";
+    } else {
+      lobbyPlayers.add({ name: user.name, googleid: user.googleid });
+      socket.join(roomCode, function () {
+        console.log("Joined", roomCode);
+        console.log("rooms: ", socket.rooms);
+      });
+    }
   }
   for (let j = 0; j < 4 - lobbyPlayers.size; j++) {
     emptyArray.push(undefined);

@@ -31,9 +31,8 @@ const Home = (props) => {
   };
 
   const enterLobby = async (code) => {
-    const response = await get("/api/joinLobby", { socketid: socket.id, roomCode: code });
-    console.log(JSON.stringify(response));
-    if (JSON.stringify(response) !== "{}") {
+    const response = await get("/api/roomCodeExists", { code: code });
+    if (response.ans) {
       await props.joinLobby(code);
       navigate(`/lobby`);
     } else {
@@ -55,21 +54,28 @@ const Home = (props) => {
 
   return (
     <div className="Home-titleContainer">
-      <video autoPlay loop muted src={videoSource} type="video/mp4" className="Home-backgroundVid"/>
+      <video
+        autoPlay
+        loop
+        muted
+        src={videoSource}
+        type="video/mp4"
+        className="Home-backgroundVid"
+      />
       <div className="Home-title">
         <h1>Pew Pew Pew</h1>
       </div>
       {props.userId ? (
-        <div> 
+        <div>
           <button className="Home-buttonContainer" onClick={createNewLobby}>
             <h3 className="Home-buttonText">Create a Game</h3>
           </button>
           <div>
             <h4>OR</h4>
           </div>
-        <NewCodeInput onSubmit={enterLobby} /> {/*NEED TO CODE SUBISSION OF ROOM CODE*/}
-      </div>
-      )   :   (
+          <NewCodeInput onSubmit={enterLobby} /> {/*NEED TO CODE SUBISSION OF ROOM CODE*/}
+        </div>
+      ) : (
         <h1>Please Login First!</h1>
       )}
       <ProfileButton
