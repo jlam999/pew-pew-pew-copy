@@ -89,7 +89,7 @@ const createLobby = (user, socket) => {
     code += char;
   }
   codeToGameMap[code] = new GameState(code);
-  const lobbyPlayers = new Set();
+  const lobbyPlayers = [];
   codeToLobbyMap[code] = lobbyPlayers;
   return code;
 };
@@ -112,13 +112,17 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
     }
   }
   if (!alreadyAdded) {
-    lobbyPlayers.add({ name: user.name, googleid: user.googleid });
-    socket.join(roomCode, function () {
-      console.log("Joined", roomCode);
-      console.log("rooms: ", socket.rooms);
-    });
+    if (lobbyPlayers.length === 4) {
+      return "Lobby is full.";
+    } else {
+      lobbyPlayers.push({ name: user.name, googleid: user.googleid });
+      socket.join(roomCode, function () {
+        console.log("Joined", roomCode);
+        console.log("rooms: ", socket.rooms);
+      });
+    }
   }
-  for (let j = 0; j < 4 - lobbyPlayers.size; j++) {
+  for (let j = 0; j < 4 - lobbyPlayers.length; j++) {
     emptyArray.push(undefined);
   }
   //console.log([...lobbyPlayers].concat(emptyArray));
@@ -127,19 +131,21 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
 };
 
 const removePlayerFromLobby = (user, socket, roomCode) => {
-  const lobbyPlayers = codeToLobbyMap[roomCode];
-  lobbyPlayers.forEach((player) => {
+  let lobbyPlayers = codeToLobbyMap[roomCode];
+  lobbyPlayers = lobbyPlayers.filter((player) => {
     if (user.googleid === player.googleid) {
-      lobbyPlayers.delete(player);
       delete userToCodeMap[user.googleid];
       console.log("delete roomCode");
       socket.leave(roomCode, function () {
         console.log("Left", roomCode);
       });
+      return false;
     }
+    return true;
   });
+  codeToLobbyMap[roomCode] = lobbyPlayers;
   let emptyArray = [];
-  for (let j = 0; j < 4 - lobbyPlayers.size; j++) {
+  for (let j = 0; j < 4 - lobbyPlayers.length; j++) {
     emptyArray.push(undefined);
   }
   io.to(roomCode).emit("lobby", [...lobbyPlayers].concat(emptyArray));

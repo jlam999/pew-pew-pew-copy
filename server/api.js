@@ -22,6 +22,7 @@ const router = express.Router();
 //initialize socket
 const socketManager = require("./server-socket");
 const { STATES } = require("mongoose");
+const { getAllRoomCodes } = require("./server-socket");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -72,7 +73,12 @@ router.post("/addGameStats", (req, res) => {
   });
 });
 
-router.get("/roomCode", (req, res) => {
+router.get("/roomCodeExists", (req, res) => {
+  codeExists = getAllRoomCodes().includes(req.query.code);
+  res.send({ ans: codeExists });
+});
+
+router.get("/getUserRoomCode", (req, res) => {
   if (req.user) {
     const code = socketManager.getCodeFromUserID(String(req.user.googleid));
     // console.log(req.user.googleid);
@@ -114,14 +120,18 @@ router.post("/startGame", (req, res) => {
 router.get("/joinLobby", async (req, res) => {
   if (req.user && socketManager.getUserFromSocketID(req.query.socketid) !== undefined) {
     if (socketManager.getAllRoomCodes().includes(req.query.roomCode)) {
-      console.log("api join lobby called.")
+      console.log("api join lobby called.");
       const lobbyPlayers = await socketManager.addPlayerToLobby(
         req.user,
         socketManager.getSocketFromSocketID(req.query.socketid),
         req.query.roomCode
       );
-      console.log("thingy", lobbyPlayers)
-      res.send([...lobbyPlayers]);
+      if (lobbyPlayers === "Lobby is full.") {
+        res.send([0, 0, 0, 0, 0]);
+      } else {
+        console.log("thingy", lobbyPlayers);
+        res.send([...lobbyPlayers]);
+      }
     } else {
       res.send({});
     }

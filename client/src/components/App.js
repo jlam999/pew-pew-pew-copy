@@ -27,7 +27,8 @@ const App = () => {
         setUserId(user.googleid);
       }
     });
-    get("/api/roomCode").then((code) => {
+
+    get("/api/getUserRoomCode").then((code) => {
       console.log(" I HAVE A FUCKING CODE", code);
       if (code !== "undefined") {
         setRoomCode(code);

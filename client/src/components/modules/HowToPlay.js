@@ -7,8 +7,8 @@ import "../pages/Lobby.css";
 const HowToPlay = () => {
   return (
     <div>
-      <input type="checkbox" id="openSidebar" />
-      <label className="HowToPlay-Label" for="openSidebar">
+      <input type="checkbox" />
+      <label className="HowToPlay-Label">
         <p className="HowToPlay-Text">How To Play</p>
       </label>
       <div id="HowToPlay-Menu">
