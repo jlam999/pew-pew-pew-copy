@@ -48,13 +48,13 @@ const draw = (gameState, userId) => {
 
   ctx.clearRect(-canvas.width, -canvas.height, canvas.width, canvas.height);
 
-  ctx.beginPath();
-  ctx.rect(
-    -canvas.width,
-    -canvas.height,
-    consts.BORDER_MAX_X + 2 * canvas.width,
-    consts.BORDER_MAX_Y + 2 * canvas.height
-  );
+//  ctx.beginPath();
+//  ctx.rect(
+//    -canvas.width,
+//    -canvas.height,
+//    consts.BORDER_MAX_X + 2 * canvas.width,
+//    consts.BORDER_MAX_Y + 2 * canvas.height
+//  );
   ctx.fillStyle = consts.newBlack;
   ctx.fill();
   ctx.closePath();
@@ -70,6 +70,8 @@ const draw = (gameState, userId) => {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
+  ctx.fillStyle = "#383A31";
+  ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
   //ctx.beginPath();
   //ctx.rect(0, 0, 500, 500);
   //ctx.fillStyle = "#272799";
@@ -210,7 +212,8 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = consts.newBlack;
     ctx.fill();
     ctx.closePath();
-
+ 
+    
     //move canvas
     let X = canvas.width / 2 - gameState.players[userId].position.x;
     let Y = canvas.height / 2 - gameState.players[userId].position.y;
@@ -218,6 +221,17 @@ const draw = (gameState, userId) => {
     ctx.globalCompositeOperation = "copy";
     ctx.drawImage(canvas, X, Y);
     ctx.globalCompositeOperation = tmp;
+    //fog
+    //
+    ctx.beginPath();
+    const radgrad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, consts.innerFog, canvas.width/2, canvas.height/2, consts.outerFog);
+    radgrad.addColorStop(0, consts.newBlackTrans);
+    radgrad.addColorStop(1, consts.newBlack);
+    ctx.fillStyle = radgrad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fill();
+    ctx.closePath();
+ 
   }
 };
 
