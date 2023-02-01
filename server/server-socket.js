@@ -44,7 +44,7 @@ const usersAreConnected = (gameState) => {
 };
 
 const addPowerUps = (gameState) => {
-  if (gameState.powerUps.length < 3) {
+  if (gameState.powerUps.length < 2) {
     gameState.spawnPowerUp();
   }
 };
@@ -66,7 +66,7 @@ const startRunningGame = () => {
         }
         sendGameState(gameState.code);
         gameState.updateGameState();
-        if (gameState.frame_count % (FPS * 10) === 0) {
+        if (gameState.frame_count % (FPS * 20) === 0) {
           addPowerUps(gameState);
         }
         gameState.frame_count++;

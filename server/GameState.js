@@ -28,8 +28,8 @@ class GameState {
 
   getRandomPosition() {
     return {
-      x: Math.floor(Math.random() * consts.BORDER_MAX_X),
-      y: Math.floor(Math.random() * consts.BORDER_MAX_Y),
+      x: Math.floor(Math.random() * (consts.BORDER_MAX_X - 60) + 30),
+      y: Math.floor(Math.random() * (consts.BORDER_MAX_Y - 60) + 30),
     };
   }
 
@@ -45,11 +45,17 @@ class GameState {
   }
 
   addPlayer(id, name) {
-    const newPlayer = new Player(consts.INIT_HEALTH, 0, 0, id, name);
-    this.players[id] = newPlayer;
     const numPlayers = Object.keys(this.players).length;
-    const init_position = spawnPositions[numPlayers - 1]; //TO CHANGE
-    newPlayer.setPosition(init_position.x, init_position.y);
+    const init_position = spawnPositions[numPlayers]; //TO CHANGE
+    const newPlayer = new Player(
+      consts.INIT_HEALTH,
+      init_position.x,
+      init_position.y,
+      id,
+      name,
+      numPlayers //index of color array.
+    );
+    this.players[id] = newPlayer;
   }
 
   movePlayer(id, dir) {
