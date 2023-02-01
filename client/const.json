@@ -34,5 +34,7 @@
   "shadowFactor": 25,
   "kickback": 0.5,
   "innerFog": 400,
-  "outerFog": 600
+  "outerFog": 600,
+  "gridResolution": 10,
+  "gridColor": "green"
 }

@@ -71,14 +71,36 @@ const draw = (gameState, userId) => {
   // Set the fill style and draw a rectangle
   ctx.fillStyle = gradient;
   ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  
+  //draw background
+  //ctx.fillStyle = "#383A31";
+  //ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
-  ctx.fillStyle = "#383A31";
-  ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
   //ctx.beginPath();
   //ctx.rect(0, 0, 500, 500);
   //ctx.fillStyle = "#272799";
   //ctx.fill();
   //ctx.closePath();
+  //draw grid
+  for (let i = 0; i < consts.BORDER_MAX_X / consts.gridResolution; i++) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.moveTo(i * consts.gridResolution-X, 0-Y);
+    ctx.lineTo(i * consts.gridResolution-X, consts.BORDER_MAX_Y-Y);
+    ctx.strokeStyle = consts.gridColor;
+    ctx.stroke();
+    ctx.closePath();
+  }
+  for (let j = 0; j < consts.BORDER_MAX_Y / consts.gridResolution; j++) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.moveTo(0-X, j * consts.gridResolution-Y);
+    ctx.lineTo(consts.BORDER_MAX_X-X, j * consts.gridResolution-Y);
+    ctx.strokeStyle = consts.gridColor;
+    ctx.stroke();
+    ctx.closePath();
+  }
+
   if (!gameState.isActive && Object.values(gameState.players).length == 1) {
     ctx.font = "bold 30px Arial";
     ctx.fillStyle = consts.newBlack;
@@ -210,7 +232,6 @@ const draw = (gameState, userId) => {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
-
     //    ctx.beginPath();
     //    ctx.rect(
     //      consts.BORDER_MAX_X - X,
