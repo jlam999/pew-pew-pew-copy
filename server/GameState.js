@@ -28,8 +28,8 @@ class GameState {
 
   getRandomPosition() {
     return {
-      x: Math.floor(Math.random() * consts.BORDER_MAX_X),
-      y: Math.floor(Math.random() * consts.BORDER_MAX_Y),
+      x: Math.floor(Math.random() * (consts.BORDER_MAX_X - 60) + 30),
+      y: Math.floor(Math.random() * (consts.BORDER_MAX_Y - 60) + 30),
     };
   }
 

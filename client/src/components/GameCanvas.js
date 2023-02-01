@@ -61,20 +61,20 @@ const draw = (gameState, userId) => {
   ctx.fill();
   ctx.closePath();
 
-  const gradient = ctx.createLinearGradient(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  // const gradient = ctx.createLinearGradient(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
   // Add three color stops
-  gradient.addColorStop(0, "#334455");
-  gradient.addColorStop(0.5, "#334477");
-  gradient.addColorStop(1, "#334499");
+  // gradient.addColorStop(0, "#334455");
+  // gradient.addColorStop(0.5, "#334477");
+  // gradient.addColorStop(1, "#334499");
 
   // Set the fill style and draw a rectangle
-  ctx.fillStyle = gradient;
+  ctx.fillStyle = "#434A42";
   ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
-  
+
   //draw background
   //ctx.fillStyle = "#383A31";
-  //ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  //ctx.fillRect(0 - X, 0 - Y, nsts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
   //ctx.beginPath();
   //ctx.rect(0, 0, 500, 500);
@@ -85,8 +85,8 @@ const draw = (gameState, userId) => {
   for (let i = 0; i < consts.BORDER_MAX_X / consts.gridResolution; i++) {
     ctx.beginPath();
     ctx.lineWidth = 2;
-    ctx.moveTo(i * consts.gridResolution-X, 0-Y);
-    ctx.lineTo(i * consts.gridResolution-X, consts.BORDER_MAX_Y-Y);
+    ctx.moveTo(i * consts.gridResolution - X, 0 - Y);
+    ctx.lineTo(i * consts.gridResolution - X, consts.BORDER_MAX_Y - Y);
     ctx.strokeStyle = consts.gridColor;
     ctx.stroke();
     ctx.closePath();
@@ -94,8 +94,8 @@ const draw = (gameState, userId) => {
   for (let j = 0; j < consts.BORDER_MAX_Y / consts.gridResolution; j++) {
     ctx.beginPath();
     ctx.lineWidth = 2;
-    ctx.moveTo(0-X, j * consts.gridResolution-Y);
-    ctx.lineTo(consts.BORDER_MAX_X-X, j * consts.gridResolution-Y);
+    ctx.moveTo(0 - X, j * consts.gridResolution - Y);
+    ctx.lineTo(consts.BORDER_MAX_X - X, j * consts.gridResolution - Y);
     ctx.strokeStyle = consts.gridColor;
     ctx.stroke();
     ctx.closePath();
@@ -125,7 +125,7 @@ const draw = (gameState, userId) => {
         2 * Math.PI,
         true
       );
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fill();
       ctx.closePath();
     }
