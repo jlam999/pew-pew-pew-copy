@@ -72,11 +72,10 @@ const Lobby = (props) => {
   }, [props.roomCode]);
 
   const attemptGameStart = () => {
+
     get("/api/gameState", { code: props.roomCode }).then((gameState) => {
       if (gameState.isActive) {
         alert("Game in Session; Cannot Join.");
-      } else if (playerList.length < 2) {
-        alert("Not enough players!");
       } else {
         post("/api/startGame", { code: props.roomCode });
       }
@@ -95,7 +94,7 @@ const Lobby = (props) => {
               {playerList.map((player) => (
                 <PlayerBox player={player}/>
               ))}
-              {playerList.length < 2 ? (
+              {playerList.filter((player) => {return player !== null}).length < 2 ? (
                 <div className="Lobby-waitButton">
                   <p className="Lobby-waitText">Waiting...</p>
                 </div>
