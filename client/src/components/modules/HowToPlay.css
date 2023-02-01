@@ -11,6 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  top: 8;
   z-index: 1;
 }
 
@@ -28,6 +29,12 @@
 .HowToPlay-Text {
   white-space: nowrap;
   margin: 0px;
+}
+
+.HowToPlay-Instructions {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 16px;
 }
 
 input[type="checkbox"] {
@@ -67,8 +74,30 @@ input[type="checkbox"]:checked ~ .HowToPlay-Label {
   border-radius: 8px 0px 0px 8px;
 }
 
-@media (max-height: 600px) {
+.demoVid1 {
+  position: relative;
+  top: 5%;
+  height: 60%;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+@media (max-height: 692px) {
   #HowToPlay-Menu {
-    height: 600px;
+    height: 692px;
+  }
+  .HowToPlay-Box {
+    height: 150px;
+    padding: 4px;
+    margin: 4px;
   }
 }
+/* 
+@media (min-height: 720px) {
+  #HowToPlay-Menu {
+    height: 720px;
+  }
+  .HowToPlay-Box {
+    height: 180px;
+  }
+} */
