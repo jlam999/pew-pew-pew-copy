@@ -13,7 +13,7 @@
   "newBlackTrans": "rgba(39, 40, 34, 0.0)",
   "obstacles": [
     {
-      "blockSize": 80,
+      "blockSize": 100,
       "map": [
         [0,0,0,0,0,1,0,0,0,0],
         [0,0,0,0,0,1,0,0,0,0],

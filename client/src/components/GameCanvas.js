@@ -37,6 +37,8 @@ const draw = (gameState, userId) => {
   canvas.height = self.innerHeight;
   width = canvas.width / 2 - xx;
   height = canvas.height / 2 - yy;
+  let X = -(canvas.width / 2 - gameState.players[userId].position.x);
+  let Y = -(canvas.height / 2 - gameState.players[userId].position.y);
 
   //window.onresize = function (event) {
   //  canvas.width = self.innerWidth;
@@ -46,20 +48,20 @@ const draw = (gameState, userId) => {
   //};
   const ctx = canvas.getContext("2d");
 
-  ctx.clearRect(-canvas.width, -canvas.height, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-//  ctx.beginPath();
-//  ctx.rect(
-//    -canvas.width,
-//    -canvas.height,
-//    consts.BORDER_MAX_X + 2 * canvas.width,
-//    consts.BORDER_MAX_Y + 2 * canvas.height
-//  );
+  //  ctx.beginPath();
+  //  ctx.rect(
+  //    -canvas.width,
+  //    -canvas.height,
+  //    consts.BORDER_MAX_X + 2 * canvas.width,
+  //    consts.BORDER_MAX_Y + 2 * canvas.height
+  //  );
   ctx.fillStyle = consts.newBlack;
   ctx.fill();
   ctx.closePath();
 
-  const gradient = ctx.createLinearGradient(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  const gradient = ctx.createLinearGradient(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
   // Add three color stops
   gradient.addColorStop(0, "#334455");
@@ -68,10 +70,10 @@ const draw = (gameState, userId) => {
 
   // Set the fill style and draw a rectangle
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
   ctx.fillStyle = "#383A31";
-  ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
+  ctx.fillRect(0 - X, 0 - Y, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
   //ctx.beginPath();
   //ctx.rect(0, 0, 500, 500);
   //ctx.fillStyle = "#272799";
@@ -90,10 +92,12 @@ const draw = (gameState, userId) => {
       ctx.arc(
         player.position.x +
           (consts.shadowFactor * (player.position.x - consts.BORDER_MAX_X / 2)) /
-            (consts.BORDER_MAX_X / 2),
+            (consts.BORDER_MAX_X / 2) -
+          X,
         player.position.y +
           (consts.shadowFactor * (player.position.y - consts.BORDER_MAX_Y / 2)) /
-            (consts.BORDER_MAX_Y / 2),
+            (consts.BORDER_MAX_Y / 2) -
+          Y,
         player.radius,
         0,
         2 * Math.PI,
@@ -115,11 +119,17 @@ const draw = (gameState, userId) => {
     {
       // shadow for mouse arrow
       ctx.beginPath();
-      ctx.moveTo(offX + vec[0] * (rad + 20), offY + vec[1] * (rad + 20));
-      ctx.lineTo(offX + vec[0] * (rad + 10) - 5 * vec[1], offY + vec[1] * (rad + 10) + 5 * vec[0]);
+      ctx.moveTo(offX + vec[0] * (rad + 20) - X, offY + vec[1] * (rad + 20) - Y);
+      ctx.lineTo(
+        offX + vec[0] * (rad + 10) - 5 * vec[1] - X,
+        offY + vec[1] * (rad + 10) + 5 * vec[0] - Y
+      );
       //    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
-      ctx.lineTo(offX + vec[0] * (rad + 10) + 5 * vec[1], offY + vec[1] * (rad + 10) - 5 * vec[0]);
-      ctx.lineTo(offX + vec[0] * (rad + 20), offY + vec[1] * (rad + 20));
+      ctx.lineTo(
+        offX + vec[0] * (rad + 10) + 5 * vec[1] - X,
+        offY + vec[1] * (rad + 10) - 5 * vec[0] - Y
+      );
+      ctx.lineTo(offX + vec[0] * (rad + 20) - X, offY + vec[1] * (rad + 20) - Y);
       ctx.fillStyle = "black";
       ctx.fill();
       ctx.closePath();
@@ -128,7 +138,7 @@ const draw = (gameState, userId) => {
     for (let player of Object.values(gameState.players)) {
       // rendering white background before drawing circles to contrast with dark background
       ctx.beginPath();
-      ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
+      ctx.arc(player.position.x - X, player.position.y - Y, player.radius, 0, 2 * Math.PI, true);
       ctx.fillStyle = "white";
       ctx.fill();
       ctx.closePath();
@@ -136,13 +146,13 @@ const draw = (gameState, userId) => {
     for (let player of Object.values(gameState.players)) {
       ctx.beginPath();
       //ctx.rect(player.position.x-player.radius, player.position.y-player.radius, 2*player.radius, 2*player.radius);
-      ctx.arc(player.position.x, player.position.y, player.radius, 0, 2 * Math.PI, true);
+      ctx.arc(player.position.x - X, player.position.y - Y, player.radius, 0, 2 * Math.PI, true);
       ctx.fillStyle = consts.playerColors[i]; //"{parseInt(player.id, 16)%parseInt('FFFFFF', 16)}";// should work
       ctx.fill();
       ctx.closePath();
       for (let bullet of player.bullets) {
         ctx.beginPath();
-        ctx.arc(bullet.position.x, bullet.position.y, bullet.radius, 0, 2 * Math.PI, true);
+        ctx.arc(bullet.position.x - X, bullet.position.y - Y, bullet.radius, 0, 2 * Math.PI, true);
         ctx.fillStyle = consts.playerColors[i];
         ctx.fill();
         ctx.closePath();
@@ -152,86 +162,94 @@ const draw = (gameState, userId) => {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(player.name, player.position.x, player.position.y);
+        ctx.fillText(player.name, player.position.x - X, player.position.y - Y);
       }
       i++;
     }
     //Draw powerups
     gameState.powerUps.forEach((powerup) => {
-      drawPowerUp(ctx, powerup.position);
+      drawPowerUp(ctx, { x: powerup.position.x - X, y: powerup.position.y - Y });
     });
 
-
-    for (let i = 0; i < consts.obstacles[0].map.length; i++) {
-      for (let j = 0; j < consts.obstacles[0].map[i].length; j++) {
-        if (consts.obstacles[0].map[i][j] == 0) continue;
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(225, 225, 255, 0.5)";
-        ctx.fillRect(
-          i * consts.obstacles[0].blockSize,
-          j * consts.obstacles[0].blockSize,
-          consts.obstacles[0].blockSize,
-          consts.obstacles[0].blockSize
-        );
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(
-          i * consts.obstacles[0].blockSize,
-          j * consts.obstacles[0].blockSize,
-          consts.obstacles[0].blockSize,
-          consts.obstacles[0].blockSize
-        );
-        ctx.fill();
-        ctx.closePath();
-      }
-    }
+    //    for (let i = 0; i < consts.obstacles[0].map.length; i++) {
+    //      for (let j = 0; j < consts.obstacles[0].map[i].length; j++) {
+    //        if (consts.obstacles[0].map[i][j] == 0) continue;
+    //        ctx.beginPath();
+    //        ctx.fillStyle = "rgba(225, 225, 255, 0.5)";
+    //        ctx.fillRect(
+    //          i * consts.obstacles[0].blockSize - X,
+    //          j * consts.obstacles[0].blockSize - Y,
+    //          consts.obstacles[0].blockSize,
+    //          consts.obstacles[0].blockSize
+    //        );
+    //        ctx.strokeStyle = gradient;
+    //        ctx.lineWidth = 2;
+    //        ctx.strokeRect(
+    //          i * consts.obstacles[0].blockSize - X,
+    //          j * consts.obstacles[0].blockSize - Y,
+    //          consts.obstacles[0].blockSize,
+    //          consts.obstacles[0].blockSize
+    //        );
+    //        ctx.fill();
+    //        ctx.closePath();
+    //      }
+    //    }
     //draw triangle
     ctx.beginPath();
-    ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
-    ctx.lineTo(xx + vec[0] * (rad + 10) - 5 * vec[1], yy + vec[1] * (rad + 10) + 5 * vec[0]);
+    ctx.moveTo(xx + vec[0] * (rad + 20) - X, yy + vec[1] * (rad + 20) - Y);
+    ctx.lineTo(
+      xx + vec[0] * (rad + 10) - 5 * vec[1] - X,
+      yy + vec[1] * (rad + 10) + 5 * vec[0] - Y
+    );
     //    ctx.lineTo(xx + vec[0]*(rad+5), yy + vec[1]*(rad+5));
-    ctx.lineTo(xx + vec[0] * (rad + 10) + 5 * vec[1], yy + vec[1] * (rad + 10) - 5 * vec[0]);
-    ctx.lineTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
+    ctx.lineTo(
+      xx + vec[0] * (rad + 10) + 5 * vec[1] - X,
+      yy + vec[1] * (rad + 10) - 5 * vec[0] - Y
+    );
+    ctx.lineTo(xx + vec[0] * (rad + 20) - X, yy + vec[1] * (rad + 20) - Y);
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
 
-    ctx.beginPath();
-    ctx.rect(
-      consts.BORDER_MAX_X,
-      0,
-      2 * consts.shadowFactor,
-      2 * consts.shadowFactor + consts.BORDER_MAX_Y
-    );
-    ctx.rect(
-      0,
-      consts.BORDER_MAX_Y,
-      2 * consts.shadowFactor + consts.BORDER_MAX_X,
-      2 * consts.shadowFactor
-    );
-    ctx.fillStyle = consts.newBlack;
-    ctx.fill();
-    ctx.closePath();
- 
-    
+    //    ctx.beginPath();
+    //    ctx.rect(
+    //      consts.BORDER_MAX_X - X,
+    //      0 - Y,
+    //      2 * consts.shadowFactor,
+    //      2 * consts.shadowFactor + consts.BORDER_MAX_Y
+    //    );
+    //    ctx.rect(
+    //      0 - X,
+    //      consts.BORDER_MAX_Y - Y,
+    //      2 * consts.shadowFactor + consts.BORDER_MAX_X,
+    //      2 * consts.shadowFactor
+    //    );
+    //    ctx.fillStyle = consts.newBlack;
+    //    ctx.fill();
+    //    ctx.closePath();
+
     //move canvas
-    let X = canvas.width / 2 - gameState.players[userId].position.x;
-    let Y = canvas.height / 2 - gameState.players[userId].position.y;
-    let tmp = ctx.globalCompositeOperation;
-    ctx.globalCompositeOperation = "copy";
-    ctx.drawImage(canvas, X, Y);
-    ctx.globalCompositeOperation = tmp;
+    //    let tmp = ctx.globalCompositeOperation;
+    //    ctx.globalCompositeOperation = "copy";
+    //    ctx.drawImage(canvas, X, Y);
+    //    ctx.globalCompositeOperation = tmp;
     //fog
     //
     ctx.beginPath();
-    const radgrad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, consts.innerFog, canvas.width/2, canvas.height/2, consts.outerFog);
+    const radgrad = ctx.createRadialGradient(
+      canvas.width / 2,
+      canvas.height / 2,
+      consts.innerFog,
+      canvas.width / 2,
+      canvas.height / 2,
+      consts.outerFog
+    );
     radgrad.addColorStop(0, consts.newBlackTrans);
     radgrad.addColorStop(1, consts.newBlack);
     ctx.fillStyle = radgrad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fill();
     ctx.closePath();
- 
   }
 };
 

@@ -45,7 +45,7 @@ class Bullet {
     };
     this.checkWallCollision();
     this.checkCollision(players);
-    this.checkMapCollision();
+//    this.checkMapCollision();
     this.#speed *= consts.bulletFriction;
   }
 
