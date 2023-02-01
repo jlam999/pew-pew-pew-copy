@@ -61,14 +61,14 @@ class Player {
     // mouse direction
     theta = theta + (Math.random() * 4 - 2) * (Math.PI / 180);
     if (this.#health > 2) {
-      let ll = Math.floor(
-        (this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta)) /
-          consts.obstacles[0].blockSize
-      );
-      let uu = Math.floor(
-        (this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta)) /
-          consts.obstacles[0].blockSize
-      );
+      // let ll = Math.floor(
+      //   (this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta)) /
+      //     consts.obstacles[0].blockSize
+      // );
+      // let uu = Math.floor(
+      //   (this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta)) /
+      //     consts.obstacles[0].blockSize
+      // );
       let shit =
         this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) > 0 &&
         this.#position.x + (this.getRadius() + this.getSpeed()) * Math.cos(theta) <
@@ -76,7 +76,7 @@ class Player {
         this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) > 0 &&
         this.#position.y - (this.getRadius() + this.getSpeed()) * Math.sin(theta) <
           consts.BORDER_MAX_Y;
-      if (this.#health > 2 && shit && consts.obstacles[0].map[ll][uu] == 0) {
+      if (this.#health > 2 && shit) {
         this.#health--;
         this.#bullets.push(
           new Bullet(
