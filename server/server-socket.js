@@ -97,12 +97,16 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
   let alreadyAdded = false;
   userToCodeMap[user.googleid] = roomCode;
   const lobbyPlayers = codeToLobbyMap[roomCode];
+  let emptyArray = []
   // console.log("code", JSON.stringify(roomCode));
   // console.log(codeToLobbyMap);
   // console.log("Players: ", lobbyPlayers);
   // console.log(codeToGameMap);
   for (let player of lobbyPlayers) {
     if (player.googleid === user.googleid) {
+      // for (let j = 0; j < 4-lobbyPlayers.size; j++) {
+      //   emptyArray.push(undefined)
+      // }
       alreadyAdded = true;
     }
   }
@@ -112,9 +116,13 @@ const addPlayerToLobby = async (user, socket, roomCode) => {
       console.log("Joined", roomCode);
       console.log("rooms: ", socket.rooms);
     });
-    io.to(roomCode).emit("lobby", [...lobbyPlayers]);
   }
-  return lobbyPlayers;
+  for (let j = 0; j < 4-lobbyPlayers.size; j++) {
+    emptyArray.push(undefined)
+  }
+  console.log([...lobbyPlayers].concat(emptyArray))
+  io.to(roomCode).emit("lobby", [...lobbyPlayers].concat(emptyArray));
+  return [...lobbyPlayers].concat(emptyArray);
 };
 
 const removePlayerFromLobby = (user, socket, roomCode) => {
@@ -129,8 +137,12 @@ const removePlayerFromLobby = (user, socket, roomCode) => {
       });
     }
   });
-  io.to(roomCode).emit("lobby", [...lobbyPlayers]);
-  return lobbyPlayers;
+  let emptyArray = []
+  for (let j = 0; j < 4-lobbyPlayers.size; j++) {
+    emptyArray.push(undefined)
+  }
+  io.to(roomCode).emit("lobby", [...lobbyPlayers].concat(emptyArray));
+  return [...lobbyPlayers].concat(emptyArray);
 };
 
 const addUserToGame = (user, socket, code) => {

@@ -114,11 +114,13 @@ router.post("/startGame", (req, res) => {
 router.get("/joinLobby", async (req, res) => {
   if (req.user && socketManager.getUserFromSocketID(req.query.socketid) !== undefined) {
     if (socketManager.getAllRoomCodes().includes(req.query.roomCode)) {
+      console.log("api join lobby called.")
       const lobbyPlayers = await socketManager.addPlayerToLobby(
         req.user,
         socketManager.getSocketFromSocketID(req.query.socketid),
         req.query.roomCode
       );
+      console.log("thingy", lobbyPlayers)
       res.send([...lobbyPlayers]);
     } else {
       res.send({});

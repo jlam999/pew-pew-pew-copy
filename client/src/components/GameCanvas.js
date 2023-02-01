@@ -21,11 +21,10 @@ const drawPowerUp = (context, position) => {
   context.fillStyle = "#FFFFFF";
   context.fill();
   context.closePath();
-  context.font = "bold 30px Arial";
-  context.textAlign = "center";
-  context.textBaseline = "middle";
+
   context.fillStyle = "#FF0000";
-  context.fillText("+", position.x, position.y);
+  context.fillRect(position.x - 10, position.y - 3, 20, 6);
+  context.fillRect(position.x - 3, position.y - 10, 6, 20);
 };
 
 const draw = (gameState, userId) => {
@@ -49,13 +48,13 @@ const draw = (gameState, userId) => {
 
   ctx.clearRect(-canvas.width, -canvas.height, canvas.width, canvas.height);
 
-  ctx.beginPath();
-  ctx.rect(
-    -canvas.width,
-    -canvas.height,
-    consts.BORDER_MAX_X + 2 * canvas.width,
-    consts.BORDER_MAX_Y + 2 * canvas.height
-  );
+//  ctx.beginPath();
+//  ctx.rect(
+//    -canvas.width,
+//    -canvas.height,
+//    consts.BORDER_MAX_X + 2 * canvas.width,
+//    consts.BORDER_MAX_Y + 2 * canvas.height
+//  );
   ctx.fillStyle = consts.newBlack;
   ctx.fill();
   ctx.closePath();
@@ -71,6 +70,8 @@ const draw = (gameState, userId) => {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
 
+  ctx.fillStyle = "#383A31";
+  ctx.fillRect(0, 0, consts.BORDER_MAX_X, consts.BORDER_MAX_Y);
   //ctx.beginPath();
   //ctx.rect(0, 0, 500, 500);
   //ctx.fillStyle = "#272799";
@@ -160,6 +161,30 @@ const draw = (gameState, userId) => {
       drawPowerUp(ctx, powerup.position);
     });
 
+
+    for (let i = 0; i < consts.obstacles[0].map.length; i++) {
+      for (let j = 0; j < consts.obstacles[0].map[i].length; j++) {
+        if (consts.obstacles[0].map[i][j] == 0) continue;
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(225, 225, 255, 0.5)";
+        ctx.fillRect(
+          i * consts.obstacles[0].blockSize,
+          j * consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize
+        );
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(
+          i * consts.obstacles[0].blockSize,
+          j * consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize,
+          consts.obstacles[0].blockSize
+        );
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
     //draw triangle
     ctx.beginPath();
     ctx.moveTo(xx + vec[0] * (rad + 20), yy + vec[1] * (rad + 20));
@@ -175,19 +200,20 @@ const draw = (gameState, userId) => {
     ctx.rect(
       consts.BORDER_MAX_X,
       0,
-      consts.shadowFactor,
-      consts.shadowFactor + consts.BORDER_MAX_Y
+      2 * consts.shadowFactor,
+      2 * consts.shadowFactor + consts.BORDER_MAX_Y
     );
     ctx.rect(
       0,
       consts.BORDER_MAX_Y,
-      consts.shadowFactor + consts.BORDER_MAX_X,
-      consts.shadowFactor
+      2 * consts.shadowFactor + consts.BORDER_MAX_X,
+      2 * consts.shadowFactor
     );
     ctx.fillStyle = consts.newBlack;
     ctx.fill();
     ctx.closePath();
-
+ 
+    
     //move canvas
     let X = canvas.width / 2 - gameState.players[userId].position.x;
     let Y = canvas.height / 2 - gameState.players[userId].position.y;
@@ -195,6 +221,17 @@ const draw = (gameState, userId) => {
     ctx.globalCompositeOperation = "copy";
     ctx.drawImage(canvas, X, Y);
     ctx.globalCompositeOperation = tmp;
+    //fog
+    //
+    ctx.beginPath();
+    const radgrad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, consts.innerFog, canvas.width/2, canvas.height/2, consts.outerFog);
+    radgrad.addColorStop(0, consts.newBlackTrans);
+    radgrad.addColorStop(1, consts.newBlack);
+    ctx.fillStyle = radgrad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fill();
+    ctx.closePath();
+ 
   }
 };
 
