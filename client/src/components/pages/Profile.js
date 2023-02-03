@@ -17,11 +17,13 @@ const Profile = (props) => {
   const [stats, updateStats] = useState([]);
 
   useEffect(() => {
-    document.title = "Profile"
-    get("/api/user", { googleid: props.userId }).then((user) => {
-      setUser(user);
-    });
-    get("/api/stats", { googleid: props.userId }).then((stats) => updateStats(stats));
+    document.title = "Profile";
+    if (props.userId) {
+      get("/api/user", { googleid: props.userId }).then((user) => {
+        setUser(user);
+      });
+      get("/api/stats", { googleid: props.userId }).then((stats) => updateStats(stats));
+    }
   }, []);
 
   return (

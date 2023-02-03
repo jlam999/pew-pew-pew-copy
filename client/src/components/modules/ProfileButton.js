@@ -23,14 +23,16 @@ const ProfileButton = (props) => {
   const [user, setUser] = useState("");
   const [isLoggedIn, setStatus] = useState(false);
   useEffect(() => {
-    get("/api/user", { googleid: props.userId }).then((user) => {
-      if (user.length === 0) {
-        setStatus(false);
-      } else {
-        setUser(user);
-        setStatus(true);
-      }
-    });
+    if (props.userId) {
+      get("/api/user", { googleid: props.userId }).then((user) => {
+        if (user.length === 0) {
+          setStatus(false);
+        } else {
+          setUser(user);
+          setStatus(true);
+        }
+      });
+    }
   }, [props.userId]);
 
   return (
